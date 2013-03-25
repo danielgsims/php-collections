@@ -19,7 +19,7 @@ class Collection implements IteratorAggregate{
     protected $items;
 
     /**
-     *
+     * Constructs the items as an array
      */
     public function __construct(){
         $this->items = array();
