@@ -178,5 +178,49 @@ class Collection implements IteratorAggregate{
        if(abs($index) > $this->count()){
            throw new OutOfRangeException("Index out of bounds of collection");
        }
-   }
+    }
+
+    /**
+     * Check to see if an item in the collection exists that satisfies the provided callback
+     *
+     * @param callback
+     * @returns bool
+     */
+    public function exists($callback){
+        return (bool) $this->find($callback);
+    }
+
+    /**
+     * Get a range of items in the collection
+     * 
+     * @param int $start The starting index of the range
+     * @param int $end The ending index of the range
+     * @returns Collection
+     */
+    public function getRange($start,$end){
+        if(!is_integer($start) || $start < 0){
+            throw new InvalidArgumentException("Start must be an integer");
+        }
+
+        if(!is_integer($end) || $end < 0){
+            throw new InvalidArgumentException("End must be an integer");
+        }
+
+        if($start >= $end){
+            throw new InvalidArgumentException("End must be greater than start"); 
+        }
+        
+        /*
+         * Todo, What is the expected result in this situation. Would this be an error, or return as many as possible?
+         */
+        if($start >= $this->count){
+            throw new InvalidArgumentException("Start must be less than the count of the items in the Collection");
+        }
+
+        $subsetItems = array_slice($this->items,$start,$end);
+        $subset = new Collection();
+        $subset->addItems($subsetItems);
+        return $subset;
+
+    }
 }
