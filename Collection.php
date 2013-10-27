@@ -5,11 +5,10 @@
  * A generic list implementation in PHP
  *
  * @author danielgsims
- *
- * @todo - Callbacks can cause a lot of unforseen errors
+ * @todo - Insert and Insert Range need to check if a number is too negative
  */
 
-class CollectionInteratorException extends Exception{}
+class CollectionIteratorException extends Exception{}
 class CollectionInvalidArgumentException extends Exception{}
 class CollectionOutOfRangeException extends Exception{}
 
@@ -28,6 +27,8 @@ class Collection implements IteratorAggregate{
 
     /**
      * Constructs the items as an array
+     *
+     * @param string $objectName Name of the object used in the Collection
      */
     public function __construct($objectName){
       $this->items = array();
@@ -40,100 +41,6 @@ class Collection implements IteratorAggregate{
     }
 
     /**
-     * Get Iterator to satisfy IteratorAggregate interface
-     * @return ArrayIterator
-     */
-    public function getIterator(){
-       return new ArrayIterator($this->items);
-   }
-
-    /**
-     * The number of items in a collection
-     * @return int
-     */
-    public function count(){
-       return count($this->items);
-   }
-
-    /**
-     * Returns the index of the first item that satisfies the callback function.
-     * Returns -1 if no index is found.
-     *
-     *
-     * @param callable $callback
-     * @return int
-     */
-    public function indexOf(callable $callback){
-      try{
-        $found = false;
-
-        for($i = 0; $i < $this->count(); $i++){
-          if($callback($this->items[$i])){
-            $found = true;
-            break;
-          }
-        }
-
-        return $found ? $i : -1;
-      } catch (Exception $e){
-        throw new CollectionInteratorException($e->getMessage());
-      }
-    }
-
-    /**
-     * Empties all of the items in the array
-     */
-    public function clear(){
-       $this->items = array();
-   }
-
-
-    /**
-     * Finds and returns the first item in the collection that satisfies the callback.
-     *
-     * @param callable $callback
-     * @return mixed|bool
-     */
-    public function find(callable $callback){
-      try{
-       $found = false;
-       foreach($this->items as $item){
-              if($callback($item)){
-                 $found = $item;
-                 break;
-              }
-       }
-
-       return $found;
-      } catch (Exception $e){
-        throw new CollectionInteratorException($e->getMessage());
-      }
-   }
-
-    /**
-     * Returns a collection of all items that satisfy the callback function. If nothing is found, returns an empty
-     * Collection
-     *
-     * @param callable $callback
-     * @return Collection
-     */
-    public function findAll(callable $callback){
-         try{
-           $col = new Collection();
-           foreach($this->items as $item){
-              if($callback($item)){
-                  $col->add($item);
-              }
-           }
-
-           return $col;
-
-         } catch (Exception $e){
-          throw new CollectionInteratorException($e->getMessage());
-         }
-   }
-
-    /**
      * Add an item to the collection
      *
      * @param mixed $item
@@ -141,31 +48,6 @@ class Collection implements IteratorAggregate{
     public function add($item){
       $this->validateItem($item);
       $this->items[] = $item;
-    }
-
-    /**
-     * Validates that the item is an object and matches the object name
-     *
-     * @param mixed $item
-     * @throws CollectionInvalidArgumentException
-     */
-    protected function validateItem($item){
-      if(!is_object($item)) throw new CollectionInvalidArgumentException("Item must be an object");
-
-      if(!is_a($item, $this->objectName)){
-        throw new CollectionInvalidArgumentException("Item is not of subtype " . $this->objectName);
-      }
-    }
-
-    /**
-     * Validates an array of items
-     *
-     * @param array $items
-     */
-    protected function validateItems(array $items){
-      foreach($items as $item){
-        $this->validateItem($item);
-      }
     }
 
     /**
@@ -179,79 +61,156 @@ class Collection implements IteratorAggregate{
     }
 
     /**
-     * Insert the item at index
+     * Fetches the item at the specified index
      *
-     * @throws InvalidArgumentException
-     * @param int $index
-     * @param mixed $item
+     * @param int $index The index to fetch
+     * @throws CollectionInvalidArgumentException
+     * @throws CollectionOutOfRangeException
      */
-    public function insert($index, $item){
+    public function at($index){
+      if(!is_int($index)) throw new  CollectionInvalidArgumentException("Index must be an integer");
+      if($index >= $this->count()) throw new CollectionOutOfRangeException("Out of range on Collection");
 
-      $this->validateIndex($index);
-      $this->validateItem($item);
-
-      //To work with negative index, get the positive relation to 0 index
-      if($index < 0)
-          $index = $this->count() + $index + 1;
-
-      $partA = array_slice($this->items,0,$index);
-      $partB = array_slice($this->items, $index, count($this->items));
-      $partA[] = $item;
-      $this->items = array_merge($partA,$partB);
-   }
-
-    /**
-     * Removes the item at the specified index
-     *
-     * @throws InvalidArgumentException
-     * @param int $index
-     */
-    public function removeAt($index){
-       $this->validateIndex($index);
-
-       if($index != -1){
-           $partA = array_slice($this->items, 0, $index);
-           $partB = array_slice($this->items, $index + 1, count($this->items));
-           $this->items = array_merge($partA,$partB);
-       } else {
-           array_pop($this->items);
-       }
-   }
-
-    /**
-     * Return the collection as an array
-     *
-     * Returns the array that is encapsulated by the collection.
-     *
-     * @return array
-     */
-    public function toArray(){
-       return $this->items;
-   }
-
-    /**
-     * @param $index
-     * @throws OutOfRangeException
-     * @throws InvalidArgumentException
-     */
-    private function validateIndex($index){
-       if(!is_int($index)){
-            throw new CollectionInvalidArgumentException("Index must be an integer");
-       }
-
-       if(abs($index) > $this->count()){
-           throw new CollectionOutOfRangeException("Index out of bounds of collection");
-       }
+      return $this->items[$index];
     }
+
+    /**
+     * Empties all of the items in the array
+     */
+    public function clear(){
+       $this->items = array();
+    }
+
+    /**
+     * Determines whether the item is in the Collection
+     *
+     * @param mixed $needle The item to search for in the collection
+     *
+     */
+    public function contains($needle){
+      $this->verifyItem($item);
+      return in_array($needles, $this->items);
+    }
+
+    /**
+     * The number of items in a collection
+     * @return int
+     */
+    public function count(){
+       return count($this->items);
+   }
 
     /**
      * Check to see if an item in the collection exists that satisfies the provided callback
      *
-     * @param callback
+     * @param callback $condition The condition criteria to test each item
      * @returns bool
      */
-    public function exists(callable $callback){
-        return (bool) $this->find($callback);
+    public function exists(callable $condition){
+        return (bool) $this->find($condition);
+    }
+
+   /**
+     * Finds and returns the first item in the collection that satisfies the callback.
+     *
+     * @param callable $condition
+     * @return mixed|bool
+     */
+    public function find(callable $condition){
+      $index = $this->findIndex($condition);
+      return $index == -1 ? false : $this->items[$index];
+    }
+
+    /**
+     * Returns a collection of all items that satisfy the callback function. If nothing is found, returns an empty
+     * Collection
+     *
+     * @param callable $condition
+     * @return Collection
+     */
+    public function findAll(callable $condition){
+         try{
+           $col = new Collection();
+           foreach($this->items as $item){
+              if($condition($item)){
+                  $col->add($item);
+              }
+           }
+
+           return $col;
+
+         } catch (Exception $e){
+          throw new CollectionIteratorException($e->getMessage());
+         }
+   }
+
+
+
+    /**
+     * Finds the index of the first item that returns true from the callback,
+     * returns -1 if no item is found
+     *
+     * @param callable $condition The callback function to test whether the item matches a condition
+     */
+    public function findIndex(callable $condition){
+      try{
+        $index = -1;
+
+        for($i = 0; $i< count($this->items); $i++){
+          if($condition($this->items[$i])){
+            $index = $i;
+            break;
+          }
+        }
+
+        return $i;
+
+      } catch (Exception $e){
+        throw new CollectionIteratorException($e->getMessage());
+      }
+    }
+
+    /**
+     * Finds and returns the last item in the collection that satisfies the callback.
+     *
+     * @param callable $condition
+     * @return mixed|bool
+     */
+    public function findLast(callable $condition){
+      $index = $this->findLastIndex($condition);
+      return $index == -1 ? false : $this->items[$index];
+    }
+
+    /**
+     * Finds the index of the last item that returns true from the callback,
+     * returns -1 if no item is found
+     *
+     * @param callable $condition The callback function to test whether the item matches a condition
+     */
+    public function findLastIndex(callable $condition){
+      try{
+        $index = -1;
+
+        for($i = count($this->items) - 1; $i>= 0; $i--){
+          if($condition($this->items[$i])){
+            $index = $i;
+            break;
+          }
+        }
+
+        return $i;
+
+      } catch (Exception $e){
+        throw new CollectionIteratorException($e->getMessage());
+      }
+    }
+
+    /**
+     * Get Iterator to satisfy IteratorAggregate interface
+     * @return ArrayIterator
+     */
+    public function getIterator(){
+       return new ArrayIterator($this->items);
     }
 
     /**
@@ -288,10 +247,151 @@ class Collection implements IteratorAggregate{
 
     }
 
-    public function at($index){
-      if(!is_int($index)) throw new  CollectionInvalidArgumentException("Index must be an integer");
-      if($index >= $this->count()) throw new CollectionOutOfRangeException("Out of range on Collection");
+     /**
+     * Returns the index of the first item that satisfies the callback function.
+     * Returns -1 if no index is found.
+     *
+     * @param callable $condition
+     * @return int
+     */
+    public function indexOf(callable $condition){
+      try{
+        $found = false;
 
-      return $this->items[$index];
+        for($i = 0; $i < $this->count(); $i++){
+          if($condition($this->items[$i])){
+            $found = true;
+            break;
+          }
+        }
+
+        return $found ? $i : -1;
+      } catch (Exception $e){
+        throw new CollectionIteratorException($e->getMessage());
+      }
+    }
+
+     /**
+     * Insert the item at index
+     *
+     * @throws InvalidArgumentException
+     * @param int $index
+     * @param mixed $item
+     */
+    public function insert($index, $item){
+
+      $this->validateIndex($index);
+      $this->validateItem($item);
+
+      //To work with negative index, get the positive relation to 0 index
+      if($index < 0)
+          $index = $this->count() + $index + 1;
+
+      $partA = array_slice($this->items,0,$index);
+      $partB = array_slice($this->items, $index, count($this->items));
+      $partA[] = $item;
+      $this->items = array_merge($partA,$partB);
+   }
+
+    /**
+     * Inset a range at the index
+     * @param int $index
+     * @param array items
+     */
+    public function insertRange($index,array $items){
+      $this->validateIndex($index);
+      $this->validateItems($items);
+
+      //To work with negative index, get the positive relation to 0 index
+      if($index < 0)
+          $index = $this->count() + $index + 1;
+
+      $partA = array_slice($this->items,0,$index);
+      $partB = array_slice($this->items, $index, count($this->items));
+      $this->items = array_merge($partA,$items);
+      $this->items = array_merge($this->items,$partB);
+    }
+
+    /**
+     * Removes the item at the specified index
+     *
+     * @throws InvalidArgumentException
+     * @param int $index
+     */
+    public function removeAt($index){
+       $this->validateIndex($index);
+
+       if($index != -1){
+           $partA = array_slice($this->items, 0, $index);
+           $partB = array_slice($this->items, $index + 1, count($this->items));
+           $this->items = array_merge($partA,$partB);
+       } else {
+           array_pop($this->items);
+       }
+   }
+
+    /**
+     * Reverses the Collection
+     */
+    public function reverse(){
+      $this->items = array_reverse($this->items);
+    }
+
+    /**
+     * Sorts the collection with a usort
+     */
+     public function sort(callable $callback){
+       return usort($this->items,$callback);
+     }
+
+    /**
+     * Return the collection as an array
+     *
+     * Returns the array that is encapsulated by the collection.
+     *
+     * @return array
+     */
+    public function toArray(){
+       return $this->items;
+   }
+
+    /**
+     * @param $index
+     * @throws OutOfRangeException
+     * @throws InvalidArgumentException
+     */
+    private function validateIndex($index){
+       if(!is_int($index)){
+            throw new CollectionInvalidArgumentException("Index must be an integer");
+       }
+
+       if(abs($index) > $this->count()){
+           throw new CollectionOutOfRangeException("Index out of bounds of collection");
+       }
+    }
+
+     /**
+     * Validates that the item is an object and matches the object name
+     *
+     * @param mixed $item
+     * @throws CollectionInvalidArgumentException
+     */
+    protected function validateItem($item){
+      if(!is_object($item)) throw new CollectionInvalidArgumentException("Item must be an object");
+
+      if(!is_a($item, $this->objectName)){
+        throw new CollectionInvalidArgumentException("Item is not of subtype " . $this->objectName);
+      }
+    }
+
+    /**
+     * Validates an array of items
+     *
+     * @param array $items
+     */
+    protected function validateItems(array $items){
+      foreach($items as $item){
+        $this->validateItem($item);
+      }
     }
 }
