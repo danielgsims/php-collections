@@ -1,16 +1,18 @@
 <?php
-
 /**
  * Class Collection
  *
- * Acts as an alternative to standard PHP arrays. The Collection class encapsulates many functions
- * that are useful in normal operations. The Collection class is especially useful when working with
- * specific types of objects. In specialized operations, this class may be extended to create a TypeSafe
- * implementation. I generally create an function in the derived call called add and use type hinting to declare
- * which type of class the collection may use. From there, use the parent addItem function.
+ * A generic list implementation in PHP
  *
  * @author danielgsims
+ *
+ * @todo - Callbacks can cause a lot of unforseen errors
  */
+
+class CollectionInteratorException extends Exception{}
+class CollectionInvalidArgumentException extends Exception{}
+class CollectionOutOfRangeException extends Exception{}
+
 class Collection implements IteratorAggregate{
     /**
      * The collection's encapsulated array
@@ -19,11 +21,24 @@ class Collection implements IteratorAggregate{
     protected $items;
 
     /**
+     * The name of the object, either class or interface, that the list works with
+     * @var string
+     */
+    protected $objectName;
+
+    /**
      * Constructs the items as an array
      */
-    public function __construct(){
-        $this->items = array();
+    public function __construct($objectName){
+      $this->items = array();
+
+      if(!class_exists($objectName) && !interface_exists($objectName)){
+        throw new CollectionInvalidArgumentException("Class or Interface name is not declared");
+      }
+
+      $this->objectName = $objectName;
     }
+
     /**
      * Get Iterator to satisfy IteratorAggregate interface
      * @return ArrayIterator
@@ -44,12 +59,26 @@ class Collection implements IteratorAggregate{
      * Returns the index of the first item that satisfies the callback function.
      * Returns -1 if no index is found.
      *
-     * @param $callback
+     *
+     * @param callable $callback
      * @return int
      */
-    public function indexOf($callback){
+    public function indexOf(callable $callback){
+      try{
+        $found = false;
 
-   }
+        for($i = 0; $i < $this->count(); $i++){
+          if($callback($this->items[$i])){
+            $found = true;
+            break;
+          }
+        }
+
+        return $found ? $i : -1;
+      } catch (Exception $e){
+        throw new CollectionInteratorException($e->getMessage());
+      }
+    }
 
     /**
      * Empties all of the items in the array
@@ -62,11 +91,12 @@ class Collection implements IteratorAggregate{
     /**
      * Finds and returns the first item in the collection that satisfies the callback.
      *
-     * @param $callback
+     * @param callable $callback
      * @return mixed|bool
      */
-    public function find($callback){
-       $found = FALSE;
+    public function find(callable $callback){
+      try{
+       $found = false;
        foreach($this->items as $item){
               if($callback($item)){
                  $found = $item;
@@ -75,24 +105,32 @@ class Collection implements IteratorAggregate{
        }
 
        return $found;
+      } catch (Exception $e){
+        throw new CollectionInteratorException($e->getMessage());
+      }
    }
 
     /**
      * Returns a collection of all items that satisfy the callback function. If nothing is found, returns an empty
      * Collection
      *
-     * @param function $callback
+     * @param callable $callback
      * @return Collection
      */
-    public function findAll($callback){
-         $col = new Collection();
-         foreach($this->items as $item){
+    public function findAll(callable $callback){
+         try{
+           $col = new Collection();
+           foreach($this->items as $item){
               if($callback($item)){
-                  $col->addItem($item);
+                  $col->add($item);
               }
-         }
+           }
 
-         return $col;
+           return $col;
+
+         } catch (Exception $e){
+          throw new CollectionInteratorException($e->getMessage());
+         }
    }
 
     /**
@@ -100,8 +138,34 @@ class Collection implements IteratorAggregate{
      *
      * @param mixed $item
      */
-    public function addItem($item){
-       $this->items[] = $item;
+    public function add($item){
+      $this->validateItem($item);
+      $this->items[] = $item;
+    }
+
+    /**
+     * Validates that the item is an object and matches the object name
+     *
+     * @param mixed $item
+     * @throws CollectionInvalidArgumentException
+     */
+    protected function validateItem($item){
+      if(!is_object($item)) throw new CollectionInvalidArgumentException("Item must be an object");
+
+      if(!is_a($item, $this->objectName)){
+        throw new CollectionInvalidArgumentException("Item is not of subtype " . $this->objectName);
+      }
+    }
+
+    /**
+     * Validates an array of items
+     *
+     * @param array $items
+     */
+    protected function validateItems(array $items){
+      foreach($items as $item){
+        $this->validateItem($item);
+      }
     }
 
     /**
@@ -109,14 +173,14 @@ class Collection implements IteratorAggregate{
      *
      * @param array $items
      */
-    public function addItems($items){
-       $this->items = array_merge($this->items,$items);
+    public function addRange(array $items){
+      $this->validateItems($items);
+      $this->items = array_merge($this->items,$items);
     }
 
     /**
      * Insert the item at index
      *
-     * @throws OutOfRangeException
      * @throws InvalidArgumentException
      * @param int $index
      * @param mixed $item
@@ -124,6 +188,7 @@ class Collection implements IteratorAggregate{
     public function insert($index, $item){
 
       $this->validateIndex($index);
+      $this->validateItem($item);
 
       //To work with negative index, get the positive relation to 0 index
       if($index < 0)
@@ -139,7 +204,6 @@ class Collection implements IteratorAggregate{
      * Removes the item at the specified index
      *
      * @throws InvalidArgumentException
-     * @throws OutOfBoundsException
      * @param int $index
      */
     public function removeAt($index){
@@ -172,11 +236,11 @@ class Collection implements IteratorAggregate{
      */
     private function validateIndex($index){
        if(!is_int($index)){
-            throw new InvalidArgumentException("Index must be an integer");
+            throw new CollectionInvalidArgumentException("Index must be an integer");
        }
 
        if(abs($index) > $this->count()){
-           throw new OutOfRangeException("Index out of bounds of collection");
+           throw new CollectionOutOfRangeException("Index out of bounds of collection");
        }
     }
 
@@ -186,13 +250,13 @@ class Collection implements IteratorAggregate{
      * @param callback
      * @returns bool
      */
-    public function exists($callback){
+    public function exists(callable $callback){
         return (bool) $this->find($callback);
     }
 
     /**
      * Get a range of items in the collection
-     * 
+     *
      * @param int $start The starting index of the range
      * @param int $end The ending index of the range
      * @returns Collection
@@ -207,9 +271,9 @@ class Collection implements IteratorAggregate{
         }
 
         if($start >= $end){
-            throw new InvalidArgumentException("End must be greater than start"); 
+            throw new InvalidArgumentException("End must be greater than start");
         }
-        
+
         /*
          * Todo, What is the expected result in this situation. Would this be an error, or return as many as possible?
          */
@@ -219,8 +283,15 @@ class Collection implements IteratorAggregate{
 
         $subsetItems = array_slice($this->items,$start,$end);
         $subset = new Collection();
-        $subset->addItems($subsetItems);
+        $subset->addRange($subsetItems);
         return $subset;
 
+    }
+
+    public function at($index){
+      if(!is_int($index)) throw new  CollectionInvalidArgumentException("Index must be an integer");
+      if($index >= $this->count()) throw new CollectionOutOfRangeException("Out of range on Collection");
+
+      return $this->items[$index];
     }
 }
