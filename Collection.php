@@ -132,7 +132,7 @@ class Collection implements IteratorAggregate, Countable{
      */
     public function findAll(callable $condition){
          try{
-           $col = new Collection();
+           $col = new Collection($this->objectName);
            foreach($this->items as $item){
               if($condition($item)){
                   $col->add($item);
@@ -224,53 +224,31 @@ class Collection implements IteratorAggregate, Countable{
      */
     public function getRange($start,$end){
         if(!is_integer($start) || $start < 0){
-            throw new InvalidArgumentException("Start must be an integer");
+            throw new CollectionInvalidArgumentException("Start must be a non-negative integer");
         }
 
-        if(!is_integer($end) || $end < 0){
-            throw new InvalidArgumentException("End must be an integer");
+        if(!is_integer($end) || $end < 1){
+            throw new CollectionInvalidArgumentException("End must be a positive integer");
         }
 
         if($start >= $end){
-            throw new InvalidArgumentException("End must be greater than start");
+            throw new CollectionInvalidArgumentException("End must be greater than start");
         }
 
-        /*
-         * Todo, What is the expected result in this situation. Would this be an error, or return as many as possible?
-         */
-        if($start >= $this->count){
-            throw new InvalidArgumentException("Start must be less than the count of the items in the Collection");
+        if($start >= $this->count()){
+            throw new CollectionInvalidArgumentException("Start must be less than the count of the items in the Collection");
         }
 
-        $subsetItems = array_slice($this->items,$start,$end);
-        $subset = new Collection();
+        if($end >= $this->count()){
+            throw new CollectionInvalidArgumentException("End must be less than the count of the items in the Collection");
+        }
+
+
+        $subsetItems = array_slice($this->items,$start,$end - 1);
+        $subset = new Collection($this->objectName);
         $subset->addRange($subsetItems);
         return $subset;
 
-    }
-
-     /**
-     * Returns the index of the first item that satisfies the callback function.
-     * Returns -1 if no index is found.
-     *
-     * @param callable $condition
-     * @return int
-     */
-    public function indexOf(callable $condition){
-      try{
-        $found = false;
-
-        for($i = 0; $i < $this->count(); $i++){
-          if($condition($this->items[$i])){
-            $found = true;
-            break;
-          }
-        }
-
-        return $found ? $i : -1;
-      } catch (Exception $e){
-        throw new CollectionIteratorException($e->getMessage());
-      }
     }
 
      /**
@@ -284,10 +262,6 @@ class Collection implements IteratorAggregate, Countable{
 
       $this->validateIndex($index);
       $this->validateItem($item);
-
-      //To work with negative index, get the positive relation to 0 index
-      if($index < 0)
-          $index = $this->count() + $index + 1;
 
       $partA = array_slice($this->items,0,$index);
       $partB = array_slice($this->items, $index, count($this->items));
@@ -338,15 +312,10 @@ class Collection implements IteratorAggregate, Countable{
     public function removeAt($index){
        $this->validateIndex($index);
 
-       if($index != -1){
-           $partA = array_slice($this->items, 0, $index);
-           $partB = array_slice($this->items, $index + 1, count($this->items));
-           $this->items = array_merge($partA,$partB);
-           return true;
-       } else {
-           array_pop($this->items);
-           return false;
-       }
+       $partA = array_slice($this->items, 0, $index);
+       $partB = array_slice($this->items, $index + 1, count($this->items));
+       $this->items = array_merge($partA,$partB);
+       return true;
     }
 
     /**
@@ -401,8 +370,12 @@ class Collection implements IteratorAggregate, Countable{
            throw new CollectionInvalidArgumentException("Index must be an integer");
        }
 
-       if(abs($index) > $this->count()){
+       if($index > $this->count()){
            throw new CollectionOutOfRangeException("Index out of bounds of collection");
+       }
+
+       if($index < 0){
+        throw new CollectionOutOfRangeException("Index cannot be negative");
        }
     }
 
