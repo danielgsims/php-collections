@@ -5,9 +5,11 @@ A PHP implementation of a templated list. The Collection class allows
 one object type and its subtypes to be added to the collection. Many
 standard PHP array functions are encapsulated in the collection.
 
+#Requirements#
+
 Requires PHP 5.4 or greater
 
-*Basic Usage*
+#Basic Usage#
 
 There are various ways to add items to the collection, such as
 appending to the end of the collection or inserting at a specific index
