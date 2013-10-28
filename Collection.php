@@ -1,4 +1,6 @@
 <?php
+//ini_set('display_errors',1);
+//error_reporting(E_STRICT);
 /**
  * Class Collection
  *
@@ -12,7 +14,7 @@ class CollectionIteratorException extends Exception{}
 class CollectionInvalidArgumentException extends Exception{}
 class CollectionOutOfRangeException extends Exception{}
 
-class Collection implements IteratorAggregate{
+class Collection implements IteratorAggregate, Countable{
     /**
      * The collection's encapsulated array
      * @var array
@@ -88,8 +90,8 @@ class Collection implements IteratorAggregate{
      *
      */
     public function contains($needle){
-      $this->verifyItem($item);
-      return in_array($needles, $this->items);
+      $this->validateItem($needle);
+      return in_array($needle, $this->items);
     }
 
     /**
@@ -163,7 +165,7 @@ class Collection implements IteratorAggregate{
           }
         }
 
-        return $i;
+        return $index;
 
       } catch (Exception $e){
         throw new CollectionIteratorException($e->getMessage());
@@ -313,9 +315,24 @@ class Collection implements IteratorAggregate{
     }
 
     /**
+     * Removes the first item that satisfies the condition callback
+     *
+     * @param callable $condition
+     * @returns bool Whether the item was found
+     */
+    public function remove(callable $condition){
+      $index = $this->findIndex($condition);
+      if($index == -1){
+        return false;
+      } else {
+        $this->removeAt($index);
+        return true;
+      }
+    }
+
+    /**
      * Removes the item at the specified index
      *
-     * @throws InvalidArgumentException
      * @param int $index
      */
     public function removeAt($index){
@@ -325,10 +342,29 @@ class Collection implements IteratorAggregate{
            $partA = array_slice($this->items, 0, $index);
            $partB = array_slice($this->items, $index + 1, count($this->items));
            $this->items = array_merge($partA,$partB);
+           return true;
        } else {
            array_pop($this->items);
+           return false;
        }
-   }
+    }
+
+    /**
+     * Removes the last item to satisfy the condition callback
+     *
+     * @param callable $condition Callable that has some search criteria
+     * @returns bool Whether the item was removed or not
+     */
+    public function removeLast(callable $condition){
+      $index = $this->findLastIndex($condition);
+
+      if($index == -1){
+        return false;
+      } else {
+        $this->removeAt($index);
+        return true;
+      }
+    }
 
     /**
      * Reverses the Collection
@@ -362,7 +398,7 @@ class Collection implements IteratorAggregate{
      */
     private function validateIndex($index){
        if(!is_int($index)){
-            throw new CollectionInvalidArgumentException("Index must be an integer");
+           throw new CollectionInvalidArgumentException("Index must be an integer");
        }
 
        if(abs($index) > $this->count()){
