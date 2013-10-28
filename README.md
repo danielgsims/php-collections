@@ -83,7 +83,7 @@ $target = $collection->findIndex(function($person){
 
 The collection can be used in loops
 
-```
+```php
 
 foreach($collection as $c){
   $c->doSomething();
