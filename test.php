@@ -2,6 +2,9 @@
 
 require_once("Collection.php");
 require_once("testClass.php");
+
+use Collection\Collection;
+
 class ControllerTest extends PHPUnit_Framework_TestCase {
 
   public function setup(){
@@ -17,18 +20,18 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals("1",$this->c->count());
 
     //we can only add items that are of type TestClassA
-    //expect a CollectionInvalidArgumentExeption
+    //expect a InvalidArgumentExeption
     //count should stay 1
     $b = new TestClassB;
     $this->classname = "";
 
     try{
       $this->c->add($b);
-    } catch (Exception $e){
+    } catch (\Exception $e){
       $this->classname = get_class($e);
     }
 
-    $this->assertEquals("CollectionInvalidArgumentException",$this->classname);
+    $this->assertEquals("Collection\InvalidArgumentException",$this->classname);
     $this->assertEquals("1",$this->c->count());
 
     //we should be able to add subtypes of TestClassA
@@ -75,11 +78,11 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 
     try{
       $this->c->addRange($badItems);
-    } catch (Exception $e){
+    } catch (\Exception $e){
       $classname = get_class($e);
     }
 
-    $this->assertEquals("CollectionInvalidArgumentException",$classname);
+    $this->assertEquals("Collection\InvalidArgumentException",$classname);
     $this->assertEquals(8,$this->c->count());
 
   }
@@ -115,11 +118,11 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     try{
       $needle = new TestClassB();
       $this->c->contains($needle);
-    } catch (Exception $e){
+    } catch (\Exception $e){
       $classname = get_class($e);
     }
 
-    $this->assertEquals("CollectionInvalidArgumentException",$classname);
+    $this->assertEquals("Collection\InvalidArgumentException",$classname);
 
   }
 
@@ -220,7 +223,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     } catch (Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"CollectionInvalidArgumentException");
+    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"Start must be a non-negative integer");
 
     //start must be natural number
@@ -228,8 +231,8 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       $this->c->getRange(1,-4);
     } catch (Exception $e){
     }
-    
-    $this->assertEquals(get_class($e),"CollectionInvalidArgumentException");
+
+    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"End must be a positive integer");
 
     unset($e);
@@ -238,7 +241,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     }catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"CollectionInvalidArgumentException");
+    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"End must be greater than start");
 
     unset($e);
@@ -247,7 +250,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     }catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"CollectionInvalidArgumentException");
+    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"Start must be less than the count of the items in the Collection");
 
     unset($e);
@@ -256,7 +259,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     }catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"CollectionInvalidArgumentException");
+    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"End must be less than the count of the items in the Collection");
 
 
@@ -272,7 +275,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
   public function testInsert(){
     $this->c->add(new TestClassA(1));
     $this->c->add(new TestClassA(2));
-    
+
     $this->c->insert(1,new TestClassA(3));
 
     $this->assertEquals(3,$this->c->at(1)->getValue());
@@ -282,7 +285,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     }catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"CollectionOutOfRangeException");
+    $this->assertEquals(get_class($e),"Collection\OutOfRangeException");
     $this->assertEquals($e->getMessage(),"Index out of bounds of collection");
 
     unset($e);
@@ -291,7 +294,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     } catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"CollectionOutOfRangeException");
+    $this->assertEquals(get_class($e),"Collection\OutOfRangeException");
     $this->assertEquals($e->getMessage(),"Index cannot be negative");
 
   }

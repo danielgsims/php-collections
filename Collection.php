@@ -7,11 +7,14 @@
  * @author danielgsims
  */
 
-class CollectionIteratorException extends Exception{}
-class CollectionInvalidArgumentException extends Exception{}
-class CollectionOutOfRangeException extends Exception{}
+namespace Collection;
 
-class Collection implements IteratorAggregate, Countable{
+class Exception extends \Exception{}
+class IteratorException extends Exception{}
+class InvalidArgumentException extends Exception{}
+class OutOfRangeException extends Exception{}
+
+class Collection implements \IteratorAggregate, \Countable{
     /**
      * The collection's encapsulated array
      * @var array
@@ -33,7 +36,7 @@ class Collection implements IteratorAggregate, Countable{
       $this->items = array();
 
       if(!class_exists($objectName) && !interface_exists($objectName)){
-        throw new CollectionInvalidArgumentException("Class or Interface name is not declared");
+        throw new InvalidArgumentException("Class or Interface name is not declared");
       }
 
       $this->objectName = $objectName;
@@ -63,12 +66,12 @@ class Collection implements IteratorAggregate, Countable{
      * Fetches the item at the specified index
      *
      * @param int $index The index to fetch
-     * @throws CollectionInvalidArgumentException
-     * @throws CollectionOutOfRangeException
+     * @throws InvalidArgumentException
+     * @throws OutOfRangeException
      */
     public function at($index){
-      if(!is_int($index)) throw new  CollectionInvalidArgumentException("Index must be an integer");
-      if($index >= $this->count()) throw new CollectionOutOfRangeException("Out of range on Collection");
+      if(!is_int($index)) throw new  InvalidArgumentException("Index must be an integer");
+      if($index >= $this->count()) throw new OutOfRangeException("Out of range on Collection");
 
       return $this->items[$index];
     }
@@ -209,7 +212,7 @@ class Collection implements IteratorAggregate, Countable{
      * @return ArrayIterator
      */
     public function getIterator(){
-       return new ArrayIterator($this->items);
+       return new \ArrayIterator($this->items);
     }
 
     /**
@@ -221,23 +224,23 @@ class Collection implements IteratorAggregate, Countable{
      */
     public function getRange($start,$end){
         if(!is_integer($start) || $start < 0){
-            throw new CollectionInvalidArgumentException("Start must be a non-negative integer");
+            throw new InvalidArgumentException("Start must be a non-negative integer");
         }
 
         if(!is_integer($end) || $end < 1){
-            throw new CollectionInvalidArgumentException("End must be a positive integer");
+            throw new InvalidArgumentException("End must be a positive integer");
         }
 
         if($start >= $end){
-            throw new CollectionInvalidArgumentException("End must be greater than start");
+            throw new InvalidArgumentException("End must be greater than start");
         }
 
         if($start >= $this->count()){
-            throw new CollectionInvalidArgumentException("Start must be less than the count of the items in the Collection");
+            throw new InvalidArgumentException("Start must be less than the count of the items in the Collection");
         }
 
         if($end >= $this->count()){
-            throw new CollectionInvalidArgumentException("End must be less than the count of the items in the Collection");
+            throw new InvalidArgumentException("End must be less than the count of the items in the Collection");
         }
 
 
@@ -364,15 +367,15 @@ class Collection implements IteratorAggregate, Countable{
      */
     private function validateIndex($index){
        if(!is_int($index)){
-           throw new CollectionInvalidArgumentException("Index must be an integer");
+           throw new InvalidArgumentException("Index must be an integer");
        }
 
        if($index > $this->count()){
-           throw new CollectionOutOfRangeException("Index out of bounds of collection");
+           throw new OutOfRangeException("Index out of bounds of collection");
        }
 
        if($index < 0){
-        throw new CollectionOutOfRangeException("Index cannot be negative");
+        throw new OutOfRangeException("Index cannot be negative");
        }
     }
 
@@ -380,13 +383,13 @@ class Collection implements IteratorAggregate, Countable{
      * Validates that the item is an object and matches the object name
      *
      * @param mixed $item
-     * @throws CollectionInvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function validateItem($item){
-      if(!is_object($item)) throw new CollectionInvalidArgumentException("Item must be an object");
+      if(!is_object($item)) throw new InvalidArgumentException("Item must be an object");
 
       if(!is_a($item, $this->objectName)){
-        throw new CollectionInvalidArgumentException("Item is not of subtype " . $this->objectName);
+        throw new InvalidArgumentException("Item is not of subtype " . $this->objectName);
       }
     }
 
