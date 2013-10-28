@@ -1,4 +1,6 @@
 phpcollection
 =============
 
-A collection class that encapsulates many PHP array functions. Encourages extendibility for type safe, Object Oriented usages.
+A PHP implementation of a templated list. The Collection class allows
+one object type and its subtypes to be added to the collection. Many
+standard PHP array functions are encapsulated in the collection.
