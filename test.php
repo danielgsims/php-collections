@@ -297,10 +297,37 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testInsertRange(){
+    $this->c->add(new TestClassA(1));
+    $this->c->add(new TestClassA(2));
 
+    $items = array();
+    $items[] = new TestClassA(3);
+    $items[] = new TestClassA(4);
+
+    $this->c->insertRange(1,$items);
+
+    $this->assertEquals(4,$this->c->count());
+    $this->assertEquals(1,$this->c->at(0)->getValue());
+    $this->assertEquals(3,$this->c->at(1)->getValue());
+    $this->assertEquals(4,$this->c->at(2)->getValue());
+    $this->assertEquals(2,$this->c->at(3)->getValue());
   }
 
   public function testRemove(){
+    $this->c->add(new TestClassA(1));
+    $this->c->add(new TestClassA(2));
+    $this->c->add(new TestClassA(3));
+    $this->c->add(new TestClassA(4));
+
+    $removeOdd = function($item){
+      return $item->getValue() % 2 != 0;
+    };
+
+    $this->c->remove($removeOdd);
+    $this->assertEquals(3,$this->c->count());
+    $this->assertEquals(2,$this->c->at(0)->getValue());
+    $this->assertEquals(3,$this->c->at(1)->getValue());
+    $this->assertEquals(4,$this->c->at(2)->getValue());
 
   }
 
@@ -322,6 +349,20 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testRemoveLast(){
+    $this->c->add(new TestClassA(1));
+    $this->c->add(new TestClassA(2));
+    $this->c->add(new TestClassA(3));
+    $this->c->add(new TestClassA(4));
+
+    $removeOdd = function($item){
+      return $item->getValue() % 2 != 0;
+    };
+
+    $this->c->removeLast($removeOdd);
+    $this->assertEquals(3,$this->c->count());
+    $this->assertEquals(1,$this->c->at(0)->getValue());
+    $this->assertEquals(2,$this->c->at(1)->getValue());
+    $this->assertEquals(4,$this->c->at(2)->getValue());
   }
 
   public function testReverse(){
