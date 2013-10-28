@@ -5,11 +5,11 @@ A PHP implementation of a templated list. The Collection class allows
 one object type and its subtypes to be added to the collection. Many
 standard PHP array functions are encapsulated in the collection.
 
-#Requirements#
+##Requirements##
 
 Requires PHP 5.4 or greater
 
-#Basic Usage#
+##Basic Usage##
 
 There are various ways to add items to the collection, such as
 appending to the end of the collection or inserting at a specific index
@@ -95,5 +95,31 @@ foreach($collection as $c){
 for($i = 0; $i<$collection->count(); $i++){
   $collection->at($i)->doSomething();
 }
+
+```
+
+##Inheritence##
+
+When you specify a class or interface into the Collection, the collection will allow subtypes of that object
+
+```php
+
+  interface iExample{
+    public function doSomething();
+  };
+
+  interface iExampleTwo extends iExample{
+    public function doSomethingElse();
+  }
+
+  class A implements iExample{
+  }
+
+  class B implements iExampleTwo{
+  }
+
+  $collection = new Collection("iExample");
+  $collection->add(new A);
+  $collection->add(new B);
 
 ```
