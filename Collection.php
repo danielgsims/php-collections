@@ -1,13 +1,10 @@
 <?php
-//ini_set('display_errors',1);
-//error_reporting(E_STRICT);
 /**
  * Class Collection
  *
  * A generic list implementation in PHP
  *
  * @author danielgsims
- * @todo - Insert and Insert Range need to check if a number is too negative
  */
 
 class CollectionIteratorException extends Exception{}
