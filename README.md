@@ -107,6 +107,11 @@ When you specify a class or interface into the Collection, the collection will a
 
   class Document{
     protected $title;
+
+    public function __construct($title){
+      $this->title = $title;
+    }
+
     public funciton getTitle(){
       return $this->title; 
     }
@@ -123,11 +128,11 @@ When you specify a class or interface into the Collection, the collection will a
   }
 
   $collection = new Collection("Document");
-  $collection->add(new Book);
-  $collection->add(new Magazine);
+  $collection->add(new Book("Example Book"));
+  $collection->add(new Magazine("Example Magazine"));
 
   foreach($collection as $document){
-    echo $book->getTitle();
+    echo $book->getTitle() . PHP_EOL;
   }
 
 ```
