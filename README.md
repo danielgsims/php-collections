@@ -132,7 +132,7 @@ When you specify a class or interface into the Collection, the collection will a
   $collection->add(new Magazine("Example Magazine"));
 
   foreach($collection as $document){
-    echo $book->getTitle() . PHP_EOL;
+    echo $document->getTitle() . PHP_EOL;
   }
 
 ```
