@@ -22,7 +22,7 @@ $collection->add(new Foo);
 $items = array();
 $items[] = new Foo;
 $items[] = new Foo;
-$collection->addRange(new Foo);
+$collection->addRange($items);
 
 $collection->insert(2,new Foo);
 
