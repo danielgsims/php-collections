@@ -105,22 +105,29 @@ When you specify a class or interface into the Collection, the collection will a
 
 ```php
 
-  interface iExample{
-    public function doSomething();
-  };
+  class Document{
+    protected $title;
+    public funciton getTitle(){
+      return $this->title; 
+    }
 
-  interface iExampleTwo extends iExample{
-    public function doSomethingElse();
+    public function setTitle($title){
+      $this->title = $title;
+    }
   }
 
-  class A implements iExample{
+  class Book extends Document{
   }
 
-  class B implements iExampleTwo{
+  class Magazine extends Document{
   }
 
-  $collection = new Collection("iExample");
-  $collection->add(new A);
-  $collection->add(new B);
+  $collection = new Collection("Document");
+  $collection->add(new Book);
+  $collection->add(new Magazine);
+
+  foreach($collection as $document){
+    echo $book->getTitle();
+  }
 
 ```
