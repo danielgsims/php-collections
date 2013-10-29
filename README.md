@@ -15,6 +15,7 @@ There are various ways to add items to the collection, such as
 appending to the end of the collection or inserting at a specific index
 
 ```php
+use Collection\Collection;
 
 $collection = new Collection("Foo");
 $collection->add(new Foo);
