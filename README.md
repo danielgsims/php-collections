@@ -99,7 +99,7 @@ for($i = 0; $i<$collection->count(); $i++){
 
 ```
 
-##Inheritence##
+##Inheritance##
 
 When you specify a class or interface into the Collection, the collection will allow subtypes of that object
 

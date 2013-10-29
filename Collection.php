@@ -7,14 +7,11 @@
  * @author danielgsims
  */
 
-namespace Collection;
+class CollectionIteratorException extends Exception{}
+class CollectionInvalidArgumentException extends Exception{}
+class CollectionOutOfRangeException extends Exception{}
 
-class Exception extends \Exception{}
-class IteratorException extends Exception{}
-class InvalidArgumentException extends Exception{}
-class OutOfRangeException extends Exception{}
-
-class Collection implements \IteratorAggregate, \Countable{
+class Collection implements IteratorAggregate, Countable{
     /**
      * The collection's encapsulated array
      * @var array
@@ -36,7 +33,7 @@ class Collection implements \IteratorAggregate, \Countable{
       $this->items = array();
 
       if(!class_exists($objectName) && !interface_exists($objectName)){
-        throw new InvalidArgumentException("Class or Interface name is not declared");
+        throw new CollectionInvalidArgumentException("Class or Interface name is not declared");
       }
 
       $this->objectName = $objectName;
@@ -66,12 +63,12 @@ class Collection implements \IteratorAggregate, \Countable{
      * Fetches the item at the specified index
      *
      * @param int $index The index to fetch
-     * @throws InvalidArgumentException
-     * @throws OutOfRangeException
+     * @throws CollectionInvalidArgumentException
+     * @throws CollectionOutOfRangeException
      */
     public function at($index){
-      if(!is_int($index)) throw new  InvalidArgumentException("Index must be an integer");
-      if($index >= $this->count()) throw new OutOfRangeException("Out of range on Collection");
+      if(!is_int($index)) throw new  CollectionInvalidArgumentException("Index must be an integer");
+      if($index >= $this->count()) throw new CollectionOutOfRangeException("Out of range on Collection");
 
       return $this->items[$index];
     }
@@ -90,8 +87,8 @@ class Collection implements \IteratorAggregate, \Countable{
      *
      */
     public function contains($needle){
-      $this->validateItem($needle);
-      return in_array($needle, $this->items);
+      $this->verifyItem($item);
+      return in_array($needles, $this->items);
     }
 
     /**
@@ -132,7 +129,7 @@ class Collection implements \IteratorAggregate, \Countable{
      */
     public function findAll(callable $condition){
          try{
-           $col = new Collection($this->objectName);
+           $col = new Collection();
            foreach($this->items as $item){
               if($condition($item)){
                   $col->add($item);
@@ -165,7 +162,7 @@ class Collection implements \IteratorAggregate, \Countable{
           }
         }
 
-        return $index;
+        return $i;
 
       } catch (Exception $e){
         throw new CollectionIteratorException($e->getMessage());
@@ -212,7 +209,7 @@ class Collection implements \IteratorAggregate, \Countable{
      * @return ArrayIterator
      */
     public function getIterator(){
-       return new \ArrayIterator($this->items);
+       return new ArrayIterator($this->items);
     }
 
     /**
@@ -224,31 +221,53 @@ class Collection implements \IteratorAggregate, \Countable{
      */
     public function getRange($start,$end){
         if(!is_integer($start) || $start < 0){
-            throw new InvalidArgumentException("Start must be a non-negative integer");
+            throw new InvalidArgumentException("Start must be an integer");
         }
 
-        if(!is_integer($end) || $end < 1){
-            throw new InvalidArgumentException("End must be a positive integer");
+        if(!is_integer($end) || $end < 0){
+            throw new InvalidArgumentException("End must be an integer");
         }
 
         if($start >= $end){
             throw new InvalidArgumentException("End must be greater than start");
         }
 
-        if($start >= $this->count()){
+        /*
+         * Todo, What is the expected result in this situation. Would this be an error, or return as many as possible?
+         */
+        if($start >= $this->count){
             throw new InvalidArgumentException("Start must be less than the count of the items in the Collection");
         }
 
-        if($end >= $this->count()){
-            throw new InvalidArgumentException("End must be less than the count of the items in the Collection");
-        }
-
-
-        $subsetItems = array_slice($this->items,$start,$end - 1);
-        $subset = new Collection($this->objectName);
+        $subsetItems = array_slice($this->items,$start,$end);
+        $subset = new Collection();
         $subset->addRange($subsetItems);
         return $subset;
 
+    }
+
+     /**
+     * Returns the index of the first item that satisfies the callback function.
+     * Returns -1 if no index is found.
+     *
+     * @param callable $condition
+     * @return int
+     */
+    public function indexOf(callable $condition){
+      try{
+        $found = false;
+
+        for($i = 0; $i < $this->count(); $i++){
+          if($condition($this->items[$i])){
+            $found = true;
+            break;
+          }
+        }
+
+        return $found ? $i : -1;
+      } catch (Exception $e){
+        throw new CollectionIteratorException($e->getMessage());
+      }
     }
 
      /**
@@ -262,6 +281,10 @@ class Collection implements \IteratorAggregate, \Countable{
 
       $this->validateIndex($index);
       $this->validateItem($item);
+
+      //To work with negative index, get the positive relation to 0 index
+      if($index < 0)
+          $index = $this->count() + $index + 1;
 
       $partA = array_slice($this->items,0,$index);
       $partB = array_slice($this->items, $index, count($this->items));
@@ -312,10 +335,15 @@ class Collection implements \IteratorAggregate, \Countable{
     public function removeAt($index){
        $this->validateIndex($index);
 
-       $partA = array_slice($this->items, 0, $index);
-       $partB = array_slice($this->items, $index + 1, count($this->items));
-       $this->items = array_merge($partA,$partB);
-       return true;
+       if($index != -1){
+           $partA = array_slice($this->items, 0, $index);
+           $partB = array_slice($this->items, $index + 1, count($this->items));
+           $this->items = array_merge($partA,$partB);
+           return true;
+       } else {
+           array_pop($this->items);
+           return false;
+       }
     }
 
     /**
@@ -367,15 +395,11 @@ class Collection implements \IteratorAggregate, \Countable{
      */
     private function validateIndex($index){
        if(!is_int($index)){
-           throw new InvalidArgumentException("Index must be an integer");
+           throw new CollectionInvalidArgumentException("Index must be an integer");
        }
 
-       if($index > $this->count()){
-           throw new OutOfRangeException("Index out of bounds of collection");
-       }
-
-       if($index < 0){
-        throw new OutOfRangeException("Index cannot be negative");
+       if(abs($index) > $this->count()){
+           throw new CollectionOutOfRangeException("Index out of bounds of collection");
        }
     }
 
@@ -383,13 +407,13 @@ class Collection implements \IteratorAggregate, \Countable{
      * Validates that the item is an object and matches the object name
      *
      * @param mixed $item
-     * @throws InvalidArgumentException
+     * @throws CollectionInvalidArgumentException
      */
     protected function validateItem($item){
-      if(!is_object($item)) throw new InvalidArgumentException("Item must be an object");
+      if(!is_object($item)) throw new CollectionInvalidArgumentException("Item must be an object");
 
       if(!is_a($item, $this->objectName)){
-        throw new InvalidArgumentException("Item is not of subtype " . $this->objectName);
+        throw new CollectionInvalidArgumentException("Item is not of subtype " . $this->objectName);
       }
     }
 
