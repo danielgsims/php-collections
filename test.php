@@ -182,6 +182,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testFindIndex(){
+    $this->c = new Collection("TestClassA");
     $this->c->add(new TestClassA(2));
     $this->c->add(new TestClassA(4));
     $this->c->add(new TestClassA(6));
@@ -191,22 +192,13 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       return $item->getValue() % 2 == 0;
     };
 
-    $this->assertEquals(0,$this->c->findIndex($findEven));
-
     $findOdd = function($item){
       return $item->getValue() % 2 != 0;
     };
 
+    $this->assertEquals(0,$this->c->findIndex($findEven));
     $this->assertEquals(-1,$this->c->findIndex($findOdd));
-
-    $findDivByFour = function($item){
-      return $item->getValue() % 4 == 0;
-    };
-
-    $this->assertEquals(1,$this->c->findIndex($findDivByFour));
-
-    $this->assertEquals(3,$this->c->findLastIndex($findDivByFour));
-    $this->assertEquals(-1,$this->c->findLastIndex($findOdd));
+    $this->assertEquals(3,$this->c->findLastIndex($findEven));
   }
 
   public function testGetRange(){
@@ -263,13 +255,12 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals($e->getMessage(),"End must be less than the count of the items in the Collection");
 
 
-    $subset = $this->c->getRange(2,5);
+    $subset = $this->c->getRange(2,4);
 
-    $this->assertEquals(4,$subset->count());
+    $this->assertEquals(3,$subset->count());
     $this->assertEquals(new TestClassA(2),$subset->at(0));
     $this->assertEquals(new TestClassA(3),$subset->at(1));
     $this->assertEquals(new TestClassA(4),$subset->at(2));
-    $this->assertEquals(new TestClassA(5),$subset->at(3));
   }
 
   public function testInsert(){
@@ -288,14 +279,13 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(get_class($e),"Collection\OutOfRangeException");
     $this->assertEquals($e->getMessage(),"Index out of bounds of collection");
 
-    unset($e);
     try{
       $this->c->insert(-1, new TestClassA(5));
     } catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"Collection\OutOfRangeException");
-    $this->assertEquals($e->getMessage(),"Index cannot be negative");
+    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
+    $this->assertEquals($e->getMessage(),"Index must be a non-negative integer");
 
   }
 
