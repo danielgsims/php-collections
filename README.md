@@ -62,7 +62,7 @@ $items[] = new Novella("Animal Farm","Animal Farm","Satire");
 $items[] = new Novel("A Brave New World","Aldous Huxley","Dystopian");
 $library->addRange($items);
 
-$library->insert(2,new Novel("I, Robot","Alduous Huxley","Science
+$library->insert(2,new Novel("I, Robot","Isaac Asimov","Science
 Fiction");
 
 ```
