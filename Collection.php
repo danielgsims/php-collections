@@ -237,7 +237,7 @@ class Collection implements \IteratorAggregate, \Countable
      * @param int $end The ending index of the range
      * @returns Collection
      */
-    public function getRange($start,$end)
+    public function getRange($start, $end)
     {
         if (!is_integer($start) || $start < 0) {
             throw new InvalidArgumentException("Start must be a non-negative integer");
@@ -320,7 +320,7 @@ class Collection implements \IteratorAggregate, \Countable
      * @param int $index
      * @param array items
      */
-    public function insertRange($index,array $items)
+    public function insertRange($index, array $items)
     {
         $this->validateIndex($index);
         $this->validateItems($items);
