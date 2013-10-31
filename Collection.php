@@ -14,7 +14,8 @@ class IteratorException extends Exception{}
 class InvalidArgumentException extends Exception{}
 class OutOfRangeException extends Exception{}
 
-class Collection implements \IteratorAggregate, \Countable{
+class Collection implements \IteratorAggregate, \Countable
+{
     /**
      * The collection's encapsulated array
      * @var array
@@ -32,14 +33,15 @@ class Collection implements \IteratorAggregate, \Countable{
      *
      * @param string $objectName Name of the object used in the Collection
      */
-    public function __construct($objectName){
-      $this->items = array();
+    public function __construct($objectName)
+    {
+        $this->items = array();
 
-      if(!class_exists($objectName) && !interface_exists($objectName)){
-        throw new InvalidArgumentException("Class or Interface name is not declared");
-      }
+        if (!class_exists($objectName) && !interface_exists($objectName)) {
+            throw new InvalidArgumentException("Class or Interface name is not declared");
+        }
 
-      $this->objectName = $objectName;
+        $this->objectName = $objectName;
     }
 
     /**
@@ -47,9 +49,10 @@ class Collection implements \IteratorAggregate, \Countable{
      *
      * @param mixed $item
      */
-    public function add($item){
-      $this->validateItem($item);
-      $this->items[] = $item;
+    public function add($item)
+    {
+        $this->validateItem($item);
+        $this->items[] = $item;
     }
 
     /**
@@ -57,9 +60,10 @@ class Collection implements \IteratorAggregate, \Countable{
      *
      * @param array $items
      */
-    public function addRange(array $items){
-      $this->validateItems($items);
-      $this->items = array_merge($this->items,$items);
+    public function addRange(array $items)
+    {
+        $this->validateItems($items);
+        $this->items = array_merge($this->items,$items);
     }
 
     /**
@@ -69,18 +73,20 @@ class Collection implements \IteratorAggregate, \Countable{
      * @throws InvalidArgumentException
      * @throws OutOfRangeException
      */
-    public function at($index){
-      if(!is_int($index)) throw new  InvalidArgumentException("Index must be an integer");
-      if($index >= $this->count()) throw new OutOfRangeException("Out of range on Collection");
+    public function at($index)
+    {
+        if (!is_int($index)) throw new  InvalidArgumentException("Index must be an integer");
+        if ($index >= $this->count()) throw new OutOfRangeException("Out of range on Collection");
 
-      return $this->items[$index];
+        return $this->items[$index];
     }
 
     /**
      * Empties all of the items in the array
      */
-    public function clear(){
-       $this->items = array();
+    public function clear()
+    {
+        $this->items = array();
     }
 
     /**
@@ -89,18 +95,20 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param mixed $needle The item to search for in the collection
      *
      */
-    public function contains($needle){
-      $this->validateItem($needle);
-      return in_array($needle, $this->items);
+    public function contains($needle)
+    {
+        $this->validateItem($needle);
+        return in_array($needle, $this->items);
     }
 
     /**
      * The number of items in a collection
      * @return int
      */
-    public function count(){
-       return count($this->items);
-   }
+    public function count()
+    {
+        return count($this->items);
+    }
 
     /**
      * Check to see if an item in the collection exists that satisfies the provided callback
@@ -108,7 +116,8 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param callback $condition The condition criteria to test each item
      * @returns bool
      */
-    public function exists(callable $condition){
+    public function exists(callable $condition)
+    {
         return (bool) $this->find($condition);
     }
 
@@ -118,9 +127,10 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param callable $condition
      * @return mixed|bool
      */
-    public function find(callable $condition){
-      $index = $this->findIndex($condition);
-      return $index == -1 ? false : $this->items[$index];
+    public function find(callable $condition)
+    {
+        $index = $this->findIndex($condition);
+        return $index == -1 ? false : $this->items[$index];
     }
 
     /**
@@ -130,21 +140,22 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param callable $condition
      * @return Collection
      */
-    public function findAll(callable $condition){
-         try{
-           $col = new Collection($this->objectName);
-           foreach($this->items as $item){
-              if($condition($item)){
-                  $col->add($item);
-              }
-           }
+    public function findAll(callable $condition)
+    {
+        try {
+            $col = new Collection($this->objectName);
+            foreach ($this->items as $item) {
+                if($condition($item)) {
+                    $col->add($item);
+                }
+            }
 
-           return $col;
+            return $col;
 
-         } catch (Exception $e){
-          throw new IteratorException($e->getMessage());
-         }
-   }
+        } catch (Exception $e) {
+            throw new IteratorException($e->getMessage());
+        }
+    }
 
 
 
@@ -154,22 +165,23 @@ class Collection implements \IteratorAggregate, \Countable{
      *
      * @param callable $condition The callback function to test whether the item matches a condition
      */
-    public function findIndex(callable $condition){
-      try{
-        $index = -1;
+    public function findIndex(callable $condition)
+    {
+        try {
+            $index = -1;
 
-        for($i = 0; $i< count($this->items); $i++){
-          if($condition($this->at($i))){
-            $index = $i;
-            break;
-          }
+            for ($i = 0; $i< count($this->items); $i++) {
+                if ($condition($this->at($i))) {
+                    $index = $i;
+                    break;
+                }
+            }
+
+            return $index;
+
+        } catch (Exception $e) {
+            throw new IteratorException($e->getMessage());
         }
-
-        return $index;
-
-      } catch (Exception $e){
-        throw new IteratorException($e->getMessage());
-      }
     }
 
     /**
@@ -178,9 +190,10 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param callable $condition
      * @return mixed|bool
      */
-    public function findLast(callable $condition){
-      $index = $this->findLastIndex($condition);
-      return $index == -1 ? false : $this->items[$index];
+    public function findLast(callable $condition)
+    {
+        $index = $this->findLastIndex($condition);
+        return $index == -1 ? false : $this->items[$index];
     }
 
     /**
@@ -189,31 +202,33 @@ class Collection implements \IteratorAggregate, \Countable{
      *
      * @param callable $condition The callback function to test whether the item matches a condition
      */
-    public function findLastIndex(callable $condition){
-      try{
-        $index = -1;
+    public function findLastIndex(callable $condition)
+    {
+        try{
+            $index = -1;
 
-        for($i = count($this->items) - 1; $i>= 0; $i--){
-          if($condition($this->items[$i])){
-            $index = $i;
-            break;
-          }
+            for ($i = count($this->items) - 1; $i>= 0; $i--) {
+                if ($condition($this->items[$i])) {
+                    $index = $i;
+                    break;
+                }
+            }
+
+            return $i;
+
+        } catch (Exception $e) {
+            throw new IteratorException($e->getMessage());
         }
-
-        return $i;
-
-      } catch (Exception $e){
-        throw new IteratorException($e->getMessage());
-      }
     }
 
     /**
      * Get Iterator to satisfy IteratorAggregate interface
      * @return ArrayIterator
      */
-    public function getIterator(){
-       return new ArrayIterator($this->items);
-    }
+     public function getIterator()
+     {
+         return new ArrayIterator($this->items);
+     }
 
     /**
      * Get a range of items in the collection
@@ -222,27 +237,28 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param int $end The ending index of the range
      * @returns Collection
      */
-    public function getRange($start,$end){
-        if(!is_integer($start) || $start < 0){
+    public function getRange($start,$end)
+    {
+        if (!is_integer($start) || $start < 0) {
             throw new InvalidArgumentException("Start must be a non-negative integer");
         }
 
-        if(!is_integer($end) || $end < 0){
+        if (!is_integer($end) || $end < 0) {
             throw new InvalidArgumentException("End must be a positive integer");
         }
 
-        if($start >= $end){
+        if ($start >= $end) {
             throw new InvalidArgumentException("End must be greater than start");
         }
 
         /*
          * Todo, What is the expected result in this situation. Would this be an error, or return as many as possible?
          */
-        if($start >= $this->count()){
+        if ($start >= $this->count()) {
             throw new InvalidArgumentException("Start must be less than the count of the items in the Collection");
         }
 
-        if($end > $this->count()){
+        if ($end > $this->count()) {
             throw new InvalidArgumentException("End must be less than the count of the items in the Collection");
         }
 
@@ -250,31 +266,34 @@ class Collection implements \IteratorAggregate, \Countable{
         $subsetItems = array_slice($this->items,$start,$length);
         $subset = new Collection($this->objectName);
         $subset->addRange($subsetItems);
+
         return $subset;
 
     }
 
-     /**
+    /**
      * Returns the index of the first item that satisfies the callback function.
      * Returns -1 if no index is found.
      *
      * @param callable $condition
      * @return int
      */
-    public function indexOf(callable $condition){
-      try{
-        $found = false;
+    public function indexOf(callable $condition)
+    {
+        try {
+            $found = false;
 
-        for($i = 0; $i < $this->count(); $i++){
-          if($condition($this->items[$i])){
-            $found = true;
-            break;
-          }
-        }
+            for ($i = 0; $i < $this->count(); $i++) {
+                if ($condition($this->items[$i])) {
+                    $found = true;
+                    break;
+                }
+            }
 
-        return $found ? $i : -1;
-      } catch (Exception $e){
-        throw new CollectionIteratorException($e->getMessage());
+            return $found ? $i : -1;
+
+      } catch (Exception $e) {
+          throw new CollectionIteratorException($e->getMessage());
       }
     }
 
@@ -285,34 +304,35 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param int $index
      * @param mixed $item
      */
-    public function insert($index, $item){
+    public function insert($index, $item)
+    {
+        $this->validateIndex($index);
+        $this->validateItem($item);
 
-      $this->validateIndex($index);
-      $this->validateItem($item);
-
-      $partA = array_slice($this->items,0,$index);
-      $partB = array_slice($this->items, $index, count($this->items));
-      $partA[] = $item;
-      $this->items = array_merge($partA,$partB);
-   }
+        $partA = array_slice($this->items,0,$index);
+        $partB = array_slice($this->items, $index, count($this->items));
+        $partA[] = $item;
+        $this->items = array_merge($partA,$partB);
+    }
 
     /**
      * Inset a range at the index
      * @param int $index
      * @param array items
      */
-    public function insertRange($index,array $items){
-      $this->validateIndex($index);
-      $this->validateItems($items);
+    public function insertRange($index,array $items)
+    {
+        $this->validateIndex($index);
+        $this->validateItems($items);
 
-      //To work with negative index, get the positive relation to 0 index
-      if($index < 0)
-          $index = $this->count() + $index + 1;
+        //To work with negative index, get the positive relation to 0 index
+        if ($index < 0) $index = $this->count() + $index + 1;
 
-      $partA = array_slice($this->items,0,$index);
-      $partB = array_slice($this->items, $index, count($this->items));
-      $this->items = array_merge($partA,$items);
-      $this->items = array_merge($this->items,$partB);
+        $partA = array_slice($this->items,0,$index);
+        $partB = array_slice($this->items, $index, count($this->items));
+
+        $this->items = array_merge($partA,$items);
+        $this->items = array_merge($this->items,$partB);
     }
 
     /**
@@ -321,14 +341,15 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param callable $condition
      * @returns bool Whether the item was found
      */
-    public function remove(callable $condition){
-      $index = $this->findIndex($condition);
-      if($index == -1){
-        return false;
-      } else {
-        $this->removeAt($index);
-        return true;
-      }
+    public function remove(callable $condition)
+    {
+        $index = $this->findIndex($condition);
+        if ($index == -1) {
+            return false;
+        } else {
+            $this->removeAt($index);
+            return true;
+        }
     }
 
     /**
@@ -336,10 +357,11 @@ class Collection implements \IteratorAggregate, \Countable{
      *
      * @param int $index
      */
-    public function removeAt($index){
+    public function removeAt($index)
+    {
        $this->validateIndex($index);
 
-       if($index != -1){
+       if ($index != -1) {
            $partA = array_slice($this->items, 0, $index);
            $partB = array_slice($this->items, $index + 1, count($this->items));
            $this->items = array_merge($partA,$partB);
@@ -356,30 +378,33 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param callable $condition Callable that has some search criteria
      * @returns bool Whether the item was removed or not
      */
-    public function removeLast(callable $condition){
-      $index = $this->findLastIndex($condition);
+    public function removeLast(callable $condition)
+    {
+        $index = $this->findLastIndex($condition);
 
-      if($index == -1){
-        return false;
-      } else {
-        $this->removeAt($index);
-        return true;
-      }
+        if ($index == -1) {
+            return false;
+        } else {
+            $this->removeAt($index);
+            return true;
+        }
     }
 
     /**
      * Reverses the Collection
      */
-    public function reverse(){
+    public function reverse()
+    {
       $this->items = array_reverse($this->items);
     }
 
     /**
      * Sorts the collection with a usort
      */
-     public function sort(callable $callback){
+    public function sort(callable $callback)
+    {
        return usort($this->items,$callback);
-     }
+    }
 
     /**
      * Return the collection as an array
@@ -388,27 +413,29 @@ class Collection implements \IteratorAggregate, \Countable{
      *
      * @return array
      */
-    public function toArray(){
+    public function toArray()
+    {
        return $this->items;
-   }
+    }
 
     /**
      * @param $index
      * @throws OutOfRangeException
      * @throws InvalidArgumentException
      */
-    private function validateIndex($index){
-       if(!is_int($index)){
-           throw new InvalidArgumentException("Index must be an integer");
-       }
+    private function validateIndex($index)
+    {
+        if (!is_int($index)) {
+            throw new InvalidArgumentException("Index must be an integer");
+        }
 
-       if($index < 0){
-          throw new InvalidArgumentException("Index must be a non-negative integer");
-       }
+        if ($index < 0) {
+            throw new InvalidArgumentException("Index must be a non-negative integer");
+        }
 
-       if($index > $this->count()){
-           throw new OutOfRangeException("Index out of bounds of collection");
-       }
+        if ($index > $this->count()) {
+            throw new OutOfRangeException("Index out of bounds of collection");
+        }
     }
 
      /**
@@ -417,12 +444,13 @@ class Collection implements \IteratorAggregate, \Countable{
      * @param mixed $item
      * @throws CollectionInvalidArgumentException
      */
-    protected function validateItem($item){
-      if(!is_object($item)) throw new InvalidArgumentException("Item must be an object");
+    protected function validateItem($item)
+    {
+        if (!is_object($item)) throw new InvalidArgumentException("Item must be an object");
 
-      if(!is_a($item, $this->objectName)){
-        throw new InvalidArgumentException("Item is not of subtype " . $this->objectName);
-      }
+        if (!is_a($item, $this->objectName)) {
+            throw new InvalidArgumentException("Item is not of subtype " . $this->objectName);
+        }
     }
 
     /**
@@ -430,9 +458,10 @@ class Collection implements \IteratorAggregate, \Countable{
      *
      * @param array $items
      */
-    protected function validateItems(array $items){
-      foreach($items as $item){
-        $this->validateItem($item);
-      }
+    protected function validateItems(array $items)
+    {
+        foreach ($items as $item) {
+            $this->validateItem($item);
+        }
     }
 }
