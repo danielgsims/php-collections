@@ -9,29 +9,49 @@
 
 namespace Collection;
 
+/**
+ * An Exception in the Collection
+ */
 class Exception extends \Exception{}
+
+/**
+ * An exception that was caught from an iterator error
+ */
 class IteratorException extends Exception{}
+
+/**
+ * Occurs when an invalid argument is used with the Collection
+ */
 class InvalidArgumentException extends Exception{}
+
+/**
+ * Occurs when an index is out of range of the collection
+ */
 class OutOfRangeException extends Exception{}
 
+/**
+ * A collection of objects with a specified class or interface
+ */
 class Collection implements \IteratorAggregate, \Countable
 {
     /**
      * The collection's encapsulated array
+     *
      * @var array
      */
     protected $items;
 
     /**
      * The name of the object, either class or interface, that the list works with
+     *
      * @var string
      */
     protected $objectName;
 
     /**
-     * Constructs the items as an array
+     * Instantiates the collection by specifying what type of Object will be used.
      *
-     * @param string $objectName Name of the object used in the Collection
+     * @param string $objectName Name of the class or interface used in the Collection
      */
     public function __construct($objectName)
     {
@@ -47,7 +67,7 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Add an item to the collection
      *
-     * @param mixed $item
+     * @param mixed $item An item of your Collection's object type to be added
      */
     public function add($item)
     {
@@ -58,7 +78,7 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * An array of items to add to the collection
      *
-     * @param array $items
+     * @param array $items An array of items of your Collection's object type to be added
      */
     public function addRange(array $items)
     {
@@ -69,9 +89,10 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Fetches the item at the specified index
      *
-     * @param int $index The index to fetch
+     * @param integer $index The index of an item to fetch
      * @throws InvalidArgumentException
      * @throws OutOfRangeException
+     * @returns mixed The item at the specified index
      */
     public function at($index)
     {
@@ -93,7 +114,7 @@ class Collection implements \IteratorAggregate, \Countable
      * Determines whether the item is in the Collection
      *
      * @param mixed $needle The item to search for in the collection
-     *
+     * @returns bool Whether the item was in the array or not
      */
     public function contains($needle)
     {
@@ -103,7 +124,8 @@ class Collection implements \IteratorAggregate, \Countable
 
     /**
      * The number of items in a collection
-     * @return int
+     *
+     * @return integer The number of items in the collection
      */
     public function count()
     {
@@ -113,8 +135,8 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Check to see if an item in the collection exists that satisfies the provided callback
      *
-     * @param callback $condition The condition criteria to test each item
-     * @returns bool
+     * @param callback $condition The condition criteria to test each item, requires one argument that represents the Collection item during an iteration.
+     * @returns bool Whether an item exists that satisfied the condition
      */
     public function exists(callable $condition)
     {
@@ -124,8 +146,8 @@ class Collection implements \IteratorAggregate, \Countable
    /**
      * Finds and returns the first item in the collection that satisfies the callback.
      *
-     * @param callable $condition
-     * @return mixed|bool
+     * @param callback $condition The condition critera to test each item, requires one argument that represents the Collection iterm during iteration.
+     * @return mixed|bool The first item that satisfied the condition or false if no object was found
      */
     public function find(callable $condition)
     {
@@ -137,8 +159,8 @@ class Collection implements \IteratorAggregate, \Countable
      * Returns a collection of all items that satisfy the callback function. If nothing is found, returns an empty
      * Collection
      *
-     * @param callable $condition
-     * @return Collection
+     * @param calback $condition The condition critera to test each item, requires one argument that represents the Collection iterm during iteration.
+     * @return Collectiona A collection of all of the items that satisfied the condition
      */
     public function findAll(callable $condition)
     {
@@ -163,7 +185,8 @@ class Collection implements \IteratorAggregate, \Countable
      * Finds the index of the first item that returns true from the callback,
      * returns -1 if no item is found
      *
-     * @param callable $condition The callback function to test whether the item matches a condition
+     * @param callback $condition The condition critera to test each item, requires one toargument that represents the Collection iterm during iteration.
+     * @return integer The index of the first item satisfying the callback or -1 if no item was found
      */
     public function findIndex(callable $condition)
     {
@@ -187,8 +210,8 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Finds and returns the last item in the collection that satisfies the callback.
      *
-     * @param callable $condition
-     * @return mixed|bool
+     * @param callback $condition The condition criteria to test each item, requires one argument that represents the Collection item during an iteration.
+     * @return mixed|bool The last item that matched condition or -1 if no item was found matching the condition.
      */
     public function findLast(callable $condition)
     {
@@ -200,7 +223,8 @@ class Collection implements \IteratorAggregate, \Countable
      * Finds the index of the last item that returns true from the callback,
      * returns -1 if no item is found
      *
-     * @param callable $condition The callback function to test whether the item matches a condition
+     * @param callback $condition The condition criteria to test each item, requires one argument that represents the Collection item during an iteration.
+     * @return integer The index of the last item  to match that matches the condition, returns -1 if no item was found
      */
     public function findLastIndex(callable $condition)
     {
@@ -233,9 +257,9 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Get a range of items in the collection
      *
-     * @param int $start The starting index of the range
-     * @param int $end The ending index of the range
-     * @returns Collection
+     * @param integer $start The starting index of the range
+     * @param integer $end The ending index of the range
+     * @returns Collection A collection of items matching the range
      */
     public function getRange($start, $end)
     {
@@ -251,9 +275,6 @@ class Collection implements \IteratorAggregate, \Countable
             throw new InvalidArgumentException("End must be greater than start");
         }
 
-        /*
-         * Todo, What is the expected result in this situation. Would this be an error, or return as many as possible?
-         */
         if ($start >= $this->count()) {
             throw new InvalidArgumentException("Start must be less than the count of the items in the Collection");
         }
@@ -272,11 +293,10 @@ class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Returns the index of the first item that satisfies the callback function.
-     * Returns -1 if no index is found.
+     * Find the index of the first item in the Collection that makes the condition
      *
-     * @param callable $condition
-     * @return int
+     * @param callback $condition The condition criteria to test each item, requires one argument that represents the Collection item during an iteration.
+     * @return integer The index of the item in the collection, -1 if no result is found
      */
     public function indexOf(callable $condition)
     {
@@ -301,8 +321,8 @@ class Collection implements \IteratorAggregate, \Countable
      * Insert the item at index
      *
      * @throws InvalidArgumentException
-     * @param int $index
-     * @param mixed $item
+     * @param integer $index The index where to insert the item
+     * @param mixed $item The item to insert
      */
     public function insert($index, $item)
     {
@@ -317,8 +337,9 @@ class Collection implements \IteratorAggregate, \Countable
 
     /**
      * Inset a range at the index
-     * @param int $index
-     * @param array items
+     *
+     * @param integer $index Index where to insert the range
+     * @param array items An array of items to insert
      */
     public function insertRange($index, array $items)
     {
@@ -338,7 +359,7 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Removes the first item that satisfies the condition callback
      *
-     * @param callable $condition
+     * @param callback $condition The condition critera to test each item, requires one argument that represents the Collection iterm during iteration.
      * @returns bool Whether the item was found
      */
     public function remove(callable $condition)
@@ -355,7 +376,7 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Removes the item at the specified index
      *
-     * @param int $index
+     * @param integer $index The index where the object should be removed
      */
     public function removeAt($index)
     {
@@ -365,17 +386,15 @@ class Collection implements \IteratorAggregate, \Countable
            $partA = array_slice($this->items, 0, $index);
            $partB = array_slice($this->items, $index + 1, count($this->items));
            $this->items = array_merge($partA,$partB);
-           return true;
        } else {
            array_pop($this->items);
-           return false;
        }
     }
 
     /**
      * Removes the last item to satisfy the condition callback
      *
-     * @param callable $condition Callable that has some search criteria
+     * @param callback $condition The condition criteria to test each item, requires one argument that represents the Collection item during an iteration.
      * @returns bool Whether the item was removed or not
      */
     public function removeLast(callable $condition)
@@ -419,7 +438,9 @@ class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param $index
+     * Validates a number to be used as an index
+     *
+     * @param integer $index The number to be validated as an index
      * @throws OutOfRangeException
      * @throws InvalidArgumentException
      */
@@ -441,7 +462,7 @@ class Collection implements \IteratorAggregate, \Countable
      /**
      * Validates that the item is an object and matches the object name
      *
-     * @param mixed $item
+     * @param mixed $item The item to be validated
      * @throws CollectionInvalidArgumentException
      */
     protected function validateItem($item)
@@ -456,7 +477,7 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Validates an array of items
      *
-     * @param array $items
+     * @param array $items an array of items to be validated
      */
     protected function validateItems(array $items)
     {
