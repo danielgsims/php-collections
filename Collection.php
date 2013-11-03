@@ -15,11 +15,6 @@ namespace Collection;
 class Exception extends \Exception{}
 
 /**
- * An exception that was caught from an iterator error
- */
-class IteratorException extends Exception{}
-
-/**
  * Occurs when an invalid argument is used with the Collection
  */
 class InvalidArgumentException extends Exception{}
@@ -56,11 +51,6 @@ class Collection implements \IteratorAggregate, \Countable
     public function __construct($objectName)
     {
         $this->items = array();
-
-        if (!class_exists($objectName) && !interface_exists($objectName)) {
-            throw new InvalidArgumentException("Class or Interface name is not declared");
-        }
-
         $this->objectName = $objectName;
     }
 
@@ -96,9 +86,7 @@ class Collection implements \IteratorAggregate, \Countable
      */
     public function at($index)
     {
-        if (!is_int($index)) throw new  InvalidArgumentException("Index must be an integer");
-        if ($index >= $this->count()) throw new OutOfRangeException("Out of range on Collection");
-
+	$this->validateIndex($index);
         return $this->items[$index];
     }
 
@@ -164,19 +152,14 @@ class Collection implements \IteratorAggregate, \Countable
      */
     public function findAll(callable $condition)
     {
-        try {
-            $col = new Collection($this->objectName);
-            foreach ($this->items as $item) {
-                if($condition($item)) {
-                    $col->add($item);
-                }
+        $col = new Collection($this->objectName);
+        foreach ($this->items as $item) {
+            if($condition($item)) {
+                $col->add($item);
             }
-
-            return $col;
-
-        } catch (Exception $e) {
-            throw new IteratorException($e->getMessage());
         }
+
+        return $col;
     }
 
 
@@ -190,21 +173,16 @@ class Collection implements \IteratorAggregate, \Countable
      */
     public function findIndex(callable $condition)
     {
-        try {
-            $index = -1;
+        $index = -1;
 
-            for ($i = 0; $i< count($this->items); $i++) {
-                if ($condition($this->at($i))) {
-                    $index = $i;
-                    break;
-                }
+        for ($i = 0; $i< count($this->items); $i++) {
+            if ($condition($this->at($i))) {
+                $index = $i;
+                break;
             }
-
-            return $index;
-
-        } catch (Exception $e) {
-            throw new IteratorException($e->getMessage());
         }
+        
+        return $index;
     }
 
     /**
@@ -228,21 +206,16 @@ class Collection implements \IteratorAggregate, \Countable
      */
     public function findLastIndex(callable $condition)
     {
-        try{
-            $index = -1;
+        $index = -1;
 
-            for ($i = count($this->items) - 1; $i>= 0; $i--) {
-                if ($condition($this->items[$i])) {
-                    $index = $i;
-                    break;
-                }
+        for ($i = count($this->items) - 1; $i>= 0; $i--) {
+            if ($condition($this->items[$i])) {
+                $index = $i;
+                break;
             }
-
-            return $i;
-
-        } catch (Exception $e) {
-            throw new IteratorException($e->getMessage());
         }
+
+        return $i;
     }
 
     /**
@@ -251,7 +224,7 @@ class Collection implements \IteratorAggregate, \Countable
      */
      public function getIterator()
      {
-         return new ArrayIterator($this->items);
+         return new \ArrayIterator($this->items);
      }
 
     /**
@@ -290,31 +263,6 @@ class Collection implements \IteratorAggregate, \Countable
 
         return $subset;
 
-    }
-
-    /**
-     * Find the index of the first item in the Collection that makes the condition
-     *
-     * @param callback $condition The condition criteria to test each item, requires one argument that represents the Collection item during an iteration.
-     * @return integer The index of the item in the collection, -1 if no result is found
-     */
-    public function indexOf(callable $condition)
-    {
-        try {
-            $found = false;
-
-            for ($i = 0; $i < $this->count(); $i++) {
-                if ($condition($this->items[$i])) {
-                    $found = true;
-                    break;
-                }
-            }
-
-            return $found ? $i : -1;
-
-      } catch (Exception $e) {
-          throw new CollectionIteratorException($e->getMessage());
-      }
     }
 
      /**
@@ -382,13 +330,9 @@ class Collection implements \IteratorAggregate, \Countable
     {
        $this->validateIndex($index);
 
-       if ($index != -1) {
-           $partA = array_slice($this->items, 0, $index);
-           $partB = array_slice($this->items, $index + 1, count($this->items));
-           $this->items = array_merge($partA,$partB);
-       } else {
-           array_pop($this->items);
-       }
+       $partA = array_slice($this->items, 0, $index);
+       $partB = array_slice($this->items, $index + 1, count($this->items));
+       $this->items = array_merge($partA,$partB);
     }
 
     /**

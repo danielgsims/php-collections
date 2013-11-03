@@ -11,6 +11,18 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->c = new Collection("TestClassA");
   }
 
+  public function testValidateIndex(){
+    try{
+      $this->c->at("one");
+    } catch (\Exception $e){
+      $classname = get_class($e);
+    }
+
+    $this->assertEquals("Collection\InvalidArgumentException",$classname);
+    $this->assertEquals("Index must be an integer",$e->getMessage());
+  
+  }
+
   public function testAddAndRetrieveFunctions(){
     $a = new TestClassA(1);
 
@@ -158,6 +170,18 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     };
 
     $this->assertEquals(false,$this->c->find($condition));
+  }
+
+  public function testFindLast(){
+    $this->c->add(new TestClassA(2));
+    $this->c->add(new TestClassA(4));
+    $this->c->add(new TestClassA(6));
+ 
+    $item = $this->c->findLast(function($item){
+        return $item->getValue() % 2 == 0;
+    });
+
+    $this->assertEquals($item->getValue(),6);
   }
 
   public function testFindAll(){
@@ -316,12 +340,17 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       return $item->getValue() % 2 != 0;
     };
 
-    $this->c->remove($removeOdd);
+    $this->assertEquals(true,$this->c->remove($removeOdd));
     $this->assertEquals(3,$this->c->count());
     $this->assertEquals(2,$this->c->at(0)->getValue());
     $this->assertEquals(3,$this->c->at(1)->getValue());
     $this->assertEquals(4,$this->c->at(2)->getValue());
 
+    $mustFail = function($item){
+        return $item->getValue() == 42;
+    };
+
+    $this->assertEquals(false,$this->c->remove($mustFail));
   }
 
   public function testRemoveAt(){
@@ -351,11 +380,17 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       return $item->getValue() % 2 != 0;
     };
 
-    $this->c->removeLast($removeOdd);
+    $this->assertEquals(true,$this->c->removeLast($removeOdd));
     $this->assertEquals(3,$this->c->count());
     $this->assertEquals(1,$this->c->at(0)->getValue());
     $this->assertEquals(2,$this->c->at(1)->getValue());
     $this->assertEquals(4,$this->c->at(2)->getValue());
+
+    $mustFail = function($item){
+        return $item->getValue() == 100;
+    };
+
+    $this->assertEquals(false,$this->c->removeLast($mustFail));
   }
 
   public function testReverse(){
@@ -374,9 +409,27 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 
   public function testSort(){
 
+    $this->c->add(new TestClassA(3));
+    $this->c->add(new TestClassA(1));
+    $this->c->add(new TestClassA(4));
+    $this->c->add(new TestClassA(2));
+
+    $comparitor = function($a,$b){
+        if ($a == $b) {
+            return 0;
+        }
+
+        return ($a < $b) ? -1 : 1;
+    };
+ 
+    $this->c->sort($comparitor);
+    $this->assertEquals(1,$this->c->at(0)->getValue());
+    $this->assertEquals(2,$this->c->at(1)->getValue());
+    $this->assertEquals(3,$this->c->at(2)->getValue());
+    $this->assertEquals(4,$this->c->at(3)->getValue());
   }
 
-  public function toArray(){
+  public function testToArray(){
     $items = array();
     $items[] = new TestClassA(1);
     $items[] = new TestClassA(2);
@@ -384,5 +437,11 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 
     $this->c->addRange($items);
     $this->assertEquals($items,$this->c->toArray());
+  }
+
+  public function testIterator(){
+    $iterator = $this->c->getIterator();
+    $class = get_class($iterator);
+    $this->assertEquals($class,"ArrayIterator");
   }
 }
