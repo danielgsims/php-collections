@@ -7,7 +7,7 @@
  * @author danielgsims
  */
 
-namespace Collection;
+namespace danielgsims;
 
 /**
  * An Exception in the Collection

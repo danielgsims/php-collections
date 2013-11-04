@@ -1,9 +1,9 @@
 <?php
 
-require_once("Collection.php");
+require_once("../danielgsims/Collection.php");
 require_once("testClass.php");
 
-use Collection\Collection;
+use danielgsims\Collection;
 
 class ControllerTest extends PHPUnit_Framework_TestCase {
 
@@ -18,7 +18,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       $classname = get_class($e);
     }
 
-    $this->assertEquals("Collection\InvalidArgumentException",$classname);
+    $this->assertEquals("danielgsims\InvalidArgumentException",$classname);
     $this->assertEquals("Index must be an integer",$e->getMessage());
   
   }
@@ -43,7 +43,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       $this->classname = get_class($e);
     }
 
-    $this->assertEquals("Collection\InvalidArgumentException",$this->classname);
+    $this->assertEquals("danielgsims\InvalidArgumentException",$this->classname);
     $this->assertEquals("1",$this->c->count());
 
     //we should be able to add subtypes of TestClassA
@@ -94,7 +94,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       $classname = get_class($e);
     }
 
-    $this->assertEquals("Collection\InvalidArgumentException",$classname);
+    $this->assertEquals("danielgsims\InvalidArgumentException",$classname);
     $this->assertEquals(8,$this->c->count());
 
   }
@@ -134,7 +134,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       $classname = get_class($e);
     }
 
-    $this->assertEquals("Collection\InvalidArgumentException",$classname);
+    $this->assertEquals("danielgsims\InvalidArgumentException",$classname);
 
   }
 
@@ -239,7 +239,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     } catch (Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
+    $this->assertEquals(get_class($e),"danielgsims\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"Start must be a non-negative integer");
 
     //start must be natural number
@@ -248,7 +248,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     } catch (Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
+    $this->assertEquals(get_class($e),"danielgsims\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"End must be a positive integer");
 
     unset($e);
@@ -257,7 +257,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     }catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
+    $this->assertEquals(get_class($e),"danielgsims\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"End must be greater than start");
 
     unset($e);
@@ -266,7 +266,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     }catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
+    $this->assertEquals(get_class($e),"danielgsims\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"Start must be less than the count of the items in the Collection");
 
     unset($e);
@@ -275,7 +275,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     }catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
+    $this->assertEquals(get_class($e),"danielgsims\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"End must be less than the count of the items in the Collection");
 
 
@@ -300,7 +300,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     }catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"Collection\OutOfRangeException");
+    $this->assertEquals(get_class($e),"danielgsims\OutOfRangeException");
     $this->assertEquals($e->getMessage(),"Index out of bounds of collection");
 
     try{
@@ -308,7 +308,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     } catch(Exception $e){
     }
 
-    $this->assertEquals(get_class($e),"Collection\InvalidArgumentException");
+    $this->assertEquals(get_class($e),"danielgsims\InvalidArgumentException");
     $this->assertEquals($e->getMessage(),"Index must be a non-negative integer");
 
   }

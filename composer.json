@@ -1,0 +1,19 @@
+{
+    "name": "danielgsims/php-list",
+    "description": "A templated list implementation in PHP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel G Sims",
+            "email": "danielgarthsims@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+    },
+    "autoload" : {
+	"psr-0": {
+	   "danielgsims": "src/"
+        }
+    }
+}
