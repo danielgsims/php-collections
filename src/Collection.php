@@ -7,7 +7,7 @@
  * @author danielgsims
  */
 
-namespace danielgsims;
+namespace Collections;
 
 /**
  * A collection of objects with a specified class or interface

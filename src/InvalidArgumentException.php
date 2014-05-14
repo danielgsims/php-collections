@@ -1,6 +1,6 @@
 <?php
 
-namespace danielgsims;
+namespace Collections;
 
 /**
  * Occurs when an invalid argument is used with the Collection

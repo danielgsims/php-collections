@@ -1,6 +1,6 @@
 {
-    "name": "danielgsims/php-list",
-    "description": "A templated list implementation in PHP",
+    "name": "danielgsims/php-collections",
+    "description": "Collection classes for PHP",
     "license": "MIT",
     "authors": [
         {
@@ -12,8 +12,8 @@
     "require": {
     },
     "autoload" : {
-	"psr-0": {
-	   "danielgsims": "src/"
-        }
+	   "psr-4": {
+	    "Collections\\": "src/"
+       }
     }
 }

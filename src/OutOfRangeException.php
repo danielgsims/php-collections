@@ -1,6 +1,6 @@
 <?php
 
-namespace danielgsims;
+namespace Collections;
 
 
 /**
