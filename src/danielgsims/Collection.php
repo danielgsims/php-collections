@@ -10,21 +10,6 @@
 namespace danielgsims;
 
 /**
- * An Exception in the Collection
- */
-class Exception extends \Exception{}
-
-/**
- * Occurs when an invalid argument is used with the Collection
- */
-class InvalidArgumentException extends Exception{}
-
-/**
- * Occurs when an index is out of range of the collection
- */
-class OutOfRangeException extends Exception{}
-
-/**
  * A collection of objects with a specified class or interface
  */
 class Collection implements \IteratorAggregate, \Countable
@@ -34,14 +19,14 @@ class Collection implements \IteratorAggregate, \Countable
      *
      * @var array
      */
-    protected $items;
+    private $items;
 
     /**
      * The name of the object, either class or interface, that the list works with
      *
      * @var string
      */
-    protected $objectName;
+    private $objectName;
 
     /**
      * Instantiates the collection by specifying what type of Object will be used.
@@ -52,6 +37,15 @@ class Collection implements \IteratorAggregate, \Countable
     {
         $this->items = array();
         $this->objectName = $objectName;
+    }
+
+    /**
+     * Fetches the name of the object that the list works with
+     */
+
+    public function getObjectName()
+    {
+        return $this->objectName;
     }
 
     /**
