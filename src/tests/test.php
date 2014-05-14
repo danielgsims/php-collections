@@ -11,6 +11,10 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->c = new Collection("TestClassA");
   }
 
+  public function testGetObjectName(){
+      $this->assertEquals("TestClassA",$this->c->getObjectName());
+  }
+
   public function testValidateIndex(){
     try{
       $this->c->at("one");
