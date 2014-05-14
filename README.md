@@ -145,3 +145,22 @@ for($i = 0; $i<$library->count(); $i++){
 In the examples above, we see the inheritance support for the
 Collection. By designating the base class (Book), we can submit Books,
 Novels and Novellas.
+
+##Validation
+
+Due to the lack of generics in PHP, we cannot type hint on the collection when it is used as an argument.
+The simplest way for us to ensurce collection safety is to manually check the object type.
+
+```php
+
+class MyClass
+{
+   public function __construct(Collection $collection)
+   {
+       if ("Book" != $collection->getObjectName()) {
+            throw new InvalidArgumentException("Collection must be a collection of Books");
+       }
+       
+   }
+}
+```
