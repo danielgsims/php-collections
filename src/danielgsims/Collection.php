@@ -9,10 +9,6 @@
 
 namespace danielgsims;
 
-require_once("Exception.php");
-require_once("InvalidArgumentException.php");
-require_once("OutOfRangeException.php");
-
 /**
  * A collection of objects with a specified class or interface
  */

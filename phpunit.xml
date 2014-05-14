@@ -1,0 +1,18 @@
+<phpunit
+    bootstrap="./tests/bootstrap.php"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd"
+    colors="true"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
+    timeoutForSmallTests="1"
+    timeoutForMediumTests="10"
+    timeoutForLargeTests="30">
+    <testsuites>
+        <testsuite name="Object_App">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
