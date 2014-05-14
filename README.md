@@ -1,4 +1,9 @@
-phpcollection
+phpcollections
+=============
+
+This library is a group of collection classes for PHP. Currently there is one collection complete, aptly called Collection.
+
+Collection
 =============
 
 A PHP implementation of a templated list. The Collection class allows
