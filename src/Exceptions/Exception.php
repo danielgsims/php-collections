@@ -1,6 +1,4 @@
-<?php
-
-namespace Collections;
+<?php namespace Collections\Exceptions;
 
 /**
  * An Exception in the Collection
