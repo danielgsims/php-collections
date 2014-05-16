@@ -408,7 +408,6 @@ class Collection implements \IteratorAggregate, \Countable
      */
     public function walk(callable $callback, $userdata = NULL)
     {
-        $index = 0;
         /**
          * Make a new array and switch it with $this->items after looping,
          * to avoid modifying any items until they're all looped and verified.
