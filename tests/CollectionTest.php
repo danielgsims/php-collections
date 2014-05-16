@@ -371,6 +371,76 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals($items,$this->c->toArray());
   }
 
+  public function testMap(){
+      $items = array();
+      $items[] = new TestClassA(1);
+      $items[] = new TestClassA(2);
+      $items[] = new TestClassA(3);
+      $this->c->addRange($items);
+
+      /* map should return new collection without modifying the existing collection */
+      $newCollection = $this->c->map(
+          function($n){
+              $n->setValue($n->getValue() * 3);
+              return $n;
+          });
+      $this->assertEquals(($this->c->at(0)->getValue() * 3), $newCollection->at(0)->getValue());
+      $this->assertEquals(($this->c->at(1)->getValue() * 3), $newCollection->at(1)->getValue());
+      $this->assertEquals(($this->c->at(2)->getValue() * 3), $newCollection->at(2)->getValue());
+
+      /* map should allow mapping collection of class A to collection of class B */
+      $stdCollection = $this->c->map(
+          function($n){
+              $o = new stdClass();
+              $o->value = $n->getValue();
+              return $o;
+          }, 'stdClass');
+
+      $this->assertEquals($stdCollection->getObjectName(), 'stdClass');
+      $this->assertEquals($this->c->at(0)->getValue(), $stdCollection->at(0)->value);
+      $this->assertEquals($this->c->at(1)->getValue(), $stdCollection->at(1)->value);
+      $this->assertEquals($this->c->at(2)->getValue(), $stdCollection->at(2)->value);
+  }
+
+  public function testWalk(){
+      $items = array();
+      $items[] = new TestClassA(1);
+      $items[] = new TestClassA(2);
+      $items[] = new TestClassA(3);
+      $this->c->addRange($items);
+ 
+      $this->arr = array();
+      $this->assertEquals(TRUE,
+          $this->c->walk(function($n){
+              $this->arr[] = $n->getValue();
+          }));
+      $this->assertEquals(1, $this->arr[0]);
+      $this->assertEquals(2, $this->arr[1]);
+      $this->assertEquals(3, $this->arr[2]);
+
+      /**
+       * Walk should allow for $userdata to be passed to $callback,
+       * as well as modifying the original collection.
+       */
+      $this->assertEquals(TRUE,
+          $this->c->walk(function($n, $index, $userdata){
+              $n->setValue($n->getValue() * $userdata);
+          }, 5));
+
+      $this->assertEquals(5, $this->c->at(0)->getValue());
+      $this->assertEquals(10, $this->c->at(1)->getValue());
+      $this->assertEquals(15, $this->c->at(2)->getValue());
+
+      /**
+       * Walk should not allow members of the collection to be changed
+       * to a type that is incompatible with the current collection.
+       */
+      $this->assertEquals(FALSE,
+          $this->c->walk(function(&$n){
+              $n = new TestClassB;
+          }));
+  }
+
   public function testIterator(){
     $iterator = $this->c->getIterator();
     $class = get_class($iterator);
