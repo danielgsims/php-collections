@@ -196,7 +196,7 @@ $d = new Dictionary(array(
     "MI" => "Michigan",
     "OH" => "Ohio"
 ));
-$d['WI'] = "Wisconson";
+$d['WI'] = "Wisconsin";
 echo $d['MI']; //Michigan
 
 ```
