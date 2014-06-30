@@ -169,3 +169,64 @@ class MyClass
    }
 }
 ```
+
+Tuple
+=============
+
+A tuple is an immutable collection where elements are accessible by index.
+
+```php
+
+$t = new Tuple("Apple", "Orange", "Banana");
+echo $t[0]; //Apple;
+
+```
+
+
+Dictionary
+=============
+
+A dictionary is a collection where elements are stored as key/value pairs and only accessible by keys. A dictionary is useful
+when you intend your array to always use keys and entries may need to be edited or removed. 
+
+
+```php
+
+$d = new Dictionary(array(
+    "MI" => "Michigan",
+    "OH" => "Ohio"
+));
+$d['WI'] = "Wisconsin";
+echo $d['MI']; //Michigan
+
+```
+
+If no keys are provided on construction, indexed keys will be assumed. However, keys will be required for adding additional elements.
+
+```php
+
+$d = new Dictionary(array("Apples", "Bananas"));
+echo $d[1]; //Bananas
+$d[] = "Oranges" //NullKeyException
+
+```
+
+Enum
+=============
+
+An enumartion functions like an immutable dictionary. This collection is useful when keys and values are needed, but no additional keys should be added or removed and no values should be changed. Like a dictionary, indexed keys will be assumed if explicit keys are not provided.
+```php
+$suits = new Enumeration(array("Spades", "Clubs", "Hearts", "Diamonds"));
+echo $suits[1]; //Clubs
+$suits[1] = "Bells" //Exception
+$suits[4] = "Eagles" //Exception
+
+$colors = new Enumeration(array(
+    "Spades" => "Black",
+    "Clubs" => "Black",
+    "Hearts" => "Red",
+    "Diamonds" => "Red"
+));
+
+echo $colors[$suits[0]]; //Black
+```

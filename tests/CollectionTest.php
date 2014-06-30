@@ -13,15 +13,8 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testValidateIndex(){
-    try{
-      $this->c->at("one");
-    } catch (\Exception $e){
-      $classname = get_class($e);
-    }
-
-    $this->assertEquals("Collections\InvalidArgumentException",$classname);
-    $this->assertEquals("Index must be an integer",$e->getMessage());
-  
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");  
+    $this->c->at("one");
   }
 
   public function testAddAndRetrieveFunctions(){
@@ -36,16 +29,9 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     //expect a InvalidArgumentExeption
     //count should stay 1
     $b = new TestClassB;
-    $this->classname = "";
 
-    try{
-      $this->c->add($b);
-    } catch (\Exception $e){
-      $this->classname = get_class($e);
-    }
-
-    $this->assertEquals("Collections\InvalidArgumentException",$this->classname);
-    $this->assertEquals("1",$this->c->count());
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+    $this->c->add($b);
 
     //we should be able to add subtypes of TestClassA
     $extendsA = new TestClassExtendsA(2);
@@ -87,15 +73,9 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $badItems[] = new TestClassB();
     $badItems[] = new TestClassB();
 
-    $classname = "";
 
-    try{
-      $this->c->addRange($badItems);
-    } catch (\Exception $e){
-      $classname = get_class($e);
-    }
-
-    $this->assertEquals("Collections\InvalidArgumentException",$classname);
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+    $this->c->addRange($badItems);
     $this->assertEquals(8,$this->c->count());
 
   }
@@ -125,18 +105,9 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $needle = new TestClassExtendsA(3);
     $this->assertEquals(false,$this->c->contains($needle));
 
-    //we cannot check for something out of the inheritence chain
-    $classname = "";
-
-    try{
-      $needle = new TestClassB();
-      $this->c->contains($needle);
-    } catch (\Exception $e){
-      $classname = get_class($e);
-    }
-
-    $this->assertEquals("Collections\InvalidArgumentException",$classname);
-
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+    $needle = new TestClassB();
+    $this->c->contains($needle);
   }
 
   public function testExists(){
@@ -234,51 +205,22 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 
     $this->c->addRange($items);
 
-    //start must be natural number
-    try{
-      $this->c->getRange(-1,3);
-    } catch (Exception $e){
-    }
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+    $this->c->getRange(-1,3);
 
-    $this->assertEquals(get_class($e),"Collections\InvalidArgumentException");
-    $this->assertEquals($e->getMessage(),"Start must be a non-negative integer");
 
     //start must be natural number
-    try{
-      $this->c->getRange(1,-4);
-    } catch (Exception $e){
-    }
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+    $this->c->getRange(1,-4);
 
-    $this->assertEquals(get_class($e),"Collections\InvalidArgumentException");
-    $this->assertEquals($e->getMessage(),"End must be a positive integer");
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+    $this->c->getRange(3,2);
 
-    unset($e);
-    try{
-      $this->c->getRange(3,2);
-    }catch(Exception $e){
-    }
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+    $this->c->getRange(20,22);
 
-    $this->assertEquals(get_class($e),"Collections\InvalidArgumentException");
-    $this->assertEquals($e->getMessage(),"End must be greater than start");
-
-    unset($e);
-    try{
-      $this->c->getRange(20,22);
-    }catch(Exception $e){
-    }
-
-    $this->assertEquals(get_class($e),"Collections\InvalidArgumentException");
-    $this->assertEquals($e->getMessage(),"Start must be less than the count of the items in the Collection");
-
-    unset($e);
-    try{
-      $this->c->getRange(2,22);
-    }catch(Exception $e){
-    }
-
-    $this->assertEquals(get_class($e),"Collections\InvalidArgumentException");
-    $this->assertEquals($e->getMessage(),"End must be less than the count of the items in the Collection");
-
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+    $this->c->getRange(2,22);
 
     $subset = $this->c->getRange(2,4);
 
@@ -296,22 +238,11 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 
     $this->assertEquals(3,$this->c->at(1)->getValue());
 
-    try{
-      $this->c->insert(100, new TestClassA(5));
-    }catch(Exception $e){
-    }
+    $this->setExpectedException("Collections\Exceptions\OutOfRangeException");
+    $this->c->insert(100, new TestClassA(5));
 
-    $this->assertEquals(get_class($e),"Collections\OutOfRangeException");
-    $this->assertEquals($e->getMessage(),"Index out of bounds of collection");
-
-    try{
-      $this->c->insert(-1, new TestClassA(5));
-    } catch(Exception $e){
-    }
-
-    $this->assertEquals(get_class($e),"Collections\InvalidArgumentException");
-    $this->assertEquals($e->getMessage(),"Index must be a non-negative integer");
-
+    $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+    $this->c->insert(-1, new TestClassA(5));
   }
 
   public function testInsertRange(){
