@@ -52,4 +52,9 @@ class Enum implements \ArrayAccess, \IteratorAggregate, \Countable
     {
         return count($this->array);
     }
+
+    public function valueExists($value)
+    {
+        return in_array($value, $this->array);
+    }
 }

@@ -62,6 +62,17 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testValueExists()
+    {
+        $states = new Dictionary([
+            "MI" => "Michigan",
+            "OH" => "Ohio"
+        ]);
+
+        $this->assertEquals(true,$states->valueExists("Michigan"));
+        $this->assertEquals(false,$states->valueExists("Wisconson"));
+    }
+
     public function testToArray()
     {
         $statesArray = [
@@ -95,7 +106,7 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([],$d->toArray());
     }
 
-    public function count()
+    public function testCount()
     {
         $d = new Dictionary([1]);
         $this->assertEquals(1,count($d));
@@ -105,10 +116,28 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2,$d->count());
     }
 
-    public function incorrectOffset()
+    public function testIncorrectOffset()
     {
         $d = new Dictionary;
         $this->setExpectedException("Collections\Exceptions\NullKeyException");
         $d[] = "thing";
     }
+
+    public function testFindAll()
+    {
+        $states = new Dictionary([
+            "MI" => "Michigan",
+            "MO" => "Missouri",
+            "MS" => "Mississippi",
+            "OH" => "Ohio"
+        ]);
+
+        $mstates = $states->findAll(function($key, $value){
+            return $value[0] === "M";
+        });
+        
+        $expected = ["MI" => "Michigan", "MO" => "Missouri", "MS" => "Mississippi"];
+        $this->assertEquals($expected, $mstates->toArray());
+    }
+
 }

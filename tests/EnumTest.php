@@ -47,6 +47,13 @@ class EnumTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true,isset($this->colors['black']));
     }
 
+    public function testValueExists()
+    {
+        $this->assertEquals(false,$this->colors->valueExists('#FF0000')); 
+        $this->assertEquals(true,$this->colors->valueExists('#000000')); 
+    }
+
+
     public function testSet()
     {
         $this->setExpectedException("Collections\Exceptions\ImmutableKeyException");

@@ -56,6 +56,11 @@ class Dictionary implements \ArrayAccess, \IteratorAggregate, \Countable
         return $this->offsetExists($key);
     }   
 
+    public function valueExists($value)
+    {
+        return in_array($value, $this->array);
+    }
+
     public function getIterator()
     {
         return new \ArrayIterator($this->array);
@@ -64,5 +69,17 @@ class Dictionary implements \ArrayAccess, \IteratorAggregate, \Countable
     public function count()
     {
         return count($this->array);
+    }
+
+    public function findAll(callable $condition)
+    {
+        $array = [];
+        foreach ($this->array as $key => $value) {
+            if($condition($key, $value)) {
+                $array[$key] = $value;
+            }
+        }
+
+        return new Dictionary($array);
     }
 }
