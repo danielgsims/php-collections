@@ -130,7 +130,7 @@ class Collection implements \IteratorAggregate, \Countable
    /**
      * Finds and returns the first item in the collection that satisfies the callback.
      *
-     * @param callback $condition The condition critera to test each item, requires one argument that represents the Collection iterm during iteration.
+     * @param callback $condition The condition critera to test each item, requires one argument that represents the Collection item during iteration.
      * @return mixed|bool The first item that satisfied the condition or false if no object was found
      */
     public function find(callable $condition)
@@ -143,7 +143,7 @@ class Collection implements \IteratorAggregate, \Countable
      * Returns a collection of all items that satisfy the callback function. If nothing is found, returns an empty
      * Collection
      *
-     * @param calback $condition The condition critera to test each item, requires one argument that represents the Collection iterm during iteration.
+     * @param calback $condition The condition critera to test each item, requires one argument that represents the Collection item during iteration.
      * @return Collectiona A collection of all of the items that satisfied the condition
      */
     public function findAll(callable $condition)
@@ -164,7 +164,7 @@ class Collection implements \IteratorAggregate, \Countable
      * Finds the index of the first item that returns true from the callback,
      * returns -1 if no item is found
      *
-     * @param callback $condition The condition critera to test each item, requires one toargument that represents the Collection iterm during iteration.
+     * @param callback $condition The condition critera to test each item, requires one toargument that represents the Collection item during iteration.
      * @return integer The index of the first item satisfying the callback or -1 if no item was found
      */
     public function findIndex(callable $condition)
@@ -303,7 +303,7 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Removes the first item that satisfies the condition callback
      *
-     * @param callback $condition The condition critera to test each item, requires one argument that represents the Collection iterm during iteration.
+     * @param callback $condition The condition critera to test each item, requires one argument that represents the Collection item during iteration.
      * @returns bool Whether the item was found
      */
     public function remove(callable $condition)
@@ -315,6 +315,22 @@ class Collection implements \IteratorAggregate, \Countable
             $this->removeAt($index);
             return true;
         }
+    }
+
+    /**
+     * Removes all items that satisfy the condition callback
+     *
+     * @param callback @condition The condition criteria to test each item, requires on argument that represents the Collection item during interation.
+     * @returns int the number of items found
+     */
+    public function removeAll(callable $condition)
+    {
+        $removed = 0;
+        while($this->remove($condition)) {
+            $removed++;
+        }
+
+        return $removed;
     }
 
     /**
