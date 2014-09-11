@@ -301,7 +301,7 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * Removes the first item that satisfies the condition callback
      *
-     * @param callback $condition The condition critera to test each item, requires one argument that represents the Collection iterm during iteration.
+     * @param callback $condition The condition critera to test each item, requires one argument that represents the Collection item during iteration.
      * @returns bool Whether the item was found
      */
     public function remove(callable $condition)
@@ -313,6 +313,22 @@ class Collection implements \IteratorAggregate, \Countable
             $this->removeAt($index);
             return true;
         }
+    }
+
+    /**
+     * Removes all items that satisfy the condition callback
+     *
+     * @param callback @condition The condition criteria to test each item, requires on argument that represents the Collection item during interation.
+     * @returns int the number of items found
+     */
+    public function removeAll(callable $condition)
+    {
+        $removed = 0;
+        while($this->remove($condition)) {
+            $removed++;
+        }
+
+        return $removed;
     }
 
     /**
