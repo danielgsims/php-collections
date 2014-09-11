@@ -285,6 +285,28 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(false,$this->c->remove($mustFail));
   }
 
+  public function testRemoveAll(){
+    $this->c->add(new TestClassA(1));
+    $this->c->add(new TestClassA(2));
+    $this->c->add(new TestClassA(3));
+    $this->c->add(new TestClassA(4));
+
+    $removeOdd = function($item){
+      return $item->getValue() % 2 != 0;
+    };
+
+    $this->assertEquals(2,$this->c->removeAll($removeOdd));
+    $this->assertEquals(2,$this->c->count());
+    $this->assertEquals(2,$this->c->at(0)->getValue());
+    $this->assertEquals(4,$this->c->at(1)->getValue());
+
+    $mustRemoveNone = function($item){
+        return $item->getValue() == 42;
+    };
+
+    $this->assertEquals(0,$this->c->removeAll($mustRemoveNone));
+  }
+
   public function testRemoveAt(){
     $items = array();
     $items[] = new TestClassA(3);
