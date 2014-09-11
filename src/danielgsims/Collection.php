@@ -392,59 +392,6 @@ class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Encapsulates the array_map function: return new collection containing all members of the collection
-     * after applying the callback function to each one.
-     *
-     * @param callable $callback The function to apply to each member of the collection     
-     * @param $objectName takes an optional object type in case the new collection differs from the current
-     * @returns the new Collection after applying the callback to each member
-     */
-    public function map(callable $callback, $objectName = NULL)
-    {
-        $array = array();
-        /* Isn't there a better way to clone an array of objects? */
-        for ($i = 0; $i< count($this->items); $i++) {
-            $array[] = clone $this->items[$i];
-        }
-        $array = array_map($callback, $array);
-        /* Set $type to $objectName, unless NULL, then set to $this->objectName */
-        $type = $objectName ?: $this->objectName;
-        $collection = new Collection($type);
-        $collection->addRange($array);
-        return $collection;
-    }
-
-    /**
-     * Recreates the array_walk function: applies the callback function to each member of the collection,
-     * passing $userdata to the callback if provided.
-     *
-     * @param callable $callback The function to apply to each member of the collection
-     * @param mixed $userdata If supplied, passed as the second parameter to the callback
-     * @returns TRUE on success or FALSE on failure
-     */
-    public function walk(callable $callback, $userdata = NULL)
-    {
-        /**
-         * Make a new array and switch it with $this->items after looping,
-         * to avoid modifying any items until they're all looped and verified.
-         */
-        $array = array();
-
-        for ($i = 0; $i< count($this->items); $i++) {
-            $clone = clone $this->items[$i];
-            call_user_func_array($callback, array(&$clone, $index, $userdata));
-            $array[] = $clone;
-            try {
-                $this->validateItem($clone);
-            } catch (InvalidArgumentException $e) {
-                return false;
-            }
-        }
-        $this->items = $array;
-        return true;
-    }
-
-    /**
      * Validates a number to be used as an index
      *
      * @param integer $index The number to be validated as an index
