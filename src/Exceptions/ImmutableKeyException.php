@@ -1,5 +1,5 @@
-<?php namespace Collections\Exceptions;
+<?php
 
-class ImmutableKeyException extends \Exception
-{
-}
+namespace Collections\Exceptions;
+
+class ImmutableKeyException extends Exception {}

@@ -1,3 +1,5 @@
-<?php namespace Collections\Exceptions;
+<?php
 
-class NullKeyException extends \Exception{};
+namespace Collections\Exceptions;
+
+class NullKeyException extends Exception {};

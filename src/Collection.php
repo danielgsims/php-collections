@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class Collection
  *
@@ -11,10 +12,14 @@ namespace Collections;
 
 use Collections\Exceptions\InvalidArgumentException;
 use Collections\Exceptions\OutOfRangeException;
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
+
 /**
  * A collection of objects with a specified class or interface
  */
-class Collection implements \IteratorAggregate, \Countable
+class Collection implements Countable, IteratorAggregate
 {
     /**
      * The collection's encapsulated array
@@ -69,7 +74,7 @@ class Collection implements \IteratorAggregate, \Countable
     public function addRange(array $items)
     {
         $this->validateItems($items);
-        $this->items = array_merge($this->items,$items);
+        $this->items = array_merge($this->items, $items);
     }
 
     /**
@@ -78,11 +83,11 @@ class Collection implements \IteratorAggregate, \Countable
      * @param integer $index The index of an item to fetch
      * @throws InvalidArgumentException
      * @throws OutOfRangeException
-     * @returns mixed The item at the specified index
+     * @return mixed The item at the specified index
      */
     public function at($index)
     {
-	$this->validateIndex($index);
+        $this->validateIndex($index);
         return $this->items[$index];
     }
 
@@ -98,7 +103,7 @@ class Collection implements \IteratorAggregate, \Countable
      * Determines whether the item is in the Collection
      *
      * @param mixed $needle The item to search for in the collection
-     * @returns bool Whether the item was in the array or not
+     * @return bool Whether the item was in the array or not
      */
     public function contains($needle)
     {
@@ -120,7 +125,7 @@ class Collection implements \IteratorAggregate, \Countable
      * Check to see if an item in the collection exists that satisfies the provided callback
      *
      * @param callback $condition The condition criteria to test each item, requires one argument that represents the Collection item during an iteration.
-     * @returns bool Whether an item exists that satisfied the condition
+     * @return bool Whether an item exists that satisfied the condition
      */
     public function exists(callable $condition)
     {
@@ -150,7 +155,7 @@ class Collection implements \IteratorAggregate, \Countable
     {
         $col = new Collection($this->objectName);
         foreach ($this->items as $item) {
-            if($condition($item)) {
+            if ($condition($item)) {
                 $col->add($item);
             }
         }
@@ -171,13 +176,13 @@ class Collection implements \IteratorAggregate, \Countable
     {
         $index = -1;
 
-        for ($i = 0; $i< count($this->items); $i++) {
+        for ($i = 0; $i < count($this->items); $i++) {
             if ($condition($this->at($i))) {
                 $index = $i;
                 break;
             }
         }
-        
+
         return $index;
     }
 
@@ -204,7 +209,7 @@ class Collection implements \IteratorAggregate, \Countable
     {
         $index = -1;
 
-        for ($i = count($this->items) - 1; $i>= 0; $i--) {
+        for ($i = count($this->items) - 1; $i >= 0; $i--) {
             if ($condition($this->items[$i])) {
                 $index = $i;
                 break;
@@ -218,17 +223,17 @@ class Collection implements \IteratorAggregate, \Countable
      * Get Iterator to satisfy IteratorAggregate interface
      * @return ArrayIterator
      */
-     public function getIterator()
-     {
-         return new \ArrayIterator($this->items);
-     }
+    public function getIterator()
+    {
+        return new ArrayIterator($this->items);
+    }
 
     /**
      * Get a range of items in the collection
      *
      * @param integer $start The starting index of the range
      * @param integer $end The ending index of the range
-     * @returns Collection A collection of items matching the range
+     * @return Collection A collection of items matching the range
      */
     public function getRange($start, $end)
     {
@@ -253,12 +258,11 @@ class Collection implements \IteratorAggregate, \Countable
         }
 
         $length = $end - $start + 1;
-        $subsetItems = array_slice($this->items,$start,$length);
+        $subsetItems = array_slice($this->items, $start, $length);
         $subset = new Collection($this->objectName);
         $subset->addRange($subsetItems);
 
         return $subset;
-
     }
 
      /**
@@ -273,10 +277,10 @@ class Collection implements \IteratorAggregate, \Countable
         $this->validateIndex($index);
         $this->validateItem($item);
 
-        $partA = array_slice($this->items,0,$index);
+        $partA = array_slice($this->items, 0, $index);
         $partB = array_slice($this->items, $index, count($this->items));
         $partA[] = $item;
-        $this->items = array_merge($partA,$partB);
+        $this->items = array_merge($partA, $partB);
     }
 
     /**
@@ -291,20 +295,20 @@ class Collection implements \IteratorAggregate, \Countable
         $this->validateItems($items);
 
         //To work with negative index, get the positive relation to 0 index
-        if ($index < 0) $index = $this->count() + $index + 1;
+        $index < 0 && $index = $this->count() + $index + 1;
 
-        $partA = array_slice($this->items,0,$index);
+        $partA = array_slice($this->items, 0, $index);
         $partB = array_slice($this->items, $index, count($this->items));
 
-        $this->items = array_merge($partA,$items);
-        $this->items = array_merge($this->items,$partB);
+        $this->items = array_merge($partA, $items);
+        $this->items = array_merge($this->items, $partB);
     }
 
     /**
      * Removes the first item that satisfies the condition callback
      *
      * @param callback $condition The condition critera to test each item, requires one argument that represents the Collection item during iteration.
-     * @returns bool Whether the item was found
+     * @return bool Whether the item was found
      */
     public function remove(callable $condition)
     {
@@ -321,12 +325,12 @@ class Collection implements \IteratorAggregate, \Countable
      * Removes all items that satisfy the condition callback
      *
      * @param callback @condition The condition criteria to test each item, requires on argument that represents the Collection item during interation.
-     * @returns int the number of items found
+     * @return int the number of items found
      */
     public function removeAll(callable $condition)
     {
         $removed = 0;
-        while($this->remove($condition)) {
+        while ($this->remove($condition)) {
             $removed++;
         }
 
@@ -344,14 +348,14 @@ class Collection implements \IteratorAggregate, \Countable
 
        $partA = array_slice($this->items, 0, $index);
        $partB = array_slice($this->items, $index + 1, count($this->items));
-       $this->items = array_merge($partA,$partB);
+       $this->items = array_merge($partA, $partB);
     }
 
     /**
      * Removes the last item to satisfy the condition callback
      *
      * @param callback $condition The condition criteria to test each item, requires one argument that represents the Collection item during an iteration.
-     * @returns bool Whether the item was removed or not
+     * @return bool Whether the item was removed or not
      */
     public function removeLast(callable $condition)
     {
@@ -370,7 +374,7 @@ class Collection implements \IteratorAggregate, \Countable
      */
     public function reverse()
     {
-      $this->items = array_reverse($this->items);
+        $this->items = array_reverse($this->items);
     }
 
     /**
@@ -378,7 +382,7 @@ class Collection implements \IteratorAggregate, \Countable
      */
     public function sort(callable $callback)
     {
-       return usort($this->items,$callback);
+       return usort($this->items, $callback);
     }
 
     /**
@@ -390,7 +394,7 @@ class Collection implements \IteratorAggregate, \Countable
      */
     public function toArray()
     {
-       return $this->items;
+        return $this->items;
     }
 
     /**
@@ -423,7 +427,9 @@ class Collection implements \IteratorAggregate, \Countable
      */
     protected function validateItem($item)
     {
-        if (!is_object($item)) throw new InvalidArgumentException("Item must be an object");
+        if (!is_object($item)) {
+            throw new InvalidArgumentException("Item must be an object");
+        }
 
         if (!is_a($item, $this->objectName)) {
             throw new InvalidArgumentException("Item is not of subtype " . $this->objectName);
