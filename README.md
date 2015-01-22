@@ -230,3 +230,12 @@ $colors = new Enumeration(array(
 
 echo $colors[$suits[0]]; //Black
 ```
+
+###Contributors###
+
+Thank you to all of the contributors and code reviewers
+
+  * [brandonlamb](https://github.com/brandonlamb)
+  * [callmehiphop](https://github.com/callmehiphop)
+  * [jamesthomasonjr](https://github.com/jamesthomasonjr)
+
