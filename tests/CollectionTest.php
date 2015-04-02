@@ -401,10 +401,23 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 
   public function testClone()
   {
-      $this->c->add(new TestClassA(1));
-      $cl = clone $this->c;
+      $t = new TestClassA(1);
+      $this->c->add($t);
+      $c = clone $this->c;
 
-      $this->assertTrue($this->c->at(0) == $cl->at(0));
-      $this->assertFalse($this->c->at(0) === $cl->at(0));
+      // Original collection entries are unmodified
+      $this->assertTrue($t === $this->c->at(0));
+      // Entries are equivalent
+      $this->assertTrue($t == $c->at(0));
+      // Cloned collection entries have new references
+      $this->assertFalse($t === $c->at(0));
+      // Cloned collections are equivalent
+      $this->assertTrue($this->c == $c);
+      // Cloned collection has new reference
+      $this->assertFalse($this->c === $c);
+      // Cloned collection entries are equivalent to original collection entries
+      $this->assertTrue($this->c->at(0) == $c->at(0));
+      // Cloned collection entries have different references from original collection entries
+      $this->assertFalse($this->c->at(0) === $c->at(0));
   }
 }
