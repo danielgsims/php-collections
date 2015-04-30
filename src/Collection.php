@@ -164,7 +164,9 @@ class Collection implements Countable, IteratorAggregate
      */
     public function findAll(callable $condition)
     {
-        $col = new self($this->objectName);
+        $class = get_class($this);
+        $col = new $class($this->objectName);
+
         foreach ($this->items as $item) {
             if ($condition($item)) {
                 $col->add($item);
@@ -246,6 +248,8 @@ class Collection implements Countable, IteratorAggregate
      */
     public function getRange($start, $end)
     {
+        print_r(get_class($this));
+
         if (!is_integer($start) || $start < 0) {
             throw new InvalidArgumentException("Start must be a non-negative integer");
         }
@@ -268,7 +272,8 @@ class Collection implements Countable, IteratorAggregate
 
         $length = $end - $start + 1;
         $subsetItems = array_slice($this->items, $start, $length);
-        $subset = new self($this->objectName);
+        $class = get_class($this);
+        $subset = new $class($this->objectName);
         $subset->addRange($subsetItems);
 
         return $subset;
