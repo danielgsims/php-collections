@@ -26,7 +26,7 @@ class Collection implements Countable, IteratorAggregate
      *
      * @var array
      */
-    private $items;
+    protected $items;
 
     /**
      * The name of the object, either class or interface, that the list works with
@@ -216,7 +216,7 @@ class Collection implements Countable, IteratorAggregate
             }
         }
 
-        return $i;
+        return $index;
     }
 
     /**
