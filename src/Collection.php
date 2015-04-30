@@ -248,8 +248,6 @@ class Collection implements Countable, IteratorAggregate
      */
     public function getRange($start, $end)
     {
-        print_r(get_class($this));
-
         if (!is_integer($start) || $start < 0) {
             throw new InvalidArgumentException("Start must be a non-negative integer");
         }
