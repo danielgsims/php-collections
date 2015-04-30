@@ -164,7 +164,7 @@ class Collection implements Countable, IteratorAggregate
      */
     public function findAll(callable $condition)
     {
-        $col = new Collection($this->objectName);
+        $col = new self($this->objectName);
         foreach ($this->items as $item) {
             if ($condition($item)) {
                 $col->add($item);
@@ -173,8 +173,6 @@ class Collection implements Countable, IteratorAggregate
 
         return $col;
     }
-
-
 
     /**
      * Finds the index of the first item that returns true from the callback,
@@ -270,7 +268,7 @@ class Collection implements Countable, IteratorAggregate
 
         $length = $end - $start + 1;
         $subsetItems = array_slice($this->items, $start, $length);
-        $subset = new Collection($this->objectName);
+        $subset = new self($this->objectName);
         $subset->addRange($subsetItems);
 
         return $subset;
