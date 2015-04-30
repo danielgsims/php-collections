@@ -26,7 +26,7 @@ class Collection implements Countable, IteratorAggregate
      *
      * @var array
      */
-    private $items;
+    protected $items;
 
     /**
      * The name of the object, either class or interface, that the list works with
@@ -164,7 +164,9 @@ class Collection implements Countable, IteratorAggregate
      */
     public function findAll(callable $condition)
     {
-        $col = new Collection($this->objectName);
+        $class = get_class($this);
+        $col = new $class($this->objectName);
+
         foreach ($this->items as $item) {
             if ($condition($item)) {
                 $col->add($item);
@@ -173,8 +175,6 @@ class Collection implements Countable, IteratorAggregate
 
         return $col;
     }
-
-
 
     /**
      * Finds the index of the first item that returns true from the callback,
@@ -227,7 +227,7 @@ class Collection implements Countable, IteratorAggregate
             }
         }
 
-        return $i;
+        return $index;
     }
 
     /**
@@ -270,7 +270,8 @@ class Collection implements Countable, IteratorAggregate
 
         $length = $end - $start + 1;
         $subsetItems = array_slice($this->items, $start, $length);
-        $subset = new Collection($this->objectName);
+        $class = get_class($this);
+        $subset = new $class($this->objectName);
         $subset->addRange($subsetItems);
 
         return $subset;
