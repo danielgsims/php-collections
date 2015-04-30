@@ -47,9 +47,20 @@ class Collection implements Countable, IteratorAggregate
     }
 
     /**
+     * Clones the collection by cloning each object in the underlying array
+     */
+    public function __clone()
+    {
+        $clone = function($object) {
+            return clone $object;
+        };
+
+        $this->items = array_map($clone, $this->items);
+    }
+
+    /**
      * Fetches the name of the object that the list works with
      */
-
     public function getObjectName()
     {
         return $this->objectName;
