@@ -160,7 +160,7 @@ class Collection implements Countable, IteratorAggregate
      * Collection
      *
      * @param calback $condition The condition critera to test each item, requires one argument that represents the Collection item during iteration.
-     * @return Collectiona A collection of all of the items that satisfied the condition
+     * @return Collection A collection of all of the items that satisfied the condition
      */
     public function findAll(callable $condition)
     {
