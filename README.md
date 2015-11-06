@@ -30,7 +30,7 @@ First, here are example classes used within the Collection examples
       $this->genre = $genre;
     }
 
-    public funciton getTitle(){
+    public function getTitle(){
       return $this->title; 
     }
 
