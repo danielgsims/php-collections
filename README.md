@@ -23,7 +23,7 @@ First, here are example classes used within the Collection examples
     protected $title;
     protected $genre;
     protected $author;
- 
+
     public function __construct($title, $author, $genre){
       $this->title = $title;
       $this->author = $author;
@@ -31,7 +31,7 @@ First, here are example classes used within the Collection examples
     }
 
     public function getTitle(){
-      return $this->title; 
+      return $this->title;
     }
 
     public function getAuthor(){
@@ -73,7 +73,7 @@ Fiction");
 ```
 
 Elements can be retrieved in various ways. The at method returns the
-object at your specified index 
+object at your specified index
 
 ```php
 
@@ -123,7 +123,7 @@ $book = $library->findAll(function($book){
   return $book->getGenre() ==  "Dystopian";
 });
 
-$book = $librar->findIndex(function($book){
+$book = $library->findIndex(function($book){
   return $book->getTitle() = "A Brave New World";
 });
 
@@ -165,7 +165,7 @@ class MyClass
        if ("Book" != $collection->getObjectName()) {
             throw new InvalidArgumentException("Collection must be a collection of Books");
        }
-       
+
    }
 }
 ```
@@ -187,7 +187,7 @@ Dictionary
 =============
 
 A dictionary is a collection where elements are stored as key/value pairs and only accessible by keys. A dictionary is useful
-when you intend your array to always use keys and entries may need to be edited or removed. 
+when you intend your array to always use keys and entries may need to be edited or removed.
 
 
 ```php
@@ -214,7 +214,7 @@ $d[] = "Oranges" //NullKeyException
 Enum
 =============
 
-An enumartion functions like an immutable dictionary. This collection is useful when keys and values are needed, but no additional keys should be added or removed and no values should be changed. Like a dictionary, indexed keys will be assumed if explicit keys are not provided.
+An enumeration functions like an immutable dictionary. This collection is useful when keys and values are needed, but no additional keys should be added or removed and no values should be changed. Like a dictionary, indexed keys will be assumed if explicit keys are not provided.
 ```php
 $suits = new Enumeration(array("Spades", "Clubs", "Hearts", "Diamonds"));
 echo $suits[1]; //Clubs
@@ -238,4 +238,3 @@ Thank you to all of the contributors and code reviewers
   * [brandonlamb](https://github.com/brandonlamb)
   * [callmehiphop](https://github.com/callmehiphop)
   * [jamesthomasonjr](https://github.com/jamesthomasonjr)
-
