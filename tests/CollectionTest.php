@@ -17,6 +17,15 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->c->at("one");
   }
 
+  public function testAccessOutOfRangeValue()
+  {
+    $a = new TestClassA(1);
+    $this->c->add($a);
+
+    $this->setExpectedException("Collections\Exceptions\OutOfRangeException");
+    $result = $this->c->at(1);
+  }
+
   public function testAddAndRetrieveFunctions(){
     $a = new TestClassA(1);
 
@@ -419,5 +428,29 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       $this->assertTrue($this->c->at(0) == $c->at(0));
       // Cloned collection entries have different references from original collection entries
       $this->assertFalse($this->c->at(0) === $c->at(0));
+  }
+
+  public function testIndexExits()
+  {
+      $t = new TestClassA(1);
+      $t2 = new TestClassA(2);
+      $this->c->add($t);
+      $this->c->add($t2);
+
+      $this->assertTrue($this->c->indexExists(0));
+      $this->assertTrue($this->c->indexExists(1));
+      $this->assertFalse($this->c->indexExists(2));
+  }
+  
+  public function testIndexExitsRejectsNegatives()
+  {
+      $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+      $this->c->indexExists(-1);
+  }
+
+  public function testIndexExitsRejectsNonIntegers()
+  {
+      $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
+      $this->c->indexExists("wat");
   }
 }
