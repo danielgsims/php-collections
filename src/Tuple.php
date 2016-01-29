@@ -16,21 +16,6 @@ class Tuple implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Constructor
      *
-     * @param array $params, PHP 5.6 variadic function
-     */
-    /*
-    public function __construct(...$params)
-    {
-        if (empty($params)) {
-            throw new InvalidArgumentException("Tuple constructor may not be empty");
-        }
-        $this->storage = $params;
-    }
-    */
-
-    /**
-     * Constructor
-     *
      * Parses function arguments
      */
     public function __construct()
