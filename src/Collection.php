@@ -494,15 +494,16 @@ class Collection implements Countable, IteratorAggregate
      */
     public function every(callable $condition)
     {
-        $result = true;
+        $response = true;
+
         foreach ($this->items as $item) {
             $result = call_user_func($condition,$item);
             if ($result === false) {
-                $result = false;
+                $response = false;
                 break;
             }
         }
 
-        return $result;
+        return $response;
     }
 }
