@@ -7,7 +7,6 @@
  *
  * @author danielgsims
  */
-
 namespace Collections;
 
 use Collections\Exceptions\InvalidArgumentException;
@@ -472,5 +471,39 @@ class Collection implements Countable, IteratorAggregate
         foreach ($items as $item) {
             $this->validateItem($item);
         }
+    }
+
+    /**
+     * Reduces a list down to a single value
+     *
+     * @param callable $callable
+     * @param mixed $initial
+     * @return mixed
+     */
+    public function reduce(callable $callable, $initial = null)
+    {
+        return array_reduce($this->items, $callable, $initial);
+    }
+
+    /**
+     * Whether every item in the collection passes the condition. This
+     * condition is a callable that should return strictly true or false.
+     *
+     * @param callable $condition
+     * @return bool
+     */
+    public function every(callable $condition)
+    {
+        $response = true;
+
+        foreach ($this->items as $item) {
+            $result = call_user_func($condition,$item);
+            if ($result === false) {
+                $response = false;
+                break;
+            }
+        }
+
+        return $response;
     }
 }

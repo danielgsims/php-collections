@@ -4,6 +4,11 @@ use Collections\Collection;
 
 class ControllerTest extends PHPUnit_Framework_TestCase {
 
+  /**
+   * @var Collection
+   */
+   private $c;
+
   public function setup(){
     $this->c = new Collection("TestClassA");
   }
@@ -452,5 +457,51 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
   {
       $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
       $this->c->indexExists("wat");
+  }
+
+  public function testReduce()
+  {
+      $t = new TestClassA(1);
+      $t2 = new TestClassA(2);
+      $t3 = new TestClassA(3);
+
+      $this->c->add($t);
+      $this->c->add($t2);
+      $this->c->add($t3);
+
+      $result = $this->c->reduce(function($total, $item){
+          return $total + $item->getValue();
+      });
+
+      $this->assertEquals(6, $result);
+
+      $result = $this->c->reduce(function($total, $item){
+          return $total + $item->getValue();
+      }, 2);
+
+      $this->assertEquals(8, $result);
+  }
+
+  public function testEvery()
+  {
+      $t = new TestClassA(2);
+      $t2 = new TestClassA(4);
+      $t3 = new TestClassA(6);
+
+      $this->c->add($t);
+      $this->c->add($t2);
+      $this->c->add($t3);
+
+      $result = $this->c->every(function($item){
+         return $item->getValue() % 2 == 0;
+      });
+
+      $this->assertTrue($result);
+
+      $result = $this->c->every(function($item){
+         return $item->getValue() % 2 != 0;
+      });
+
+      $this->assertFalse($result);
   }
 }
