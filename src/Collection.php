@@ -100,17 +100,7 @@ class Collection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function contains($needle)
-    {
-        $this->validateItem($needle);
-
-        return in_array($needle, $this->items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function exists(callable $condition)
+    public function contains(callable $condition)
     {
         return (bool) $this->find($condition);
     }

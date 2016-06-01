@@ -2,9 +2,9 @@
 
 use Collections\Collection;
 
-class TestClear extends PHPUnit_Framework_TestCase
+class ClearTest extends PHPUnit_Framework_TestCase
 {
-    public function clear_returns_an_empty_collection()
+    public function test_clear_returns_an_empty_collection()
     {
         $col = new Collection('TestClassA', [ new TestClassA(1) ]);
 

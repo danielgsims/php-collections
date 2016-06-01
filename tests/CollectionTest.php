@@ -14,26 +14,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
         $this->c = new Collection("TestClassA");
     }
 
-    private function collectionOne()
-    {
-        return new Collection('TestClassA', [
-            new TestClassA(1),
-            new TestClassA(2),
-            new TestClassA(3),
-            new TestClassA(4),
-        ]);
-    }
-
-    private function collectionTwo()
-    {
-        return new Collection(
-            'TestClassA', [
-                new TestClassA(54),
-                new TestClassA(32),
-            ]
-        );
-    }
-
     private function collectionEvens()
     {
         return new Collection('TestClassA', [
@@ -46,61 +26,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     public function testGetObjectName()
     {
         $this->assertEquals("TestClassA", $this->c->getObjectName());
-    }
-
-    public function testContains()
-    {
-        $col = $this->collectionOne();
-
-        //this should exist
-        $needle = new TestClassA(3);
-        $this->assertEquals(true, $col->contains($needle));
-
-        //this does not
-        $needle = new TestClassA(5);
-        $this->assertEquals(false, $col->contains($needle));
-
-        //we can check a subtype, which shouldn't be found
-        $needle = new TestClassExtendsA(3);
-        $this->assertEquals(false, $col->contains($needle));
-
-        $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
-        $needle = new TestClassB();
-        $col->contains($needle);
-    }
-
-    public function testExists()
-    {
-        $col = $this->collectionTwo();
-
-        $condition = function ($item) {
-            return $item->getValue() == 32;
-        };
-
-        $this->assertEquals(true, $col->exists($condition));
-
-        $condition = function ($item) {
-            return $item->getValue() == 42;
-        };
-
-        $this->assertEquals(false, $col->exists($condition));
-    }
-
-    public function testFind()
-    {
-        $col = $this->collectionTwo();
-
-        $condition = function ($item) {
-            return $item->getValue() == 32;
-        };
-
-        $this->assertEquals(new TestClassA(32), $col->find($condition));
-
-        $condition = function ($item) {
-            return $item->getValue() == 42;
-        };
-
-        $this->assertEquals(false, $col->find($condition));
     }
 
     public function testFindLast()
@@ -428,33 +353,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
         });
 
         $this->assertFalse($result);
-    }
-
-    public function testTake()
-    {
-        $t = new TestClassA(2);
-        $t2 = new TestClassA(4);
-        $t3 = new TestClassA(6);
-
-        $this->c = $this->c->add($t);
-        $this->c = $this->c->add($t2);
-        $this->c = $this->c->add($t3);
-        $c1 = $this->c->take(1);
-        $c2 = $this->c->take(2);
-        $c3 = $this->c->take(3);
-
-        $this->assertEquals(1, $c1->count());
-        $this->assertEquals(2, $c2->count());
-        $this->assertEquals(3, $c3->count());
-
-        $this->assertEquals($t, $c1->at(0));
-
-        $this->assertEquals($t, $c2->at(0));
-        $this->assertEquals($t2, $c2->at(1));
-
-        $this->assertEquals($t, $c3->at(0));
-        $this->assertEquals($t2, $c3->at(1));
-        $this->assertEquals($t3, $c3->at(2));
     }
 
     public function testTakeRight()

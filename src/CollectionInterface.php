@@ -43,20 +43,12 @@ interface CollectionInterface extends Countable, IteratorAggregate
     public function clear();
 
     /**
-     * Determines whether the item is in the Collection
-     *
-     * @param mixed $needle The item to search for in the collection
-     * @return bool Whether the item was in the array or not
-     */
-    public function contains($needle);
-
-    /**
      * Check to see if an item in the collection exists that satisfies the provided callback
      *
      * @param callback $condition The condition criteria to test each item, requires one argument that represents the Collection item during an iteration.
      * @return bool Whether an item exists that satisfied the condition
      */
-    public function exists(callable $condition);
+    public function contains(callable $condition);
 
    /**
      * Finds and returns the first item in the collection that satisfies the callback.
