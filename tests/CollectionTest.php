@@ -47,43 +47,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals("TestClassA", $this->c->getObjectName());
     }
-    public function testAddRange()
-    {
-        //add range should append, so start with 1 item
-        $a = new TestClassA(0);
-        $this->c = $this->c->add($a);
-
-        $items = array();
-        for ($i = 1; $i < 6; $i++) {
-            $items[] = new TestClassA($i);
-        }
-
-        $this->c = $this->c->addRange($items);
-
-        $this->assertEquals(6, $this->c->count());
-        $this->assertEquals($a, $this->c->at(0));
-        $this->assertEquals($items[2], $this->c->at(3));
-
-        $this->assertEquals(6, $this->c->count());
-
-        //we can add a range of items that extend our base class
-        $moreItems = array();
-        $moreItems[] = new TestClassExtendsA(6);
-        $moreItems[] = new TestClassExtendsA(7);
-
-        $this->c = $this->c->addRange($moreItems);
-        $this->assertEquals(8, $this->c->count());
-
-        $badItems = array();
-        $badItems[] = new TestClassB();
-        $badItems[] = new TestClassB();
-
-
-        $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
-        $this->c = $this->c->addRange($badItems);
-        $this->assertEquals(8, $this->c->count());
-
-    }
 
     public function testContains()
     {
