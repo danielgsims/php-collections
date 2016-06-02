@@ -159,7 +159,7 @@ interface CollectionInterface extends Countable, IteratorAggregate
     /**
      * Sorts the collection with a usort
      * @param callable $callback
-     * @return bool
+     * @return static
      */
     public function sort(callable $callback);
 

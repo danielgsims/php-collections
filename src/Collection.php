@@ -16,7 +16,7 @@ use ArrayIterator;
 /**
  * A collection of objects with a specified class or interface
  */
-class Collection implements CollectionInterface
+class Collection
 {
     /**
      * The collection's encapsulated array
@@ -296,29 +296,13 @@ class Collection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAll(callable $condition)
+    public function without(callable $condition)
     {
-        $removed = 0;
-        while ($this->remove($condition)) {
-            $removed++;
-        }
+        $inverse = function($item) use ($condition) {
+            return !$condition($item);
+        };
 
-        return $removed;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove(callable $condition)
-    {
-        $index = $this->findIndex($condition);
-        if ($index == -1) {
-            return false;
-        } else {
-            $this->removeAt($index);
-
-            return true;
-        }
+        return $this->find($inverse);
     }
 
     /**
@@ -327,26 +311,13 @@ class Collection implements CollectionInterface
     public function removeAt($index)
     {
         $this->validateIndex($index);
+        $items = $this->items;
 
-        $partA = array_slice($this->items, 0, $index);
-        $partB = array_slice($this->items, $index + 1, count($this->items));
-        $this->items = array_merge($partA, $partB);
-    }
+        $partA = array_slice($items, 0, $index);
+        $partB = array_slice($items, $index + 1, count($items));
+        $items = array_merge($partA, $partB);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeLast(callable $condition)
-    {
-        $index = $this->findLastIndex($condition);
-
-        if ($index == -1) {
-            return false;
-        }
-
-        $this->removeAt($index);
-
-        return true;
+        return new static($this->objectName, $items);
     }
 
     /**
@@ -362,7 +333,15 @@ class Collection implements CollectionInterface
      */
     public function sort(callable $callback)
     {
-        return usort($this->items, $callback);
+        $items = $this->items;
+
+        $ok = usort($items, $callback);
+
+        if (!$ok) {
+            throw new \InvalidArgumentException("Sort failed");
+        }
+
+        return new static($this->objectName, $items);
     }
 
     /**
@@ -430,13 +409,6 @@ class Collection implements CollectionInterface
 
     // new functions
 
-    /**
-     * Selects all elements except for the first n ones.
-     *
-     * @param $count
-     * @return Collection
-     * @throws InvalidArgumentException
-     */
     public function drop($num)
     {
         return $this->slice($num, $this->count());
@@ -451,21 +423,6 @@ class Collection implements CollectionInterface
 
     public function dropWhile(callable $condition)
     {
-    }
-
-    public function shift()
-    {
-        return $this->at(0);
-    }
-
-    public function pop()
-    {
-        return $this->at($this->count());
-    }
-
-    public function head()
-    {
-        return $this->at(0);
     }
 
     public function tail()
