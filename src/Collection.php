@@ -30,19 +30,48 @@ class Collection
      *
      * @var string
      */
-    private $objectName;
+    private $type;
 
     /**
      * Instantiates the collection by specifying what type of Object will be used.
      *
-     * @param string $objectName Name of the class or interface used in the Collection
+     * @param string $type Name of the class or interface used in the Collection
      */
-    public function __construct($objectName, $items = [])
+    public function __construct($type, $items = [])
     {
-        $this->objectName = $objectName;
-        if ($items) $this->validateItems($items);
+        $this->setType($type);
+
+        if ($items) {
+          $this->validateItems($items);
+        }
 
         $this->items = $items;
+    }
+
+    private function setType($type)
+    {
+        if (class_exists($type)) {
+            $this->type = $type;
+            return;
+        }
+
+        $synonyms = [
+            "int" => "integer",
+            "float" => "double",
+            "bool" => "boolean"
+        ];
+
+        if (array_key_exists($type, $synonyms)) {
+            $type = $synonyms[$type];
+        }
+
+        $types = [ "string", "integer", "double", "boolean", "array", "object" ];
+
+        if (!in_array($type, $types)) {
+            throw new InvalidArgumentException("This type does not exist.");
+        }
+
+        $this->type = $type;
     }
 
     /**
@@ -60,9 +89,9 @@ class Collection
     /**
      * {@inheritdoc}
      */
-    public function getObjectName()
+    public function getType()
     {
-        return $this->objectName;
+        return $this->type;
     }
 
     /**
@@ -75,7 +104,7 @@ class Collection
         $items = $this->items;
         $items[] = $item;
 
-        return new static($this->objectName, $items);
+        return new static($this->type, $items);
     }
 
     /**
@@ -86,7 +115,7 @@ class Collection
         $this->validateItems($items);
         $newItems = array_merge($this->items, $items);
 
-        return new static($this->objectName, $newItems);
+        return new static($this->type, $newItems);
     }
 
     /**
@@ -94,7 +123,7 @@ class Collection
      */
     public function clear()
     {
-        return new static($this->objectName);
+        return new static($this->type);
     }
 
     /**
@@ -195,7 +224,7 @@ class Collection
             }
         }
 
-        return new static($this->objectName, $items);
+        return new static($this->type, $items);
     }
 
     /**
@@ -258,7 +287,7 @@ class Collection
 
         $subsetItems = array_slice($this->items, $start, $length);
 
-        return new static($this->objectName, $subsetItems);
+        return new static($this->type, $subsetItems);
     }
 
     /**
@@ -317,7 +346,7 @@ class Collection
         $partB = array_slice($items, $index + 1, count($items));
         $items = array_merge($partA, $partB);
 
-        return new static($this->objectName, $items);
+        return new static($this->type, $items);
     }
 
     /**
@@ -341,7 +370,7 @@ class Collection
             throw new \InvalidArgumentException("Sort failed");
         }
 
-        return new static($this->objectName, $items);
+        return new static($this->type, $items);
     }
 
     /**
@@ -386,12 +415,12 @@ class Collection
      */
     protected function validateItem($item)
     {
-        if (!is_object($item)) {
-            throw new InvalidArgumentException("Item must be an object");
-        }
+        $type = gettype($item);
 
-        if (!is_a($item, $this->objectName)) {
-            throw new InvalidArgumentException("Item is not of subtype " . $this->objectName);
+        if ($type === "object" && !is_a($item, $this->type)) {
+            throw new InvalidArgumentException("Item is not type or subtype of " . $this->type);
+        } elseif ($type !== "object" && $type != $this->getType()) {
+            throw new InvalidArgumentException("Item is not of type: " . $this->type);
         }
     }
 
