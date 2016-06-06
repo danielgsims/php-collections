@@ -107,4 +107,13 @@ class AddTest extends PHPUnit_Framework_TestCase
     {
         $col = new Collection('this_type_is_invalid');
     }
+
+    /**
+     * @expectedException Collections\Exceptions\InvalidArgumentException
+     */
+    public function test_collection_throws_ex_for_different_types()
+    {
+        $col = new Collection('int');
+        $col = $col->add('string');
+    }
 }
