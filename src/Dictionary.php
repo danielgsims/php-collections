@@ -120,13 +120,7 @@ class Dictionary implements ArrayAccess, Countable, IteratorAggregate
 
     public function getOrElse($key, $default)
     {
-        //Add type validation
-        if ($this->keyExists($key)) {
-            return $this[$key];
-        } else {
-            $this[$key] = $default;
-            return $this[$key];
-        }
+        return ($this->keyExists($key)) ? $this[$key] : $default;
     }
 
     public function keys()
@@ -149,8 +143,6 @@ class Dictionary implements ArrayAccess, Countable, IteratorAggregate
 
     public function addRange(Dictionary $range)
     {
-        foreach ($range as $key => $value) {
-          $this->getOrElse($key, $value);
-        }
+
     }
 }

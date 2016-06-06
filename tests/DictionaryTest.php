@@ -149,20 +149,11 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
             "OH" => "Ohio"
         ]);
 
-        $expected = new Dictionary([
-            "MI" => "Michigan",
-            "MO" => "Missouri",
-            "MS" => "Mississippi",
-            "OH" => "Ohio",
-            "KY" => "Kentucky"
-        ]);
-
-        $mi = $states->getOrElse("MI", "Michigan");
+        $mi = $states->getOrElse("MI", 3);
         $this->assertEquals("Michigan", $mi);
 
-        $ky = $states->getOrElse("KY", "Kentucky");
-        $this->assertEquals("Kentucky", $ky);
-        $this->assertEquals($expected, $states);
+        $ky = $states->getOrElse("KY", 3);
+        $this->assertEquals(3, $ky);
     }
 
     public function testKeys()
@@ -195,29 +186,7 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
 
     public function testAddRange()
     {
-        $numbers = new Dictionary([
-            1 => "One",
-            2 => "Two",
-            3 => "Three"
-        ]);
 
-        $newNums = new Dictionary([
-            4 => "Four",
-            5 => "Five",
-            6 => "Six"
-        ]);
-
-        $numbers->addRange($newNums);
-
-        $expected = new Dictionary([
-            1 => "One",
-            2 => "Two",
-            3 => "Three",
-            4 => "Four",
-            5 => "Five",
-            6 => "Six"
-        ]);
-        $this->assertEquals($expected, $numbers);
     }
 
 }
