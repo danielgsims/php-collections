@@ -452,6 +452,9 @@ class Collection
 
     public function dropWhile(callable $condition)
     {
+        $count = $this->countWhileTrue($condition);
+
+        return ($count) ? $this->drop($count) : $this;
     }
 
     public function tail()
