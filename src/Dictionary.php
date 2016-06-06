@@ -99,7 +99,7 @@ class Dictionary implements ArrayAccess, Countable, IteratorAggregate
         return $this->storage;
     }
 
-    public function findAll(callable $condition)
+    public function filter(callable $condition)
     {
         $storage = [];
         foreach ($this->storage as $key => $value) {
@@ -115,6 +115,42 @@ class Dictionary implements ArrayAccess, Countable, IteratorAggregate
     {
         if (empty($offest)) {
             throw new NullKeyException("A key may not be null");
+        }
+    }
+
+    public function getOrElse($key, $default)
+    {
+        //Add type validation
+        if ($this->keyExists($key)) {
+            return $this[$key];
+        } else {
+            $this[$key] = $default;
+            return $this[$key];
+        }
+    }
+
+    public function keys()
+    {
+        foreach ($this->storage as $key => $value) {
+            $newArray[] = $key;
+        }
+
+        return $newArray;
+    }
+
+    public function values()
+    {
+        foreach ($this->storage as $key => $value) {
+            $newArray[] = $value;
+        }
+
+        return $newArray;
+    }
+
+    public function addRange(Dictionary $range)
+    {
+        foreach ($range as $key => $value) {
+          $this->getOrElse($key, $value);
         }
     }
 }

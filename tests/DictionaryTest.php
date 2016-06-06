@@ -8,7 +8,7 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
     {
         $fruits = new Dictionary([
             "apple",
-            "banana"    
+            "banana"
         ]);
 
         $this->assertEquals("apple",$fruits[0]);
@@ -81,7 +81,7 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
         ];
 
         $states = new Dictionary($statesArray);
-        $this->assertEquals($statesArray,$states->toArray()); 
+        $this->assertEquals($statesArray,$states->toArray());
 
         $numbers = [1,2,3];
         $nums = new Dictionary($numbers);
@@ -123,7 +123,7 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
         $d[] = "thing";
     }
 
-    public function testFindAll()
+    public function testFilter()
     {
         $states = new Dictionary([
             "MI" => "Michigan",
@@ -132,12 +132,92 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
             "OH" => "Ohio"
         ]);
 
-        $mstates = $states->findAll(function($key, $value){
+        $mstates = $states->filter(function($key, $value){
             return $value[0] === "M";
         });
-        
+
         $expected = ["MI" => "Michigan", "MO" => "Missouri", "MS" => "Mississippi"];
         $this->assertEquals($expected, $mstates->toArray());
+    }
+
+    public function testGetOrElse()
+    {
+        $states = new Dictionary([
+            "MI" => "Michigan",
+            "MO" => "Missouri",
+            "MS" => "Mississippi",
+            "OH" => "Ohio"
+        ]);
+
+        $expected = new Dictionary([
+            "MI" => "Michigan",
+            "MO" => "Missouri",
+            "MS" => "Mississippi",
+            "OH" => "Ohio",
+            "KY" => "Kentucky"
+        ]);
+
+        $mi = $states->getOrElse("MI", "Michigan");
+        $this->assertEquals("Michigan", $mi);
+
+        $ky = $states->getOrElse("KY", "Kentucky");
+        $this->assertEquals("Kentucky", $ky);
+        $this->assertEquals($expected, $states);
+    }
+
+    public function testKeys()
+    {
+        $numbers = new Dictionary([
+            1 => "One",
+            2 => "Two",
+            3 => "Three"
+        ]);
+
+        $nums = $numbers->keys();
+
+        $expected = [1, 2, 3];
+        $this->assertEquals($expected, $nums);
+    }
+
+    public function testValues()
+    {
+        $numbers = new Dictionary([
+            1 => "One",
+            2 => "Two",
+            3 => "Three"
+        ]);
+
+        $nums = $numbers->values();
+
+        $expected = ["One", "Two", "Three"];
+        $this->assertEquals($expected, $nums);
+    }
+
+    public function testAddRange()
+    {
+        $numbers = new Dictionary([
+            1 => "One",
+            2 => "Two",
+            3 => "Three"
+        ]);
+
+        $newNums = new Dictionary([
+            4 => "Four",
+            5 => "Five",
+            6 => "Six"
+        ]);
+
+        $numbers->addRange($newNums);
+
+        $expected = new Dictionary([
+            1 => "One",
+            2 => "Two",
+            3 => "Three",
+            4 => "Four",
+            5 => "Five",
+            6 => "Six"
+        ]);
+        $this->assertEquals($expected, $numbers);
     }
 
 }
