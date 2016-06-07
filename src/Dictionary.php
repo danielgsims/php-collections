@@ -102,6 +102,14 @@ class Dictionary implements IteratorAggregate
         return new static($this->keyType, $this->valType, $storage);
     }
 
+    public function without(callable $condition)
+    {
+        $inverse = function($k,$v) use ($condition) {
+            return !$condition($k,$v);
+        };
+
+        return $this->filter($inverse);
+    }
     /**
      * @param $key
      * @param $value
