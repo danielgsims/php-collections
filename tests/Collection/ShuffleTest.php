@@ -30,6 +30,7 @@ class ShuffleTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($shuffled->contains(function ($a) { return $a == 8; }));
         $this->assertTrue($shuffled->contains(function ($a) { return $a == 9; }));
         $this->assertTrue($shuffled->contains(function ($a) { return $a == 10; }));
+
         $this->assertNotEquals($col, $shuffled);
     }
 }

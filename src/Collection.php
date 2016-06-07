@@ -461,10 +461,10 @@ class Collection
 
     public function shuffle()
     {
-        $newCol = new Collection($this->getType());
-        $newCol = $newCol->merge($this);
-        shuffle($newCol->items);
-        return $newCol;
+        $items = $this->items;
+        shuffle($items);
+
+        return new static($this->getType(), $items);
     }
 
     public function merge(Collection $collection)
