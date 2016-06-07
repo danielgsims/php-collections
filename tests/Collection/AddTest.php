@@ -125,4 +125,13 @@ class AddTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(3, $col->count());
     }
+
+    /**
+     * @expectedException Collections\Exceptions\InvalidArgumentException
+     */
+    public function test_collection_throws_ex_for_different_types()
+    {
+        $col = new Collection('int');
+        $col = $col->add('string');
+    }
 }
