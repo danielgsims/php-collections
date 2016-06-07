@@ -125,4 +125,25 @@ class Dictionary implements IteratorAggregate
             $callable($key, $value);
         }
     }
+
+    public function map(callable $callable)
+    {
+        $items = [];
+
+        $keyType = null;
+        $valType = null;
+
+        foreach ($this->storage as $key => $val) {
+            list($k,$v) = $callable($key, $val);
+
+            if (!isset($keyType) && !isset($valType)) {
+                $keyType = gettype($k);
+                $valType = gettype($v);
+            }
+
+            $items[$k] = $v;
+        }
+
+        return new Dictionary($keyType, $valType, $items);
+    }
 }
