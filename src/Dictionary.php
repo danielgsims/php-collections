@@ -8,66 +8,56 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 
-class Dictionary implements ArrayAccess, Countable, IteratorAggregate
+class Dictionary implements IteratorAggregate
 {
+    use TypeValidator;
+
     protected $storage;
+    protected $keyType;
+    protected $valType;
 
     /**
      * Constructor
      *
      * @param array $storage
      */
-    public function __construct(array $storage = array())
+    public function __construct($keyType, $valType, array $storage = array())
     {
         $this->storage = $storage;
+        $this->keyType = $this->determineType($keyType, true);
+        $this->valType = $this->determineType($valType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function offsetExists($offest)
+    public function getKeyType()
     {
-        return array_key_exists($offest,$this->storage);
+        return $this->keyType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function offsetGet($offest)
+    public function getValueType()
     {
-        return $this->offsetExists($offest) ? $this->storage[$offest] : null;
+        return $this->valType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function offsetSet($offest, $value)
+    public function exists($key)
     {
-        $this->validateOffset($offest);
-        $this->storage[$offest] = $value;
+        return array_key_exists($key,$this->storage);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function offsetUnset($offset)
+    public function get($key)
     {
-        if ($this->offsetExists($offset)) {
-            unset($this->storage[$offset]);
+        return array_key_exists($key,$this->storage) ? $this->storage[$key] : null;
+    }
+
+    public function delete($key)
+    {
+        $storage = $this->storage;
+        if (array_key_exists($key,$this->storage)) {
+            unset($storage[$key]);
         }
+
+        return new static($this->keyType, $this->valType, $storage);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function keyExists($key)
-    {
-        return $this->offsetExists($key);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function valueExists($value)
     {
         return in_array($value, $this->storage);
@@ -91,7 +81,7 @@ class Dictionary implements ArrayAccess, Countable, IteratorAggregate
 
     public function clear()
     {
-        $this->storage = array();
+        return new static($this->keyType, $this->valType);
     }
 
     public function toArray()
@@ -102,43 +92,53 @@ class Dictionary implements ArrayAccess, Countable, IteratorAggregate
     public function filter(callable $condition)
     {
         $storage = [];
+
         foreach ($this->storage as $key => $value) {
             if ($condition($key, $value)) {
                 $storage[$key] = $value;
             }
         }
 
-        return new Dictionary($storage);
+        return new static($this->keyType, $this->valType, $storage);
     }
 
-    private function validateOffset($offest)
+    /**
+     * @param $key
+     * @param $value
+     * @return static
+     * @throws Exceptions\InvalidArgumentException
+     */
+    public function add($key, $value)
     {
-        if (empty($offest)) {
-            throw new NullKeyException("A key may not be null");
+        $this->validateItem($key, $this->keyType);
+        $this->validateItem($value, $this->valType);
+
+        $storage = $this->storage;
+        $storage[$key] = $value;
+
+        return new static($this->keyType, $this->valType, $storage);
+    }
+
+    public function each(callable $callable)
+    {
+        foreach ($this->storage as $key => $value) {
+            $callable($key, $value);
         }
     }
 
     public function getOrElse($key, $default)
     {
-        return ($this->keyExists($key)) ? $this[$key] : $default;
+        return ($this->exists($key)) ? $this->get($key) : $default;
     }
 
     public function keys()
     {
-        foreach ($this->storage as $key => $value) {
-            $newArray[] = $key;
-        }
-
-        return $newArray;
+        return array_keys($this->storage);
     }
 
     public function values()
     {
-        foreach ($this->storage as $key => $value) {
-            $newArray[] = $value;
-        }
-
-        return $newArray;
+        return array_values($this->storage);
     }
 
     public function addRange(Dictionary $range)
