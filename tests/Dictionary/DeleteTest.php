@@ -5,7 +5,7 @@ namespace Collections\Tests\Dictionary;
 use Collections\Dictionary;
 use PHPUnit_Framework_TestCase;
 
-class BlankTest extends PHPUnit_Framework_TestCase
+class DeleteTest extends PHPUnit_Framework_TestCase
 {
     public function test_delete_key_creates_second_dic_without_key()
     {

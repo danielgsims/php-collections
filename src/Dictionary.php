@@ -28,6 +28,16 @@ class Dictionary implements IteratorAggregate
         $this->valType = $this->determineType($valType);
     }
 
+    public function getKeyType()
+    {
+        return $this->keyType;
+    }
+
+    public function getValueType()
+    {
+        return $this->valType;
+    }
+
     public function exists($key)
     {
         return array_key_exists($key,$this->storage);
@@ -107,5 +117,12 @@ class Dictionary implements IteratorAggregate
         $storage[$key] = $value;
 
         return new static($this->keyType, $this->valType, $storage);
+    }
+
+    public function each(callable $callable)
+    {
+        foreach ($this->storage as $key => $value) {
+            $callable($key, $value);
+        }
     }
 }
