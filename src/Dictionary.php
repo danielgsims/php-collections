@@ -134,7 +134,6 @@ class Dictionary implements IteratorAggregate
         }
     }
 
-<<<<<<< HEAD
     public function getOrElse($key, $default)
     {
         return ($this->exists($key)) ? $this->get($key) : $default;
@@ -150,10 +149,6 @@ class Dictionary implements IteratorAggregate
         return array_values($this->storage);
     }
 
-    public function addRange(Dictionary $range)
-    {
-    }
-=======
     public function map(callable $callable)
     {
         $items = [];
@@ -173,6 +168,5 @@ class Dictionary implements IteratorAggregate
         }
 
         return new Dictionary($keyType, $valType, $items);
->>>>>>> dd3cb543c4a2a15c3f26407a573a45c3917b8557
     }
 }
