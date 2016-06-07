@@ -102,6 +102,14 @@ class Dictionary implements IteratorAggregate
         return new static($this->keyType, $this->valType, $storage);
     }
 
+    public function without(callable $condition)
+    {
+        $inverse = function($k,$v) use ($condition) {
+            return !$condition($k,$v);
+        };
+
+        return $this->filter($inverse);
+    }
     /**
      * @param $key
      * @param $value
@@ -126,6 +134,7 @@ class Dictionary implements IteratorAggregate
         }
     }
 
+<<<<<<< HEAD
     public function getOrElse($key, $default)
     {
         return ($this->exists($key)) ? $this->get($key) : $default;
@@ -143,6 +152,27 @@ class Dictionary implements IteratorAggregate
 
     public function addRange(Dictionary $range)
     {
+    }
+=======
+    public function map(callable $callable)
+    {
+        $items = [];
 
+        $keyType = null;
+        $valType = null;
+
+        foreach ($this->storage as $key => $val) {
+            list($k,$v) = $callable($key, $val);
+
+            if (!isset($keyType) && !isset($valType)) {
+                $keyType = gettype($k);
+                $valType = gettype($v);
+            }
+
+            $items[$k] = $v;
+        }
+
+        return new Dictionary($keyType, $valType, $items);
+>>>>>>> dd3cb543c4a2a15c3f26407a573a45c3917b8557
     }
 }

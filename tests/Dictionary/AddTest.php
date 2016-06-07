@@ -126,4 +126,13 @@ class AddTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(2, $d->get('key'));
     }
+
+    public function test_ex_thrown_if_callable_is_not_passed()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $d = new Dictionary('string', 'callable');
+        $d = $d->add('test', 123);
+    }
+
+
 }
