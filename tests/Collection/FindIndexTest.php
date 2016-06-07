@@ -25,4 +25,14 @@ class FindIndexTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(3, $this->c->findLastIndex($findEven));
     }
 
+    public function test_find_last_index_when_not_found()
+    {
+        $col = new Collection('int',[1,2,3]);
+
+        $index = $col->findLastIndex(function($x) {
+           return $x === 4;
+        });
+
+        $this->assertEquals(-1, $index);
+    }
 }

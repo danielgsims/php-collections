@@ -18,6 +18,8 @@ use ArrayIterator;
  */
 class Collection
 {
+    use TypeValidator;
+
     /**
      * The collection's encapsulated array
      *
@@ -39,39 +41,14 @@ class Collection
      */
     public function __construct($type, $items = [])
     {
-        $this->setType($type);
+        $type = $this->determineType($type);
+        $this->type = $type;
 
         if ($items) {
           $this->validateItems($items);
         }
 
         $this->items = $items;
-    }
-
-    private function setType($type)
-    {
-        if (class_exists($type)) {
-            $this->type = $type;
-            return;
-        }
-
-        $synonyms = [
-            "int" => "integer",
-            "float" => "double",
-            "bool" => "boolean"
-        ];
-
-        if (array_key_exists($type, $synonyms)) {
-            $type = $synonyms[$type];
-        }
-
-        $types = [ "string", "integer", "double", "boolean", "array", "object" ];
-
-        if (!in_array($type, $types)) {
-            throw new InvalidArgumentException("This type does not exist.");
-        }
-
-        $this->type = $type;
     }
 
     /**
@@ -99,7 +76,7 @@ class Collection
      */
     public function add($item)
     {
-        $this->validateItem($item);
+        $this->validateItem($item, $this->type);
 
         $items = $this->items;
         $items[] = $item;
@@ -296,7 +273,7 @@ class Collection
     public function insert($index, $item)
     {
         $this->validateIndex($index);
-        $this->validateItem($item);
+        $this->validateItem($item, $this->type);
 
         $partA = array_slice($this->items, 0, $index);
         $partB = array_slice($this->items, $index, count($this->items));
@@ -331,7 +308,7 @@ class Collection
             return !$condition($item);
         };
 
-        return $this->find($inverse);
+        return $this->filter($inverse);
     }
 
     /**
@@ -364,11 +341,7 @@ class Collection
     {
         $items = $this->items;
 
-        $ok = usort($items, $callback);
-
-        if (!$ok) {
-            throw new \InvalidArgumentException("Sort failed");
-        }
+        usort($items, $callback);
 
         return new static($this->type, $items);
     }
@@ -408,23 +381,6 @@ class Collection
     }
 
     /**
-     * Validates that the item is an object and matches the object name
-     *
-     * @param $item
-     * @throws InvalidArgumentException
-     */
-    protected function validateItem($item)
-    {
-        $type = gettype($item);
-
-        if ($type === "object" && !is_a($item, $this->type)) {
-            throw new InvalidArgumentException("Item is not type or subtype of " . $this->type);
-        } elseif ($type !== "object" && $type != $this->getType()) {
-            throw new InvalidArgumentException("Item is not of type: " . $this->type);
-        }
-    }
-
-    /**
      * Validates an array of items
      *
      * @param array $items an array of items to be validated
@@ -432,7 +388,7 @@ class Collection
     protected function validateItems(array $items)
     {
         foreach ($items as $item) {
-            $this->validateItem($item);
+            $this->validateItem($item, $this->type);
         }
     }
 
@@ -488,5 +444,9 @@ class Collection
         $count = $this->countWhileTrue($condition);
 
         return ($count) ? $this->take($count) : $this->clear();
+    }
+
+    public function map(callable $condition)
+    {
     }
 }

@@ -107,4 +107,22 @@ class AddTest extends PHPUnit_Framework_TestCase
     {
         $col = new Collection('this_type_is_invalid');
     }
+
+    public function test_collection_supports_interfaces()
+    {
+        $col = new Collection('TestClassAInterface');
+        $col = $col->add(new TestClassA(1));
+
+        $this->assertEquals(1, $col->count());
+    }
+
+    public function test_collection_supports_callables()
+    {
+        $col = new Collection('callable');
+        $col = $col->add(function(){});
+        $col = $col->add([ $col, 'add']);
+        $col = $col->add(new Invoker);
+
+        $this->assertEquals(3, $col->count());
+    }
 }
