@@ -452,4 +452,24 @@ class Collection
     public function map(callable $condition)
     {
     }
+
+    public function reduceRight(callable $callable, $initial = null)
+    {
+        $reverse = array_reverse($this->items);
+        return array_reduce($reverse, $callable, $initial);
+    }
+
+    public function shuffle()
+    {
+        $items = $this->items;
+        shuffle($items);
+
+        return new static($this->getType(), $items);
+    }
+
+    public function merge(Collection $collection)
+    {
+        $items = $collection->toArray();
+        return $this->addRange($items);
+    }
 }

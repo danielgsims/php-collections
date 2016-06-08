@@ -134,6 +134,21 @@ class Dictionary implements IteratorAggregate
         }
     }
 
+    public function getOrElse($key, $default)
+    {
+        return ($this->exists($key)) ? $this->get($key) : $default;
+    }
+
+    public function keys()
+    {
+        return array_keys($this->storage);
+    }
+
+    public function values()
+    {
+        return array_values($this->storage);
+    }
+
     public function map(callable $callable)
     {
         $items = [];
