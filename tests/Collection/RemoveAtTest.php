@@ -12,7 +12,7 @@ class RemoveAtTest extends PHPUnit_Framework_TestCase
         $items[] = new TestClassA(1);
 
         $this->c = new Collection('TestClassA');
-        $this->c = $this->c->addRange($items);
+        $this->c = $this->c->merge($items);
 
         $this->assertEquals(3, $this->c->count());
 
