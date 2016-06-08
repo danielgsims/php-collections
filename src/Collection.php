@@ -45,7 +45,7 @@ class Collection
         $this->type = $type;
 
         if ($items) {
-          $this->validateItems($items, $this->type);
+            $this->validateItems($items, $this->type);
         }
 
         $this->items = $items;
@@ -415,7 +415,7 @@ class Collection
     public function each(callable $callable)
     {
         foreach ($this->items as $item) {
-            $callable($item);
+             $callable($item);
         }
     }
 

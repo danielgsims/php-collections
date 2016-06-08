@@ -25,10 +25,6 @@ class Dictionary implements IteratorAggregate
     {
         $this->keyType = $this->determineType($keyType, true);
 
-        if ($this->keyType === "double") {
-            throw new \InvalidArgumentException("Floats are not supported as keys");
-        }
-
         $this->valType = $this->determineType($valType);
 
         foreach ($storage as $key => $val) {
