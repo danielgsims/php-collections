@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Class Collection
- *
- * A generic list implementation in PHP
- *
- * @author danielgsims
- */
 namespace Collections;
 
 use Collections\Exceptions\InvalidArgumentException;
@@ -16,7 +9,7 @@ use ArrayIterator;
 /**
  * A collection of objects with a specified class or interface
  */
-class Collection
+class Collection implements CollectionInterface
 {
     use TypeValidator;
 
@@ -37,7 +30,9 @@ class Collection
     /**
      * Instantiates the collection by specifying what type of Object will be used.
      *
-     * @param string $type Name of the class or interface used in the Collection
+     * @param $type
+     * @param array $items
+     * @throws InvalidArgumentException
      */
     public function __construct($type, $items = [])
     {
@@ -52,19 +47,7 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function __clone()
-    {
-        $clone = function ($object) {
-            return clone $object;
-        };
-
-        $this->items = array_map($clone, $this->items);
-    }
-
-    /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getType()
     {
@@ -72,7 +55,9 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param $item
+     * @return static
+     * @throws InvalidArgumentException
      */
     public function add($item)
     {
@@ -85,18 +70,7 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function addRange(array $items)
-    {
-        $this->validateItems($items, $this->type);
-        $newItems = array_merge($this->items, $items);
-
-        return new static($this->type, $newItems);
-    }
-
-    /**
-     * {@inheritdoc}
+     * @return static
      */
     public function clear()
     {
@@ -104,7 +78,8 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $condition
+     * @return bool
      */
     public function contains(callable $condition)
     {
@@ -112,7 +87,8 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $condition
+     * @return bool
      */
     public function find(callable $condition)
     {
@@ -122,7 +98,8 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $condition
+     * @return int
      */
     public function findIndex(callable $condition)
     {
@@ -139,7 +116,9 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param $index
+     * @return mixed
+     * @throws OutOfRangeException
      */
     public function at($index)
     {
@@ -165,7 +144,9 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param $index
+     * @return bool
+     * @throws InvalidArgumentException
      */
     public function indexExists($index)
     {
@@ -181,7 +162,7 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @return int
      */
     public function count()
     {
@@ -189,7 +170,8 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $condition
+     * @return static
      */
     public function filter(callable $condition)
     {
@@ -205,7 +187,8 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $condition
+     * @return bool
      */
     public function findLast(callable $condition)
     {
@@ -215,7 +198,8 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $condition
+     * @return int
      */
     public function findLastIndex(callable $condition)
     {
@@ -232,7 +216,7 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @return ArrayIterator
      */
     public function getIterator()
     {
@@ -240,7 +224,10 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param $start
+     * @param $end
+     * @return static
+     * @throws InvalidArgumentException
      */
     public function slice($start, $end)
     {
@@ -268,7 +255,10 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param $index
+     * @param $item
+     * @throws InvalidArgumentException
+     * @throws OutOfRangeException
      */
     public function insert($index, $item)
     {
@@ -282,7 +272,9 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param $index
+     * @param array $items
+     * @throws OutOfRangeException
      */
     public function insertRange($index, array $items)
     {
@@ -300,7 +292,8 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $condition
+     * @return Collection
      */
     public function without(callable $condition)
     {
@@ -312,7 +305,9 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param $index
+     * @return static
+     * @throws OutOfRangeException
      */
     public function removeAt($index)
     {
@@ -327,15 +322,16 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @return static
      */
     public function reverse()
     {
-        $this->items = array_reverse($this->items);
+        return new static($this->getType(), array_reverse($this->items));
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $callback
+     * @return static
      */
     public function sort(callable $callback)
     {
@@ -347,7 +343,7 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
     public function toArray()
     {
@@ -355,7 +351,9 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $callable
+     * @param null $initial
+     * @return mixed
      */
     public function reduce(callable $callable, $initial = null)
     {
@@ -363,7 +361,8 @@ class Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @param callable $condition
+     * @return bool
      */
     public function every(callable $condition)
     {
@@ -380,11 +379,21 @@ class Collection
         return $response;
     }
 
+    /**
+     * @param $num
+     * @return Collection
+     * @throws InvalidArgumentException
+     */
     public function drop($num)
     {
         return $this->slice($num, $this->count());
     }
 
+    /**
+     * @param $num
+     * @return Collection
+     * @throws InvalidArgumentException
+     */
     public function dropRight($num)
     {
         return ($num != $this->count())
@@ -392,6 +401,10 @@ class Collection
                     : $this->clear();
     }
 
+    /**
+     * @param callable $condition
+     * @return Collection
+     */
     public function dropWhile(callable $condition)
     {
         $count = $this->countWhileTrue($condition);
@@ -399,21 +412,39 @@ class Collection
         return ($count) ? $this->drop($count) : $this;
     }
 
+    /**
+     * @return Collection
+     * @throws InvalidArgumentException
+     */
     public function tail()
     {
        return $this->slice(1,$this->count());
     }
 
+    /**
+     * @param $num
+     * @return Collection
+     * @throws InvalidArgumentException
+     */
     public function take($num)
     {
         return $this->slice(0, $num - 1);
     }
 
+    /**
+     * @param $num
+     * @return Collection
+     * @throws InvalidArgumentException
+     */
     public function takeRight($num)
     {
         return $this->slice($this->count() - $num, $this->count());
     }
 
+    /**
+     * @param callable $condition
+     * @return int
+     */
     protected function countWhileTrue(callable $condition)
     {
         $count = 0;
@@ -428,6 +459,10 @@ class Collection
         return $count;
     }
 
+    /**
+     * @param callable $condition
+     * @return Collection
+     */
     public function takeWhile(callable $condition)
     {
         $count = $this->countWhileTrue($condition);
@@ -435,16 +470,53 @@ class Collection
         return ($count) ? $this->take($count) : $this->clear();
     }
 
-    public function map(callable $condition)
+    /**
+     * @param callable $callable
+     */
+    public function each(callable $callable)
     {
+        foreach ($this->items as $item) {
+            $callable($item);
+        }
     }
 
+    /**
+     * @param callable $callable
+     * @return static
+     */
+    public function map(callable $callable)
+    {
+        $items = [];
+        $type = null;
+
+        foreach ($this->items as $item) {
+             $result = $callable($item);
+
+            if (!isset($type)) {
+                $type =  gettype($result);
+            }
+
+            $items[] = $result;
+        }
+
+        return new static($type, $items);
+    }
+
+    /**
+     * @param callable $callable
+     * @param null $initial
+     * @return mixed
+     */
     public function reduceRight(callable $callable, $initial = null)
     {
         $reverse = array_reverse($this->items);
+
         return array_reduce($reverse, $callable, $initial);
     }
 
+    /**
+     * @return static
+     */
     public function shuffle()
     {
         $items = $this->items;
@@ -453,9 +525,24 @@ class Collection
         return new static($this->getType(), $items);
     }
 
-    public function merge(Collection $collection)
+    /**
+     * @param $items
+     * @return static
+     * @throws InvalidArgumentException
+     */
+    public function merge($items)
     {
-        $items = $collection->toArray();
-        return $this->addRange($items);
+        if ($items instanceof static) {
+            $items = $items->toArray();
+        }
+
+        if (!is_array($items)) {
+            throw new InvalidArgumentException("Merge must be given array or Collection");
+        }
+
+        $this->validateItems($items, $this->type);
+        $newItems = array_merge($this->items, $items);
+
+        return new static($this->type, $newItems);
     }
 }

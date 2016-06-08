@@ -9,4 +9,3 @@ before_script:
 
 script:
   - phpunit
-
