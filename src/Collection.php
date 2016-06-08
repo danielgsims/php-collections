@@ -54,18 +54,6 @@ class Collection
     /**
      * {@inheritdoc}
      */
-    public function __clone()
-    {
-        $clone = function ($object) {
-            return clone $object;
-        };
-
-        $this->items = array_map($clone, $this->items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
@@ -82,14 +70,6 @@ class Collection
         $items[] = $item;
 
         return new static($this->type, $items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addRange(array $items)
-    {
-
     }
 
     /**
@@ -432,11 +412,30 @@ class Collection
         return ($count) ? $this->take($count) : $this->clear();
     }
 
-    public function map(callable $condition)
+    public function each(callable $callable)
     {
-        $items = array_map($condition, $this->items);
+        foreach ($this->items as $item) {
+            $callable($item);
+        }
+    }
 
-        return new static($this->getType(), $items);
+
+    public function map(callable $callable)
+    {
+        $items = [];
+        $type = null;
+
+        foreach ($this->items as $item) {
+             $result = $callable($item);
+
+            if (!isset($type)) {
+                $type =  gettype($result);
+            }
+
+            $items[] = $result;
+        }
+
+        return new static($type, $items);
     }
 
     public function reduceRight(callable $callable, $initial = null)
@@ -461,7 +460,7 @@ class Collection
         }
 
         if (!is_array($items)) {
-            throw new \InvalidArgumentException("Merge must be given array or Collection");
+            throw new InvalidArgumentException("Merge must be given array or Collection");
         }
 
         $this->validateItems($items, $this->type);
