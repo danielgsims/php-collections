@@ -118,6 +118,12 @@ class AddTest extends PHPUnit_Framework_TestCase
         $d = new Dictionary('test2', 'int');
     }
 
+    public function test_float_is_invalid_key_type()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $d = new Dictionary('double', 'int');
+    }
+
     public function test_setting_key_will_overwrite_if_exists()
     {
         $d = new Dictionary('string', 'int');
