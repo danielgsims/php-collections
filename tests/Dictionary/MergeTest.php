@@ -50,4 +50,12 @@ class MergeTest extends \PHPUnit_Framework_TestCase
 
         $m = $l->merge($r);
     }
+
+    public function test_merge_of_non_array()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $d = (new Dictionary('string', 'int'))->add('a',1);
+
+        $result = $d->merge(3);
+    }
 }
