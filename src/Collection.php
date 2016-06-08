@@ -45,7 +45,7 @@ class Collection
         $this->type = $type;
 
         if ($items) {
-          $this->validateItems($items);
+          $this->validateItems($items, $this->type);
         }
 
         $this->items = $items;
@@ -89,7 +89,7 @@ class Collection
      */
     public function addRange(array $items)
     {
-        $this->validateItems($items);
+        $this->validateItems($items, $this->type);
         $newItems = array_merge($this->items, $items);
 
         return new static($this->type, $newItems);
@@ -287,7 +287,7 @@ class Collection
     public function insertRange($index, array $items)
     {
         $this->validateIndex($index);
-        $this->validateItems($items);
+        $this->validateItems($items, $this->type);
 
         //To work with negative index, get the positive relation to 0 index
         $index < 0 && $index = $this->count() + $index + 1;
@@ -379,20 +379,6 @@ class Collection
 
         return $response;
     }
-
-    /**
-     * Validates an array of items
-     *
-     * @param array $items an array of items to be validated
-     */
-    protected function validateItems(array $items)
-    {
-        foreach ($items as $item) {
-            $this->validateItem($item, $this->type);
-        }
-    }
-
-    // new functions
 
     public function drop($num)
     {

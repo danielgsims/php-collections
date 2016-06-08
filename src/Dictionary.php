@@ -154,4 +154,19 @@ class Dictionary implements IteratorAggregate
 
         return new Dictionary($keyType, $valType, $items);
     }
+
+    public function merge($newItems)
+    {
+        if ($newItems instanceof self) {
+            $newItems = $newItems->toArray();
+        }
+
+        if (!is_array($newItems)) {
+            throw new \InvalidArgumentException('Combine must be a Dictionary or an array');
+        }
+
+        $items = array_merge($this->storage, $newItems);
+
+        return new static($this->keyType, $this->valType, $items);
+    }
 }

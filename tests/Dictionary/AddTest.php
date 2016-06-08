@@ -133,6 +133,4 @@ class AddTest extends PHPUnit_Framework_TestCase
         $d = new Dictionary('string', 'callable');
         $d = $d->add('test', 123);
     }
-
-
 }

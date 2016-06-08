@@ -44,6 +44,19 @@ trait TypeValidator
         return in_array($type, $types) ? $type : null;
     }
 
+    /**
+     * Validates an array of items
+     *
+     * @param array $items an array of items to be validated
+     * @param type
+     */
+    protected function validateItems(array $items, $type)
+    {
+        foreach ($items as $item) {
+            $this->validateItem($item, $type);
+        }
+    }
+
     protected function validateItem($item, $target)
     {
         $type = gettype($item);
