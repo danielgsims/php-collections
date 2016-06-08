@@ -40,7 +40,7 @@ class Collection implements CollectionInterface
         $this->type = $type;
 
         if ($items) {
-          $this->validateItems($items, $this->type);
+            $this->validateItems($items, $this->type);
         }
 
         $this->items = $items;
