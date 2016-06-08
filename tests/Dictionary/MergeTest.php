@@ -3,6 +3,7 @@
 namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
+use Collections\Exceptions\InvalidArgumentException;
 
 class MergeTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,10 +44,10 @@ class MergeTest extends \PHPUnit_Framework_TestCase
 
     public function test_merge_of_bad_types_fails()
     {
+        $this->expectException(InvalidArgumentException::class);
         $l = (new Dictionary('string','int'))->add('a',1);
         $r = (new Dictionary('string','string'))->add('b','2');
 
         $m = $l->merge($r);
-
     }
 }

@@ -28,24 +28,24 @@ class AddTest extends PHPUnit_Framework_TestCase
         $d = $d->add(1, 42);
         $this->assertEquals(1, $d->count());
 
-        //float key and val
-        $d = new Dictionary('float', 'float');
-        $d = $d->add(1.0, 2.0);
+        //float works as val
+        $d = new Dictionary('string', 'float');
+        $d = $d->add("a", 2.0);
         $this->assertEquals(1, $d->count());
 
         //double synonymous with float
-        $d = new Dictionary('double', 'double');
-        $d = $d->add(1.0, 2.0);
+        $d = new Dictionary('string', 'double');
+        $d = $d->add('b', 2.0);
         $this->assertEquals(1, $d->count());
 
-        //bool key and value
-        $d = new Dictionary('bool', 'bool');
-        $d = $d->add(true, false);
+        //bool valid value
+        $d = new Dictionary('int', 'bool');
+        $d = $d->add(1, false);
         $this->assertEquals(1, $d->count());
 
         //boolean synonymous with bool
-        $d = new Dictionary('boolean', 'boolean');
-        $d = $d->add(true, false);
+        $d = new Dictionary('int', 'boolean');
+        $d = $d->add(1, false);
         $this->assertEquals(1, $d->count());
 
         //callable works as value type
@@ -133,4 +133,5 @@ class AddTest extends PHPUnit_Framework_TestCase
         $d = new Dictionary('string', 'callable');
         $d = $d->add('test', 123);
     }
+
 }

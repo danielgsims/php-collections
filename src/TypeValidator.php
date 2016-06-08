@@ -7,13 +7,18 @@ use Collections\Exceptions\InvalidArgumentException;
 
 trait TypeValidator
 {
-    private function determineType($type, $onlyScalar = false)
+    private function determineType($type, $keyType = false)
     {
-        if (!$onlyScalar && $this->nonScalarTypeExists($type)) {
+        if (!$keyType && $this->nonScalarTypeExists($type)) {
             return $type;
         }
 
         if ($scalarType = $this->determineScalar($type)) {
+
+            if ($keyType && (in_array($scalarType, ["double", "boolean"]))) {
+                throw new InvalidArgumentException("This type is not supported as a key.");
+            }
+
             return $scalarType;
         }
 
