@@ -8,7 +8,7 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 
-class Dictionary implements IteratorAggregate
+class Dictionary implements DictionaryInterface
 {
     use TypeValidator;
 
@@ -17,9 +17,10 @@ class Dictionary implements IteratorAggregate
     protected $valType;
 
     /**
-     * Constructor
-     *
+     * @param $keyType
+     * @param $valType
      * @param array $storage
+     * @throws Exceptions\InvalidArgumentException
      */
     public function __construct($keyType, $valType, array $storage = [])
     {
@@ -39,26 +40,44 @@ class Dictionary implements IteratorAggregate
         }
     }
 
+    /**
+     * @return string
+     */
     public function getKeyType()
     {
         return $this->keyType;
     }
 
+    /**
+     * @return string
+     */
     public function getValueType()
     {
         return $this->valType;
     }
 
+    /**
+     * @param $key
+     * @return bool
+     */
     public function exists($key)
     {
         return array_key_exists($key,$this->storage);
     }
 
+    /**
+     * @param $key
+     * @return mixed
+     */
     public function get($key)
     {
         return array_key_exists($key,$this->storage) ? $this->storage[$key] : null;
     }
 
+    /**
+     * @param $key
+     * @return static
+     */
     public function delete($key)
     {
         $storage = $this->storage;
@@ -69,13 +88,17 @@ class Dictionary implements IteratorAggregate
         return new static($this->keyType, $this->valType, $storage);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public function valueExists($value)
     {
         return in_array($value, $this->storage);
     }
 
     /**
-     * {@inheritDoc}
+     * @return ArrayIterator
      */
     public function getIterator()
     {
@@ -83,23 +106,33 @@ class Dictionary implements IteratorAggregate
     }
 
     /**
-     * {@inheritDoc}
+     * @return int
      */
     public function count()
     {
         return count($this->storage);
     }
 
+    /**
+     * @return static
+     */
     public function clear()
     {
         return new static($this->keyType, $this->valType);
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return $this->storage;
     }
 
+    /**
+     * @param callable $condition
+     * @return static
+     */
     public function filter(callable $condition)
     {
         $storage = [];
@@ -113,6 +146,10 @@ class Dictionary implements IteratorAggregate
         return new static($this->keyType, $this->valType, $storage);
     }
 
+    /**
+     * @param callable $condition
+     * @return static
+     */
     public function without(callable $condition)
     {
         $inverse = function($k,$v) use ($condition) {
@@ -135,6 +172,9 @@ class Dictionary implements IteratorAggregate
         return new static($this->keyType, $this->valType, $storage);
     }
 
+    /**
+     * @param callable $callable
+     */
     public function each(callable $callable)
     {
         foreach ($this->storage as $key => $value) {
@@ -142,21 +182,36 @@ class Dictionary implements IteratorAggregate
         }
     }
 
+    /**
+     * @param $key
+     * @param $default
+     * @return mixed
+     */
     public function getOrElse($key, $default)
     {
         return ($this->exists($key)) ? $this->get($key) : $default;
     }
 
+    /**
+     * @return array
+     */
     public function keys()
     {
         return array_keys($this->storage);
     }
 
+    /**
+     * @return array
+     */
     public function values()
     {
         return array_values($this->storage);
     }
 
+    /**
+     * @param callable $callable
+     * @return static
+     */
     public function map(callable $callable)
     {
         $items = [];
@@ -175,9 +230,13 @@ class Dictionary implements IteratorAggregate
             $items[$k] = $v;
         }
 
-        return new Dictionary($keyType, $valType, $items);
+        return new static($keyType, $valType, $items);
     }
 
+    /**
+     * @param $newItems
+     * @return static
+     */
     public function merge($newItems)
     {
         if ($newItems instanceof self) {
