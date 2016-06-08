@@ -89,10 +89,7 @@ class Collection
      */
     public function addRange(array $items)
     {
-        $this->validateItems($items, $this->type);
-        $newItems = array_merge($this->items, $items);
 
-        return new static($this->type, $newItems);
     }
 
     /**
@@ -437,11 +434,15 @@ class Collection
 
     public function map(callable $condition)
     {
+        $items = array_map($condition, $this->items);
+
+        return new static($this->getType(), $items);
     }
 
     public function reduceRight(callable $callable, $initial = null)
     {
         $reverse = array_reverse($this->items);
+
         return array_reduce($reverse, $callable, $initial);
     }
 
@@ -453,9 +454,19 @@ class Collection
         return new static($this->getType(), $items);
     }
 
-    public function merge(Collection $collection)
+    public function merge($items)
     {
-        $items = $collection->toArray();
-        return $this->addRange($items);
+        if ($items instanceof static) {
+            $items = $items->toArray();
+        }
+
+        if (!is_array($items)) {
+            throw new \InvalidArgumentException("Merge must be given array or Collection");
+        }
+
+        $this->validateItems($items, $this->type);
+        $newItems = array_merge($this->items, $items);
+
+        return new static($this->type, $newItems);
     }
 }

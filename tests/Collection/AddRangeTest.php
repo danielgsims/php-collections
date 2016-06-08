@@ -9,7 +9,7 @@ class AddRangeTest extends PHPUnit_Framework_TestCase
         $col = new Collection('TestClassA');
         $range = [ new TestClassA(0), new TestClassA(1) ];
 
-        $withRange = $col->addRange($range);
+        $withRange = $col->merge($range);
 
         $this->assertEquals(0, $col->count());
         $this->assertEquals(2, $withRange->count());
@@ -26,6 +26,6 @@ class AddRangeTest extends PHPUnit_Framework_TestCase
         $badItems[] = new TestClassB();
 
         $col = new Collection('TestClassA');
-        $col->addRange($badItems);
+        $col->merge($badItems);
     }
 }
