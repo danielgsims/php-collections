@@ -21,11 +21,22 @@ class Dictionary implements IteratorAggregate
      *
      * @param array $storage
      */
-    public function __construct($keyType, $valType, array $storage = array())
+    public function __construct($keyType, $valType, array $storage = [])
     {
-        $this->storage = $storage;
         $this->keyType = $this->determineType($keyType, true);
+
+        if ($this->keyType === "double") {
+            throw new \InvalidArgumentException("Floats are not supported as keys");
+        }
+
         $this->valType = $this->determineType($valType);
+
+        foreach ($storage as $key => $val) {
+            $this->validateItem($key, $this->keyType);
+            $this->validateItem($val, $this->valType);
+
+            $this->storage[$key] = $val;
+        }
     }
 
     public function getKeyType()
@@ -118,9 +129,6 @@ class Dictionary implements IteratorAggregate
      */
     public function add($key, $value)
     {
-        $this->validateItem($key, $this->keyType);
-        $this->validateItem($value, $this->valType);
-
         $storage = $this->storage;
         $storage[$key] = $value;
 
@@ -168,5 +176,20 @@ class Dictionary implements IteratorAggregate
         }
 
         return new Dictionary($keyType, $valType, $items);
+    }
+
+    public function merge($newItems)
+    {
+        if ($newItems instanceof self) {
+            $newItems = $newItems->toArray();
+        }
+
+        if (!is_array($newItems)) {
+            throw new \InvalidArgumentException('Combine must be a Dictionary or an array');
+        }
+
+        $items = array_merge($this->storage, $newItems);
+
+        return new static($this->keyType, $this->valType, $items);
     }
 }
