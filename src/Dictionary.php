@@ -37,7 +37,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getKeyType()
     {
@@ -45,7 +45,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getValueType()
     {
@@ -53,8 +53,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param $key
-     * @return bool
+     * {@inheritdoc}
      */
     public function exists($key)
     {
@@ -62,8 +61,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param $key
-     * @return mixed
+     * {@inheritdoc}
      */
     public function get($key)
     {
@@ -71,8 +69,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param $key
-     * @return static
+     * {@inheritdoc}
      */
     public function delete($key)
     {
@@ -85,8 +82,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param $value
-     * @return bool
+     * {@inheritdoc}
      */
     public function valueExists($value)
     {
@@ -94,7 +90,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @return ArrayIterator
+     * {@inheritdoc}
      */
     public function getIterator()
     {
@@ -102,7 +98,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function count()
     {
@@ -110,7 +106,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @return static
+     * {@inheritdoc}
      */
     public function clear()
     {
@@ -118,7 +114,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function toArray()
     {
@@ -126,8 +122,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param callable $condition
-     * @return static
+     * {@inheritdoc}
      */
     public function filter(callable $condition)
     {
@@ -143,8 +138,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param callable $condition
-     * @return static
+     * {@inheritdoc}
      */
     public function without(callable $condition)
     {
@@ -154,11 +148,9 @@ class Dictionary implements DictionaryInterface
 
         return $this->filter($inverse);
     }
+
     /**
-     * @param $key
-     * @param $value
-     * @return static
-     * @throws Exceptions\InvalidArgumentException
+     * {@inheritdoc}
      */
     public function add($key, $value)
     {
@@ -169,7 +161,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param callable $callable
+     * {@inheritdoc}
      */
     public function each(callable $callable)
     {
@@ -179,9 +171,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param $key
-     * @param $default
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getOrElse($key, $default)
     {
@@ -189,7 +179,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function keys()
     {
@@ -197,7 +187,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function values()
     {
@@ -205,8 +195,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param callable $callable
-     * @return static
+     * {@inheritdoc}
      */
     public function map(callable $callable)
     {
@@ -230,8 +219,7 @@ class Dictionary implements DictionaryInterface
     }
 
     /**
-     * @param $newItems
-     * @return static
+     * {@inheritdoc}
      */
     public function merge($newItems)
     {
