@@ -15,5 +15,6 @@ class DeleteTest extends PHPUnit_Framework_TestCase
         $d2 = $d->delete('a');
         $this->assertEquals(2, $d->count());
         $this->assertEquals(1, $d2->count());
+        $this->assertFalse($d2->valueExists(1));
     }
 }
