@@ -2,7 +2,6 @@
 
 namespace Collections;
 
-
 use Collections\Exceptions\InvalidArgumentException;
 
 trait TypeValidator
@@ -14,7 +13,6 @@ trait TypeValidator
         }
 
         if ($scalarType = $this->determineScalar($type)) {
-
             if ($keyType && (in_array($scalarType, ["double", "boolean"]))) {
                 throw new InvalidArgumentException("This type is not supported as a key.");
             }

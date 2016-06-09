@@ -5,4 +5,6 @@ namespace Collections\Exceptions;
 /**
  * An Exception in the Collection
  */
-class Exception extends \Exception{}
+class Exception extends \Exception
+{
+}

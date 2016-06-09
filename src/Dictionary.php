@@ -2,7 +2,6 @@
 
 namespace Collections;
 
-use Collections\Exceptions\NullKeyException;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
@@ -58,7 +57,7 @@ class Dictionary implements DictionaryInterface
      */
     public function exists($key)
     {
-        return array_key_exists($key,$this->storage);
+        return array_key_exists($key, $this->storage);
     }
 
     /**
@@ -67,7 +66,7 @@ class Dictionary implements DictionaryInterface
      */
     public function get($key)
     {
-        return array_key_exists($key,$this->storage) ? $this->storage[$key] : null;
+        return array_key_exists($key, $this->storage) ? $this->storage[$key] : null;
     }
 
     /**
@@ -77,7 +76,7 @@ class Dictionary implements DictionaryInterface
     public function delete($key)
     {
         $storage = $this->storage;
-        if (array_key_exists($key,$this->storage)) {
+        if (array_key_exists($key, $this->storage)) {
             unset($storage[$key]);
         }
 
@@ -148,7 +147,7 @@ class Dictionary implements DictionaryInterface
      */
     public function without(callable $condition)
     {
-        $inverse = function($k,$v) use ($condition) {
+        $inverse = function ($k, $v) use ($condition) {
             return !$condition($k,$v);
         };
 

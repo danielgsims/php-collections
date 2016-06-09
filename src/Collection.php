@@ -40,7 +40,7 @@ class Collection implements CollectionInterface
         $this->type = $type;
 
         if ($items) {
-          $this->validateItems($items, $this->type);
+            $this->validateItems($items, $this->type);
         }
 
         $this->items = $items;
@@ -297,7 +297,7 @@ class Collection implements CollectionInterface
      */
     public function without(callable $condition)
     {
-        $inverse = function($item) use ($condition) {
+        $inverse = function ($item) use ($condition) {
             return !$condition($item);
         };
 
@@ -418,7 +418,7 @@ class Collection implements CollectionInterface
      */
     public function tail()
     {
-       return $this->slice(1,$this->count());
+        return $this->slice(1, $this->count());
     }
 
     /**
@@ -451,7 +451,7 @@ class Collection implements CollectionInterface
 
         foreach ($this->items as $item) {
             if (!$condition($item)) {
-              break;
+                break;
             }
             $count++;
         }
