@@ -47,7 +47,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -55,9 +55,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $item
-     * @return static
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
      */
     public function add($item)
     {
@@ -70,7 +68,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @return static
+     * {@inheritdoc}
      */
     public function clear()
     {
@@ -78,8 +76,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $condition
-     * @return bool
+     * {@inheritdoc}
      */
     public function contains(callable $condition)
     {
@@ -87,8 +84,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $condition
-     * @return bool
+     * {@inheritdoc}
      */
     public function find(callable $condition)
     {
@@ -98,8 +94,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $condition
-     * @return int
+     * {@inheritdoc}
      */
     public function findIndex(callable $condition)
     {
@@ -116,9 +111,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $index
-     * @return mixed
-     * @throws OutOfRangeException
+     * {@inheritdoc}
      */
     public function at($index)
     {
@@ -144,9 +137,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $index
-     * @return bool
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
      */
     public function indexExists($index)
     {
@@ -162,7 +153,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function count()
     {
@@ -170,8 +161,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $condition
-     * @return static
+     * {@inheritdoc}
      */
     public function filter(callable $condition)
     {
@@ -187,8 +177,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $condition
-     * @return bool
+     * {@inheritdoc}
      */
     public function findLast(callable $condition)
     {
@@ -198,8 +187,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $condition
-     * @return int
+     * {@inheritdoc}
      */
     public function findLastIndex(callable $condition)
     {
@@ -216,7 +204,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @return ArrayIterator
+     * {@inheritdoc}
      */
     public function getIterator()
     {
@@ -224,10 +212,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $start
-     * @param $end
-     * @return static
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
      */
     public function slice($start, $end)
     {
@@ -255,10 +240,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $index
-     * @param $item
-     * @throws InvalidArgumentException
-     * @throws OutOfRangeException
+     * {@inheritdoc}
      */
     public function insert($index, $item)
     {
@@ -268,13 +250,12 @@ class Collection implements CollectionInterface
         $partA = array_slice($this->items, 0, $index);
         $partB = array_slice($this->items, $index, count($this->items));
         $partA[] = $item;
-        $this->items = array_merge($partA, $partB);
+
+        return new static ($this->type, array_merge($partA, $partB));
     }
 
     /**
-     * @param $index
-     * @param array $items
-     * @throws OutOfRangeException
+     * {@inheritdoc}
      */
     public function insertRange($index, array $items)
     {
@@ -287,13 +268,14 @@ class Collection implements CollectionInterface
         $partA = array_slice($this->items, 0, $index);
         $partB = array_slice($this->items, $index, count($this->items));
 
-        $this->items = array_merge($partA, $items);
-        $this->items = array_merge($this->items, $partB);
+        $items1 = array_merge($partA, $items);
+        $items1 = array_merge($items1, $partB);
+
+        return new static ($this->type, $items1);
     }
 
     /**
-     * @param callable $condition
-     * @return Collection
+     * {@inheritdoc}
      */
     public function without(callable $condition)
     {
@@ -305,9 +287,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $index
-     * @return static
-     * @throws OutOfRangeException
+     * {@inheritdoc}
      */
     public function removeAt($index)
     {
@@ -322,7 +302,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @return static
+     * {@inheritdoc}
      */
     public function reverse()
     {
@@ -330,8 +310,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $callback
-     * @return static
+     * {@inheritdoc}
      */
     public function sort(callable $callback)
     {
@@ -343,7 +322,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function toArray()
     {
@@ -351,9 +330,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $callable
-     * @param null $initial
-     * @return mixed
+     * {@inheritdoc}
      */
     public function reduce(callable $callable, $initial = null)
     {
@@ -361,8 +338,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $condition
-     * @return bool
+     * {@inheritdoc}
      */
     public function every(callable $condition)
     {
@@ -380,9 +356,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $num
-     * @return Collection
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
      */
     public function drop($num)
     {
@@ -390,9 +364,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $num
-     * @return Collection
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
      */
     public function dropRight($num)
     {
@@ -402,8 +374,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $condition
-     * @return Collection
+     * {@inheritdoc}
      */
     public function dropWhile(callable $condition)
     {
@@ -413,8 +384,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @return Collection
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
      */
     public function tail()
     {
@@ -422,9 +392,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $num
-     * @return Collection
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
      */
     public function take($num)
     {
@@ -432,9 +400,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $num
-     * @return Collection
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
      */
     public function takeRight($num)
     {
@@ -460,8 +426,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $condition
-     * @return Collection
+     * {@inheritdoc}
      */
     public function takeWhile(callable $condition)
     {
@@ -471,7 +436,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $callable
+     * {@inheritdoc}
      */
     public function each(callable $callable)
     {
@@ -481,8 +446,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $callable
-     * @return static
+     * {@inheritdoc}
      */
     public function map(callable $callable)
     {
@@ -503,9 +467,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param callable $callable
-     * @param null $initial
-     * @return mixed
+     * {@inheritdoc}
      */
     public function reduceRight(callable $callable, $initial = null)
     {
@@ -515,7 +477,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @return static
+     * {@inheritdoc}
      */
     public function shuffle()
     {
@@ -526,9 +488,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param $items
-     * @return static
-     * @throws InvalidArgumentException
+     * {@inheritdoc}
      */
     public function merge($items)
     {
