@@ -1,9 +1,9 @@
 <?php
 namespace Collections;
+
 use ArrayIterator;
 use Collections\Exceptions\InvalidArgumentException;
 use Collections\Exceptions\OutOfRangeException;
-
 
 /**
  * A collection of objects with a specified class or interface

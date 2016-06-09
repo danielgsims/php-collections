@@ -2,4 +2,6 @@
 
 namespace Collections\Exceptions;
 
-class ImmutableKeyException extends Exception {}
+class ImmutableKeyException extends Exception
+{
+}
