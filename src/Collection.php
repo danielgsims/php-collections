@@ -154,6 +154,28 @@ class Collection implements Countable, IteratorAggregate
         return $index == -1 ? false : $this->items[$index];
     }
 
+    public function disjoin(callable $condition)
+    {
+        $class = get_class($this);
+        $rejects = new $class($this->objectName);
+        $passes = new $class($this->objectName);
+
+        foreach ($this->items as $item) {
+            if ($condition($item)) {
+                $passes->add($item);
+            } else {
+                $rejects->add($item);
+            }
+        }
+
+        return [ $passes, $rejects ];
+    }
+
+    public function filter(callable $condition)
+    {
+        return $this->findAll($condition);
+    }
+
     /**
      * Returns a collection of all items that satisfy the callback function. If nothing is found, returns an empty
      * Collection

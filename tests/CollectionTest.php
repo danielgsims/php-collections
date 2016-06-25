@@ -504,4 +504,32 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 
       $this->assertFalse($result);
   }
+
+  public function testDisjoin()
+  {
+      $t = new TestClassA(2);
+      $t1 = new TestClassA(3);
+      $t2 = new TestClassA(4);
+      $t3 = new TestClassA(5);
+      $t4 = new TestClassA(6);
+
+      $this->c->add($t);
+      $this->c->add($t1);
+      $this->c->add($t2);
+      $this->c->add($t3);
+      $this->c->add($t4);
+
+      list($pass, $reject) = $this->c->disjoin(function($item){
+         return $item->getValue() % 2 == 0;
+      });
+
+      $this->assertEquals(3, count($pass));
+      $this->assertEquals($t, $pass->at(0));
+      $this->assertEquals($t2, $pass->at(1));
+      $this->assertEquals($t4, $pass->at(2));
+
+      $this->assertEquals(2, count($reject));
+      $this->assertEquals($t1, $reject->at(0));
+      $this->assertEquals($t3, $reject->at(1));
+  }
 }
