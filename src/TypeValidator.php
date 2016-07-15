@@ -66,6 +66,7 @@ trait TypeValidator
 
         $shouldBeCallable = $target === 'callable';
         $isObject = $type === "object";
+        $looseObjectCheck = $target === "object";
 
         //callable must be callable
         if ($shouldBeCallable && !is_callable($item)) {
@@ -73,7 +74,7 @@ trait TypeValidator
         }
 
         //target isn't callable, object must be an instance of target
-        if (!$shouldBeCallable && $isObject && !is_a($item, $target)) {
+        if (!$shouldBeCallable && $isObject && !is_a($item, $target) && !$looseObjectCheck) {
             throw new InvalidArgumentException("Item is not type or subtype of " . $target);
         }
 

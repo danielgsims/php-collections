@@ -458,6 +458,10 @@ class Collection implements CollectionInterface
 
             if (!isset($type)) {
                 $type =  gettype($result);
+
+                if ($type === "object") {
+                    $type = get_class($result);
+                }
             }
 
             $items[] = $result;
