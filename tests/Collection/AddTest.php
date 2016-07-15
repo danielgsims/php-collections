@@ -134,4 +134,12 @@ class AddTest extends PHPUnit_Framework_TestCase
         $col = new Collection('int');
         $col = $col->add('string');
     }
+
+    public function test_can_odd_objects()
+    {
+        $col = new Collection('object');
+        $col = $col->add(new \DateTime);
+
+        $this->assertEquals(1,$col->count());
+    }
 }

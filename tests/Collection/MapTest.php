@@ -41,4 +41,23 @@ class MapTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $result);
     }
+
+    public function test_map_object()
+    {
+        $c = (new Collection('string'))
+              ->add('05/01/2016')
+              ->add('05/02/2016')
+              ->add('05/03/2016')
+              ->add('05/04/2016');
+
+        $result = $c->map(function ($a) { return new \DateTime($a); });
+
+        $expected = (new Collection('DateTime'))
+                        ->add(new \DateTime('05/01/2016'))
+                        ->add(new \DateTime('05/02/2016'))
+                        ->add(new \DateTime('05/03/2016'))
+                        ->add(new \DateTime('05/04/2016'));
+
+        $this->assertEquals($expected, $result);
+    }
 }
