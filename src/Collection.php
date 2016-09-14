@@ -46,6 +46,10 @@ class Collection implements CollectionInterface
         $this->items = $items;
     }
 
+    protected function setItemsFromTrustedSource(array $items) {
+        $this->items = $items;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -64,7 +68,10 @@ class Collection implements CollectionInterface
         $items = $this->items;
         $items[] = $item;
 
-        return new static($this->type, $items);
+        $col = new static($this->type);
+        $col->setItemsFromTrustedSource($items);
+
+        return $col;
     }
 
     /**
@@ -173,7 +180,10 @@ class Collection implements CollectionInterface
             }
         }
 
-        return new static($this->type, $items);
+        $col = new static($this->type);
+        $col->setItemsFromTrustedSource($items);
+
+        return $col;
     }
 
     /**
@@ -236,7 +246,10 @@ class Collection implements CollectionInterface
 
         $subsetItems = array_slice($this->items, $start, $length);
 
-        return new static($this->type, $subsetItems);
+        $col = new static($this->type);
+        $col->setItemsFromTrustedSource($subsetItems);
+
+        return $col;
     }
 
     /**
@@ -251,7 +264,11 @@ class Collection implements CollectionInterface
         $partB = array_slice($this->items, $index, count($this->items));
         $partA[] = $item;
 
-        return new static ($this->type, array_merge($partA, $partB));
+        $items = array_merge($partA, $partB);
+        $col = new static ($this->type);
+        $col->setItemsFromTrustedSource($items);
+
+        return $col;
     }
 
     /**
@@ -271,7 +288,10 @@ class Collection implements CollectionInterface
         $items1 = array_merge($partA, $items);
         $items1 = array_merge($items1, $partB);
 
-        return new static ($this->type, $items1);
+        $col = new static ($this->type);
+        $col->setItemsFromTrustedSource($items1);
+
+        return $col;
     }
 
     /**
@@ -298,7 +318,10 @@ class Collection implements CollectionInterface
         $partB = array_slice($items, $index + 1, count($items));
         $items = array_merge($partA, $partB);
 
-        return new static($this->type, $items);
+        $col = new static ($this->type);
+        $col->setItemsFromTrustedSource($items);
+
+        return $col;
     }
 
     /**
@@ -306,7 +329,13 @@ class Collection implements CollectionInterface
      */
     public function reverse()
     {
-        return new static($this->getType(), array_reverse($this->items));
+        $items = array_reverse($this->items);
+
+        $col = new static ($this->type);
+        $col->setItemsFromTrustedSource($items);
+
+        return $col;
+
     }
 
     /**
@@ -318,7 +347,10 @@ class Collection implements CollectionInterface
 
         usort($items, $callback);
 
-        return new static($this->type, $items);
+        $col = new static ($this->type);
+        $col->setItemsFromTrustedSource($items);
+
+        return $col;
     }
 
     /**
@@ -467,7 +499,11 @@ class Collection implements CollectionInterface
             $items[] = $result;
         }
 
-        return new static($type, $items);
+
+        $col = new static ($type);
+        $col->setItemsFromTrustedSource($items);
+
+        return $col;
     }
 
     /**
@@ -488,7 +524,10 @@ class Collection implements CollectionInterface
         $items = $this->items;
         shuffle($items);
 
-        return new static($this->getType(), $items);
+        $col = new static ($this->type);
+        $col->setItemsFromTrustedSource($items);
+
+        return $col;
     }
 
     /**
@@ -507,6 +546,9 @@ class Collection implements CollectionInterface
         $this->validateItems($items, $this->type);
         $newItems = array_merge($this->items, $items);
 
-        return new static($this->type, $newItems);
+        $col = new static ($this->type);
+        $col->setItemsFromTrustedSource($newItems);
+
+        return $col;
     }
 }
