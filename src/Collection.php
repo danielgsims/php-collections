@@ -46,7 +46,8 @@ class Collection implements CollectionInterface
         $this->items = $items;
     }
 
-    protected function setItemsFromTrustedSource(array $items) {
+    protected function setItemsFromTrustedSource(array $items)
+    {
         $this->items = $items;
     }
 
