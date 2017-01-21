@@ -348,7 +348,7 @@ class Collection implements CollectionInterface
 
         usort($items, $callback);
 
-        $col = new static ($this->type);
+        $col = new static($this->type);
         $col->setItemsFromTrustedSource($items);
 
         return $col;
