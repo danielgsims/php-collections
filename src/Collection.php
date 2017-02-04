@@ -459,9 +459,9 @@ class Collection implements Countable, IteratorAggregate
      */
     private function validateIndex($index)
     {
-        $exists = $this->indexInsertable($index);
+        $insertable = $this->indexInsertable($index);
 
-        if (!$exists) {
+        if (!$insertable) {
             throw new OutOfRangeException("Index out of bounds of collection");
         }
     }
