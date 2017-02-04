@@ -259,6 +259,15 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->c->insert(-1, new TestClassA(5));
   }
 
+  public function testInsertEnd(){
+    $this->c->add(new TestClassA(1));
+    $this->c->add(new TestClassA(2));
+
+    $this->c->insert(2,new TestClassA(3));
+
+    $this->assertEquals(3,$this->c->at(2)->getValue());
+  }
+
   public function testInsertRange(){
     $this->c->add(new TestClassA(1));
     $this->c->add(new TestClassA(2));
