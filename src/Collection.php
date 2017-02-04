@@ -431,12 +431,12 @@ class Collection implements Countable, IteratorAggregate
     }
 
     /**
-     * Return whether the given index exists
+     * Return whether the given index is insertable
      *
      * @param integer $index The number to be validated as an index
      * @return bool
      */
-    public function indexExists($index)
+    public function indexInsertable($index)
     {
        if (!is_int($index)) {
             throw new InvalidArgumentException("Index must be an integer");
@@ -446,7 +446,7 @@ class Collection implements Countable, IteratorAggregate
             throw new InvalidArgumentException("Index must be a non-negative integer");
         }
 
-        return $index < $this->count();
+        return $index <= $this->count();
     }
 
 
@@ -459,7 +459,7 @@ class Collection implements Countable, IteratorAggregate
      */
     private function validateIndex($index)
     {
-        $exists = $this->indexExists($index);
+        $exists = $this->indexInsertable($index);
 
         if (!$exists) {
             throw new OutOfRangeException("Index out of bounds of collection");

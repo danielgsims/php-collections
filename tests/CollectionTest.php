@@ -28,7 +28,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->c->add($a);
 
     $this->setExpectedException("Collections\Exceptions\OutOfRangeException");
-    $result = $this->c->at(1);
+    $result = $this->c->at(2);
   }
 
   public function testAddAndRetrieveFunctions(){
@@ -444,28 +444,29 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       $this->assertFalse($this->c->at(0) === $c->at(0));
   }
 
-  public function testIndexExits()
+  public function testIndexInsertable()
   {
       $t = new TestClassA(1);
       $t2 = new TestClassA(2);
       $this->c->add($t);
       $this->c->add($t2);
 
-      $this->assertTrue($this->c->indexExists(0));
-      $this->assertTrue($this->c->indexExists(1));
-      $this->assertFalse($this->c->indexExists(2));
+      $this->assertTrue($this->c->indexInsertable(0));
+      $this->assertTrue($this->c->indexInsertable(1));
+      $this->assertTrue($this->c->indexInsertable(2));
+      $this->assertFalse($this->c->indexInsertable(3));
   }
   
   public function testIndexExitsRejectsNegatives()
   {
       $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
-      $this->c->indexExists(-1);
+      $this->c->indexInsertable(-1);
   }
 
   public function testIndexExitsRejectsNonIntegers()
   {
       $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
-      $this->c->indexExists("wat");
+      $this->c->indexInsertable("wat");
   }
 
   public function testReduce()
