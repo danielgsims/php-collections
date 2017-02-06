@@ -93,7 +93,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(8,$this->c->count());
 
   }
-
+  
   public function testClear(){
     $this->c->add(new TestClassA(1));
     $this->assertEquals(1,$this->c->count());
@@ -259,6 +259,24 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->c->insert(-1, new TestClassA(5));
   }
 
+  public function testInsertEnd(){
+    $this->c->add(new TestClassA(1));
+    $this->c->add(new TestClassA(2));
+
+    $this->c->insert(2,new TestClassA(3));
+
+    $this->assertEquals(3,$this->c->at(2)->getValue());
+  }
+ 
+  public function testInsertBeginning(){
+    $this->c->add(new TestClassA(1));
+    $this->c->add(new TestClassA(2));
+
+    $this->c->insert(0,new TestClassA(3));
+
+    $this->assertEquals(3,$this->c->at(0)->getValue());
+  }
+
   public function testInsertRange(){
     $this->c->add(new TestClassA(1));
     $this->c->add(new TestClassA(2));
@@ -276,6 +294,21 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(2,$this->c->at(3)->getValue());
   }
 
+  public function testInsertRangeEnd(){
+    $this->c->add(new TestClassA(1));
+
+    $items = array();
+    $items[] = new TestClassA(2);
+    $items[] = new TestClassA(3);
+
+    $this->c->insertRange(1,$items);
+
+    $this->assertEquals(3,$this->c->count());
+    $this->assertEquals(1,$this->c->at(0)->getValue());
+    $this->assertEquals(2,$this->c->at(1)->getValue());
+    $this->assertEquals(3,$this->c->at(2)->getValue());
+
+  }
   public function testRemove(){
     $this->c->add(new TestClassA(1));
     $this->c->add(new TestClassA(2));
@@ -337,6 +370,33 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(1,$this->c->at(1)->getValue());
 
   }
+ 
+  public function testRemoveAtEnd(){
+    $items = array();
+    $items[] = new TestClassA(1);
+    $items[] = new TestClassA(2);
+
+    $this->c->addRange($items);
+    $this->assertEquals(2,$this->c->count());
+
+    $this->c->removeAt(1);
+
+    $this->assertEquals(1,$this->c->count());
+    $this->assertEquals(1,$this->c->at(0)->getValue());
+  }
+
+  public function testRemoveAtBadIndex(){
+    $items = array();
+    $items[] = new TestClassA(1);
+    $items[] = new TestClassA(2);
+
+    $this->c->addRange($items);
+
+
+    $this->setExpectedException("Collections\Exceptions\OutOfRangeException");
+    $this->c->removeAt(3);
+  }
+
 
   public function testRemoveLast(){
     $this->c->add(new TestClassA(1));
@@ -435,28 +495,29 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
       $this->assertFalse($this->c->at(0) === $c->at(0));
   }
 
-  public function testIndexExits()
+  public function testIndexInsertable()
   {
       $t = new TestClassA(1);
       $t2 = new TestClassA(2);
       $this->c->add($t);
       $this->c->add($t2);
 
-      $this->assertTrue($this->c->indexExists(0));
-      $this->assertTrue($this->c->indexExists(1));
-      $this->assertFalse($this->c->indexExists(2));
+      $this->assertTrue($this->c->indexInsertable(0));
+      $this->assertTrue($this->c->indexInsertable(1));
+      $this->assertTrue($this->c->indexInsertable(2));
+      $this->assertFalse($this->c->indexInsertable(3));
   }
   
   public function testIndexExitsRejectsNegatives()
   {
       $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
-      $this->c->indexExists(-1);
+      $this->c->indexInsertable(-1);
   }
 
   public function testIndexExitsRejectsNonIntegers()
   {
       $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
-      $this->c->indexExists("wat");
+      $this->c->indexInsertable("wat");
   }
 
   public function testReduce()
