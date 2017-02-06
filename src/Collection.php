@@ -307,7 +307,7 @@ class Collection implements Countable, IteratorAggregate
      */
     public function insert($index, $item)
     {
-        $this->validateIndex($index);
+        $this->validateInsertable($index);
         $this->validateItem($item);
 
         $partA = array_slice($this->items, 0, $index);
@@ -324,7 +324,7 @@ class Collection implements Countable, IteratorAggregate
      */
     public function insertRange($index, array $items)
     {
-        $this->validateIndex($index);
+        $this->validateInsertable($index);
         $this->validateItems($items);
 
         //To work with negative index, get the positive relation to 0 index
@@ -436,6 +436,25 @@ class Collection implements Countable, IteratorAggregate
      * @param integer $index The number to be validated as an index
      * @return bool
      */
+    public function indexExists($index)
+    {
+       if (!is_int($index)) {
+            throw new InvalidArgumentException("Index must be an integer");
+        }
+
+        if ($index < 0) {
+            throw new InvalidArgumentException("Index must be a non-negative integer");
+        }
+
+        return $index < $this->count();
+    }
+    
+    /**
+     * Return whether the given index is insertable
+     *
+     * @param integer $index The number to be validated as an index
+     * @return bool
+     */
     public function indexInsertable($index)
     {
        if (!is_int($index)) {
@@ -449,7 +468,6 @@ class Collection implements Countable, IteratorAggregate
         return $index <= $this->count();
     }
 
-
     /**
      * Validates a number to be used as an index
      *
@@ -459,10 +477,19 @@ class Collection implements Countable, IteratorAggregate
      */
     private function validateIndex($index)
     {
+        $index = $this->indexExists($index);
+
+        if (!$index) {
+            throw new OutOfRangeException("Index out of bounds of collection");
+        }
+    }
+
+    private function validateInsertable($index)
+    {
         $insertable = $this->indexInsertable($index);
 
         if (!$insertable) {
-            throw new OutOfRangeException("Index out of bounds of collection");
+            throw new OutOfRangeException("Index out of bounds for inseration");
         }
     }
 
