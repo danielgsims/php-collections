@@ -379,10 +379,10 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $this->c->addRange($items);
     $this->assertEquals(2,$this->c->count());
 
-    $this->c->removeAt(2);
+    $this->c->removeAt(1);
 
     $this->assertEquals(1,$this->c->count());
-    $this->assertEquals(1,$this->c->at(1)->getValue());
+    $this->assertEquals(1,$this->c->at(0)->getValue());
   }
 
   public function testRemoveAtBadIndex(){
@@ -391,6 +391,9 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
     $items[] = new TestClassA(2);
 
     $this->c->addRange($items);
+
+
+    $this->setExpectedException("Collections\Exceptions\OutOfRangeException");
     $this->c->removeAt(3);
   }
 
