@@ -552,4 +552,14 @@ class Collection implements CollectionInterface
 
         return $col;
     }
+
+    public function first()
+    {
+        return reset($this->items);
+    }
+
+    public function last()
+    {
+        return end($this->items);
+    }
 }
