@@ -313,4 +313,20 @@ interface CollectionInterface extends \IteratorAggregate, \Countable
      * @throws InvalidArgumentException
      */
     public function merge($items);
+
+    /**
+     * Get first item of the collection
+     *
+     * @return mixed
+     * @throws \RuntimeException
+     */
+    public function first();
+
+    /**
+     * Get last item of the collection
+     *
+     * @return mixed
+     * @throws \RuntimeException
+     */
+    public function last();
 }
