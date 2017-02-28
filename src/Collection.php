@@ -555,11 +555,19 @@ class Collection implements CollectionInterface
 
     public function first()
     {
+        if (empty($this->items)) {
+            throw new \RuntimeException('Cannot get first element of empty Collection');
+        }
+
         return reset($this->items);
     }
 
     public function last()
     {
+        if (empty($this->items)) {
+            throw new \RuntimeException('Cannot get last element of empty Collection');
+        }
+
         return end($this->items);
     }
 }
