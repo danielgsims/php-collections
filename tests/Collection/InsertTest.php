@@ -4,7 +4,7 @@ use Collections\Collection;
 
 class InsertTest extends PHPUnit_Framework_TestCase
 {
-        public function testInsert()
+    public function testInsert()
     {
         $c = new Collection('TestClassA');
         $c = $c->add(new TestClassA(1));
@@ -20,5 +20,4 @@ class InsertTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
         $c->insert(-1, new TestClassA(5));
     }
-
 }
