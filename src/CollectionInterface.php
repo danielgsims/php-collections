@@ -318,7 +318,7 @@ interface CollectionInterface extends \IteratorAggregate, \Countable
      * Get first item of the collection
      *
      * @return mixed
-     * @throws \RuntimeException
+     * @throws \OutOfBoundsException
      */
     public function first();
 
@@ -326,7 +326,7 @@ interface CollectionInterface extends \IteratorAggregate, \Countable
      * Get last item of the collection
      *
      * @return mixed
-     * @throws \RuntimeException
+     * @throws \OutOfBoundsException
      */
     public function last();
 }
