@@ -552,4 +552,22 @@ class Collection implements CollectionInterface
 
         return $col;
     }
+
+    public function first()
+    {
+        if (empty($this->items)) {
+            throw new \OutOfBoundsException('Cannot get first element of empty Collection');
+        }
+
+        return reset($this->items);
+    }
+
+    public function last()
+    {
+        if (empty($this->items)) {
+            throw new \OutOfBoundsException('Cannot get last element of empty Collection');
+        }
+
+        return end($this->items);
+    }
 }
