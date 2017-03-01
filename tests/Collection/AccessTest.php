@@ -38,4 +38,9 @@ class AccessTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(new TestClassA(1), $res);
     }
+
+    public function test_fails()
+    {
+        $this->assertTrue(false);
+    }
 }
