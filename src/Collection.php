@@ -34,7 +34,7 @@ class Collection implements CollectionInterface
      * @param array $items
      * @throws InvalidArgumentException
      */
-    public function __construct($type, $items = [])
+    public function __construct($type, array $items = [])
     {
         $type = $this->determineType($type);
         $this->type = $type;
@@ -98,7 +98,7 @@ class Collection implements CollectionInterface
     {
         $index = $this->findIndex($condition);
 
-        return $index == -1 ? false : $this->items[$index];
+        return $index === -1 ? false : $this->items[$index];
     }
 
     /**
@@ -108,7 +108,7 @@ class Collection implements CollectionInterface
     {
         $index = -1;
 
-        for ($i = 0; $i < count($this->items); $i++) {
+        for ($i = 0, $collectionLength = count($this->items); $i < $collectionLength; $i++) {
             if ($condition($this->at($i))) {
                 $index = $i;
                 break;
@@ -140,7 +140,7 @@ class Collection implements CollectionInterface
         $exists = $this->indexExists($index);
 
         if (!$exists) {
-            throw new OutOfRangeException("Index out of bounds of collection");
+            throw new OutOfRangeException('Index out of bounds of collection');
         }
     }
 
@@ -150,11 +150,11 @@ class Collection implements CollectionInterface
     public function indexExists($index)
     {
         if (!is_int($index)) {
-            throw new InvalidArgumentException("Index must be an integer");
+            throw new InvalidArgumentException('Index must be an integer');
         }
 
         if ($index < 0) {
-            throw new InvalidArgumentException("Index must be a non-negative integer");
+            throw new InvalidArgumentException('Index must be a non-negative integer');
         }
 
         return $index < $this->count();
@@ -194,7 +194,7 @@ class Collection implements CollectionInterface
     {
         $index = $this->findLastIndex($condition);
 
-        return $index == -1 ? false : $this->items[$index];
+        return $index === -1 ? false : $this->items[$index];
     }
 
     /**
@@ -227,20 +227,20 @@ class Collection implements CollectionInterface
      */
     public function slice($start, $end)
     {
-        if (!is_integer($start) || $start < 0) {
-            throw new InvalidArgumentException("Start must be a non-negative integer");
+        if ($start < 0 || !is_int($start)) {
+            throw new InvalidArgumentException('Start must be a non-negative integer');
         }
 
-        if (!is_integer($end) || $end < 0) {
-            throw new InvalidArgumentException("End must be a positive integer");
+        if ($end < 0 || !is_int($end)) {
+            throw new InvalidArgumentException('End must be a positive integer');
         }
 
         if ($start > $end) {
-            throw new InvalidArgumentException("End must be greater than start");
+            throw new InvalidArgumentException('End must be greater than start');
         }
 
         if ($end > $this->count() + 1) {
-            throw new InvalidArgumentException("End must be less than the count of the items in the Collection");
+            throw new InvalidArgumentException('End must be less than the count of the items in the Collection');
         }
 
         $length = $end - $start + 1;
@@ -327,6 +327,7 @@ class Collection implements CollectionInterface
 
     /**
      * {@inheritdoc}
+     * @throws InvalidArgumentException
      */
     public function reverse()
     {
@@ -378,7 +379,7 @@ class Collection implements CollectionInterface
         $response = true;
 
         foreach ($this->items as $item) {
-            $result = call_user_func($condition, $item);
+            $result = $condition($item);
             if ($result === false) {
                 $response = false;
                 break;
@@ -401,9 +402,9 @@ class Collection implements CollectionInterface
      */
     public function dropRight($num)
     {
-        return ($num != $this->count())
-                    ? $this->slice(0, $this->count() - $num - 1)
-                    : $this->clear();
+        return $num !== $this->count()
+            ? $this->slice(0, $this->count() - $num - 1)
+            : $this->clear();
     }
 
     /**
@@ -413,7 +414,7 @@ class Collection implements CollectionInterface
     {
         $count = $this->countWhileTrue($condition);
 
-        return ($count) ? $this->drop($count) : $this;
+        return $count ? $this->drop($count) : $this;
     }
 
     /**
@@ -465,7 +466,7 @@ class Collection implements CollectionInterface
     {
         $count = $this->countWhileTrue($condition);
 
-        return ($count) ? $this->take($count) : $this->clear();
+        return $count ? $this->take($count) : $this->clear();
     }
 
     /**
@@ -489,10 +490,10 @@ class Collection implements CollectionInterface
         foreach ($this->items as $item) {
              $result = $callable($item);
 
-            if (!isset($type)) {
+            if (null === $type) {
                 $type =  gettype($result);
 
-                if ($type === "object") {
+                if ($type === 'object') {
                     $type = get_class($result);
                 }
             }
@@ -541,7 +542,7 @@ class Collection implements CollectionInterface
         }
 
         if (!is_array($items)) {
-            throw new InvalidArgumentException("Merge must be given array or Collection");
+            throw new InvalidArgumentException('Merge must be given array or Collection');
         }
 
         $this->validateItems($items, $this->type);
