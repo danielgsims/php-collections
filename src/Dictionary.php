@@ -11,7 +11,7 @@ class Dictionary implements DictionaryInterface
 {
     use TypeValidator;
 
-    protected $storage;
+    protected $storage = [];
     protected $keyType;
     protected $valType;
 
