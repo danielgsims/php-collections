@@ -5,7 +5,7 @@ This library contains two collection classes: an array list, and a dictionary.
 Both of these classes are immutable. If you add or remove items from these collections,
 you will receive a new instance with the changes applied. 
 
-##Requirements##
+## Requirements ##
 
 Requires PHP 5.4 or greater, dev reqiures PHP 5.5 or greater.
 
