@@ -269,5 +269,4 @@ class Dictionary implements DictionaryInterface
 
         return $carry;
     }
-
 }
