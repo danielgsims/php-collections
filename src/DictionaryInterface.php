@@ -26,6 +26,15 @@ interface DictionaryInterface extends \IteratorAggregate, \Countable
     public function exists($key);
 
     /**
+     * Returns true if the callable returns true. The callable should accept a
+     * key and value as arguments and return a boolean.
+     *
+     * @param callable $callable
+     * @param bool
+     */
+    public function contains(callable $callable);
+
+    /**
      * Returns the value associated with $key.
      *
      * @param $key
@@ -93,7 +102,7 @@ interface DictionaryInterface extends \IteratorAggregate, \Countable
      *
      * @param $key
      * @param $value
-     * @return static
+     * @return DictionaryInterface
      * @throws Exceptions\InvalidArgumentException
      */
     public function add($key, $value);
@@ -146,4 +155,14 @@ interface DictionaryInterface extends \IteratorAggregate, \Countable
      * @return static
      */
     public function merge($newItems);
+
+
+    /**
+     * Reduce the dictionary to a single value. The callable should contain args: carry, key, value
+     *
+     * @param callable $callable
+     * @param mixed $initial
+     * @return mixed
+     */
+    public function reduce(callable $callable, $initial);
 }

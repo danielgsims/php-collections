@@ -234,4 +234,40 @@ class Dictionary implements DictionaryInterface
 
         return new static($this->keyType, $this->valType, $items);
     }
+
+
+    /**
+     *
+     * {@inheritdoc}
+     *
+     * @param callable $callable
+     * @return bool
+     */
+    public function contains(callable $callable)
+    {
+        foreach ($this->storage as $key => $value) {
+            if ($callable($key, $value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     *
+     * {@inheritdoc}
+     */
+    public function reduce(callable $callable, $initial)
+    {
+        $carry = $initial;
+
+        foreach ($this->storage as $key => $value) {
+            $carry = $callable($carry, $key, $value);
+        }
+
+        return $carry;
+    }
+
 }
