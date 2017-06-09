@@ -102,7 +102,7 @@ interface DictionaryInterface extends \IteratorAggregate, \Countable
      *
      * @param $key
      * @param $value
-     * @return DictionaryInterface
+     * @return static
      * @throws Exceptions\InvalidArgumentException
      */
     public function add($key, $value);
