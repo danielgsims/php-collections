@@ -37,4 +37,14 @@ class MapTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(97, $m->get(1));
         $this->assertEquals(98, $m->get(2));
     }
+
+    public function test_map_empty_dictionary()
+    {
+        $d = new Dictionary('string', 'int');
+        $result = $d->map(function ($a) {
+            return $a;
+        });
+        $expected = new Dictionary('string', 'int');
+        $this->assertEquals($expected, $result);
+    }
 }
