@@ -214,6 +214,11 @@ class Dictionary implements DictionaryInterface
             $items[$k] = $v;
         }
 
+        if (null === $keyType && null === $valType) {
+            $keyType = $this->keyType;
+            $valType = $this->valType;
+        }
+
         return new static($keyType, $valType, $items);
     }
 

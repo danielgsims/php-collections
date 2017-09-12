@@ -501,6 +501,9 @@ class Collection implements CollectionInterface
             $items[] = $result;
         }
 
+        if (null === $type) {
+            $type = $this->type;
+        }
 
         $col = new static ($type);
         $col->setItemsFromTrustedSource($items);
