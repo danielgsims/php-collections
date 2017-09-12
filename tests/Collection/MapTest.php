@@ -72,4 +72,14 @@ class MapTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
 
     }
+
+    public function test_map_empty_collection()
+    {
+        $c = new Collection('string');
+        $result = $c->map(function ($a) {
+            return $a;
+        });
+        $expected = new Collection('string');
+        $this->assertEquals($expected, $result);
+    }
 }
