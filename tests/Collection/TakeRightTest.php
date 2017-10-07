@@ -32,4 +32,12 @@ class TakeRightTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($t2, $c3->at(1));
         $this->assertEquals($t3, $c3->at(2));
     }
+
+    public function test_take_right_takes_remainder_if_count_too_large()
+    {
+        $c = new Collection('int',[0,1,2,3]);
+        $c2 = $c->takeRight(10);
+
+        $this->assertEquals(4, $c2->count());
+    }
 }

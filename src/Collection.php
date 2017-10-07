@@ -430,6 +430,9 @@ class Collection implements CollectionInterface
      */
     public function take($num)
     {
+        if ($num > $this->count()) {
+            $num = $this->count();
+        }
         return $this->slice(0, $num - 1);
     }
 
@@ -438,6 +441,10 @@ class Collection implements CollectionInterface
      */
     public function takeRight($num)
     {
+        if ($num > $this->count()) {
+            $num = $this->count();
+        }
+
         return $this->slice($this->count() - $num, $this->count());
     }
 
