@@ -50,11 +50,10 @@ class FancyTest extends PHPUnit_Framework_TestCase
         $result = $this->col->take(-1);
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
-    public function test_take_too_many_throws_ex()
+    public function test_take_returns_remainder()
     {
-        $this->col->take(100);
+        $result = $this->col->take(100);
+
+        $this->assertEquals(3, $result->count());
     }
 }
