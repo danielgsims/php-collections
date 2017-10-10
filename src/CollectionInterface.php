@@ -329,4 +329,16 @@ interface CollectionInterface extends \IteratorAggregate, \Countable
      * @throws \OutOfBoundsException
      */
     public function last();
+
+    /**
+     * An alias for headAndTail
+     */
+    public function hat();
+
+    /**
+     * Returns the [ $head, $tail ] of a collection. If the tail is empty, this will
+     * return null. If the collection is empty, both will be null. This is so that you
+     * can easily use the collection for head tail recurssion. 
+     */
+    public function headAndTail();
 }
