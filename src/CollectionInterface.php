@@ -341,4 +341,11 @@ interface CollectionInterface extends \IteratorAggregate, \Countable
      * can easily use the collection for head tail recursion
      */
     public function headAndTail();
+
+    /**
+     * Pop pop! Returns the last item, and the next last item
+     *
+     * @return mixed
+     */
+    public function popPop();
 }
