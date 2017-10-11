@@ -599,4 +599,17 @@ class Collection implements CollectionInterface
 
         return [ $this->first(), $this->tail() ];
     }
+
+    public function popPop()
+    {
+        if ($this->count() >= 2) {
+            return [ $this->last(), $this->at($this->count() - 2) ];
+        }
+
+        if ($this->count() === 1) {
+            return [ $this->last(), null ];
+        }
+
+        return [ null, null ];
+    }
 }
