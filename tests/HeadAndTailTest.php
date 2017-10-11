@@ -7,7 +7,7 @@ class HeadAndTailTest extends PHPUnit_Framework_TestCase
     public function test_head_and_tail_returns_head_and_collection_for_tail()
     {
         $col = new Collection('int', [1,2,3]);
-        [$h,$t] = $col->headAndTail();
+        list($h,$t) = $col->headAndTail();
 
         $this->assertEquals(1, $h);
         $this->assertInstanceOf(Collection::class, $t);
@@ -17,7 +17,7 @@ class HeadAndTailTest extends PHPUnit_Framework_TestCase
     public function test_empty_collection_returns_null_for_both()
     {
         $col = new Collection('int');
-        [$h,$t] = $col->headAndTail();
+        list($h,$t) = $col->headAndTail();
 
         $this->assertNull($h);
         $this->assertNull($t);
