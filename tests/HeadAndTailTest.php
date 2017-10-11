@@ -26,7 +26,7 @@ class HeadAndTailTest extends PHPUnit_Framework_TestCase
     public function test_collection_with_one_item_returns_head_and_null_tail()
     {
         $col = new Collection('int', [1]);
-        [$h, $t] = $col->headAndTail();
+        list($h, $t) = $col->headAndTail();
 
         $this->assertEquals(1, $h);
         $this->assertNull($t);
@@ -35,16 +35,16 @@ class HeadAndTailTest extends PHPUnit_Framework_TestCase
     public function test_hat_works_the_same()
     {
         $col = new Collection('int', [1,2,3]);
-        [ $h, $t ] = $col->hat();
+        list( $h, $t) = $col->hat();
         $this->assertEquals(1, $h);
         $this->assertEquals([2,3], $t->toArray());
 
-        [$h, $t] = $t->hat();
+        list($h, $t) = $t->hat();
 
         $this->assertEquals(2, $h);
         $this->assertEquals([3], $t->toArray());
 
-        [$h, $t ] = $t->hat();
+        list($h, $t) = $t->hat();
 
         $this->assertEquals(3, $h);
         $this->assertNull($t);
