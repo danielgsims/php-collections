@@ -7,15 +7,17 @@
   Returns the type of the collection.
   
   ```php
- 
-     $col = new Collection('int', [1,2,3]);
-     $type = $col->getType(); //int
+  $col = new Collection('int', [1,2,3]);
+  $type = $col->getType(); //int
   ```
 
   ### add
 
-  ```php
+  Returns a new collection with the item appended on the end.
 
+  ```php
+  $col = new Collection('int', [1,2]);
+  $longer = $col->add(3); //Collection('int', [1,2,3]); 
   ```
 
   ### clear
