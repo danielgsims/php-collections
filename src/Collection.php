@@ -581,4 +581,22 @@ class Collection implements CollectionInterface
 
         return end($this->items);
     }
+
+    public function hat()
+    {
+        return $this->headAndTail();
+    }
+
+    public function headAndTail()
+    {
+        if ($this->count() === 0) {
+            return [ null, null ];
+        }
+
+        if ($this->count() === 1) {
+            return [ $this->first(), null ];
+        }
+
+        return [ $this->first(), $this->tail() ];
+    }
 }
