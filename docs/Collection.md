@@ -3,9 +3,9 @@
 ## Methods
 
   ### getType
-  
+
   Returns the type of the collection.
-  
+
   ```php
   $col = new Collection('int', [1,2,3]);
   $type = $col->getType(); //int
@@ -17,13 +17,14 @@
 
   ```php
   $col = new Collection('int', [1,2]);
-  $longer = $col->add(3); //Collection('int', [1,2,3]); 
+  $longer = $col->add(3); //Collection('int', [1,2,3]);
   ```
 
   ### clear
 
   ```php
-
+  $col = new Collection('int', [1,2,3]);
+  $col = $col->clear(); //Collection('int', []);
   ```
 
   ### contains
@@ -59,7 +60,8 @@
   ### count
 
   ```php
-
+  $col = new Collection('int', [1,2,3]);
+  $count = $col->count(); //3
   ```
 
   ### filter
@@ -119,7 +121,8 @@
   ### reverse
 
   ```php
-
+  $col = new Collection('int', [1,2,3]);
+  $col = $col->reverse(); //Collection('int', [3,2,1]);
   ```
 
   ### sort
@@ -221,21 +224,23 @@
   ### first
 
   ```php
-
+  $col = new Collection('int', [1,2,3]);
+  $first = $col->first(); //1
   ```
 
   ### last
 
   ```php
-
+  $col = new Collection('int', [1,2,3]);
+  $last = $col->last(); //3
   ```
 
   ### headAndTail
-  
+
   ```php
-  
+
   ```
-  
+
   ### hat
-  
+
   see headAndTail
