@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class ShuffleTest extends PHPUnit_Framework_TestCase
+class ShuffleTest extends TestCase
 {
     public function test_shuffle()
     {

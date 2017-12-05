@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class DropWhileTest extends PHPUnit_Framework_TestCase
+class DropWhileTest extends TestCase
 {
     public function test_drop_while()
     {

@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class TakeRightTest extends PHPUnit_Framework_TestCase
+class TakeRightTest extends TestCase
 {
     public function testTakeRight()
     {

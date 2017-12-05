@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class ToArrayTest extends PHPUnit_Framework_TestCase
+class ToArrayTest extends TestCase
 {
     public function testToArray()
     {

@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class HeadAndTailTest extends PHPUnit_Framework_TestCase
+class HeadAndTailTest extends TestCase
 {
     public function test_head_and_tail_returns_head_and_collection_for_tail()
     {

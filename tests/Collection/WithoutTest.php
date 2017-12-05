@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class WithoutTest extends PHPUnit_Framework_TestCase
+class WithoutTest extends TestCase
 {
     public function test_without_returns_items_that_do_not_match_criteria()
     {

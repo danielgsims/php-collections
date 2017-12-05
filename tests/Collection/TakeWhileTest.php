@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class TakeWhileTest extends PHPUnit_Framework_TestCase
+class TakeWhileTest extends TestCase
 {
     public function test_take_while()
     {

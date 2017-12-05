@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class GetIteratorTest extends PHPUnit_Framework_TestCase
+class GetIteratorTest extends TestCase
 {
     public function testIterator()
     {

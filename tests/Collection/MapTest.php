@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class MapTest extends PHPUnit_Framework_TestCase
+class MapTest extends TestCase
 {
     public function test_map_ints()
     {
@@ -62,7 +63,7 @@ class MapTest extends PHPUnit_Framework_TestCase
 
         $count = 0;
         $result = $c->map(function ($a) use (&$count) { return $count++; });
-       
+
         $expected = (new Collection('integer'))
                         ->add(0)
                         ->add(1)

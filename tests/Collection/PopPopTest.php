@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class PopPopTest extends PHPUnit_Framework_TestCase
+class PopPopTest extends TestCase
 {
     public function test_pop_pop()
     {

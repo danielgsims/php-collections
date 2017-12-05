@@ -4,12 +4,12 @@ namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
 use Collections\Exceptions\InvalidArgumentException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use TestClassA;
 use TestClassAInterface;
 use TestClassExtendsA;
 
-class ReduceTest extends PHPUnit_Framework_TestCase
+class ReduceTest extends TestCase
 {
     public function test_adding_with_okay_types_adds_to_dictionary()
     {
