@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class FirstAndLastTest extends PHPUnit_Framework_TestCase
+class FirstAndLastTest extends TestCase
 {
     public function test_can_get_first_item()
     {

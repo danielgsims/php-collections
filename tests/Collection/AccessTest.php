@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class AccessTest extends PHPUnit_Framework_TestCase
+class AccessTest extends TestCase
 {
     /**
      * @expectedException Collections\Exceptions\InvalidArgumentException

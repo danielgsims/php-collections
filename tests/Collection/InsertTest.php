@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class InsertTest extends PHPUnit_Framework_TestCase
+class InsertTest extends TestCase
 {
     public function testInsert()
     {

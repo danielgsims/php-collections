@@ -2,8 +2,9 @@
 
 use Collections\Collection;
 use Collections\Exceptions\InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-class MergeTest extends PHPUnit_Framework_TestCase
+class MergeTest extends TestCase
 {
     public function test_merge()
     {

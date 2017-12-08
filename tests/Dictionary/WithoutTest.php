@@ -3,8 +3,9 @@
 namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class WithoutTest extends \PHPUnit_Framework_TestCase
+class WithoutTest extends TestCase
 {
     public function test_filter()
     {

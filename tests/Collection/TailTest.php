@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class TailTest extends PHPUnit_Framework_TestCase
+class TailTest extends TestCase
 {
     public function test_that_tail_gives_you_everything_but_head()
     {

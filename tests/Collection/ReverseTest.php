@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class ReverseTest extends PHPUnit_Framework_TestCase
+class ReverseTest extends TestCase
 {
 
     public function testReverse()

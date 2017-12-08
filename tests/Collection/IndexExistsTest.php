@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class IndexExistsTest extends PHPUnit_Framework_TestCase
+class IndexExistsTest extends TestCase
 {
     public function testIndexExits()
     {
