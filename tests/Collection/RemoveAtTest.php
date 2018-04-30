@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class RemoveAtTest extends PHPUnit_Framework_TestCase
+class RemoveAtTest extends TestCase
 {
    public function testRemoveAt()
     {

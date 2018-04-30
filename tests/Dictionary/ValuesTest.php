@@ -3,8 +3,9 @@
 namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class ValuesTest extends \PHPUnit_Framework_TestCase
+class ValuesTest extends TestCase
 {
     public function test_values()
     {

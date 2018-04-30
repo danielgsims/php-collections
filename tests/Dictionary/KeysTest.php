@@ -3,8 +3,9 @@
 namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class KeysTest extends \PHPUnit_Framework_TestCase
+class KeysTest extends TestCase
 {
     public function test_keys()
     {

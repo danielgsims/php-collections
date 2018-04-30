@@ -142,7 +142,7 @@ class Dictionary implements DictionaryInterface
     public function without(callable $condition)
     {
         $inverse = function ($k, $v) use ($condition) {
-            return !$condition($k,$v);
+            return !$condition($k, $v);
         };
 
         return $this->filter($inverse);

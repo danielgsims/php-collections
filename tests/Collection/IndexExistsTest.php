@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class IndexExistsTest extends PHPUnit_Framework_TestCase
+class IndexExistsTest extends TestCase
 {
     public function testIndexExits()
     {
@@ -15,16 +16,22 @@ class IndexExistsTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($col->indexExists(2));
     }
 
+    /**
+     * @expectedException Collections\Exceptions\InvalidArgumentException
+     * @expectedExceptionMessage Index must be a non-negative integer
+     */
     public function testIndexExitsRejectsNegatives()
     {
-        $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
         $col = new Collection('TestClassA');
         $col->indexExists(-1);
     }
 
+    /**
+     * @expectedException Collections\Exceptions\InvalidArgumentException
+     * @expectedExceptionMessage Index must be an integer
+     */
     public function testIndexExitsRejectsNonIntegers()
     {
-        $this->setExpectedException("Collections\Exceptions\InvalidArgumentException");
         $col = new Collection('TestClassA');
         $col->indexExists("wat");
     }

@@ -4,8 +4,9 @@ namespace Collections\Tests\Dictionary;
 
 
 use Collections\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class ToArrayTest extends \PHPUnit_Framework_TestCase
+class ToArrayTest extends TestCase
 {
     public function test_to_array_returns_assoc_array()
     {

@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class ReduceRightTest extends PHPUnit_Framework_TestCase
+class ReduceRightTest extends TestCase
 {
     public function test_reduce_right_add()
     {

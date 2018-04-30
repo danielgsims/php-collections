@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class FindAllTest extends PHPUnit_Framework_TestCase
+class FindAllTest extends TestCase
 {
     public function testFindAll()
     {

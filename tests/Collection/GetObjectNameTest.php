@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class GetObjectNameTest extends PHPUnit_Framework_TestCase
+class GetObjectNameTest extends TestCase
 {
     public function testGetObjectName()
     {

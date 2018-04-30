@@ -4,8 +4,9 @@ namespace Collections\Tests\Dictionary;
 
 
 use Collections\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class ClearTest extends \PHPUnit_Framework_TestCase
+class ClearTest extends TestCase
 {
     public function test_clear_creates_empty_dictionary_of_same_type()
     {

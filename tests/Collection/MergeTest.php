@@ -2,8 +2,9 @@
 
 use Collections\Collection;
 use Collections\Exceptions\InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-class MergeTest extends PHPUnit_Framework_TestCase
+class MergeTest extends TestCase
 {
     public function test_merge()
     {
@@ -59,9 +60,11 @@ class MergeTest extends PHPUnit_Framework_TestCase
         $col->merge($badItems);
     }
 
+    /**
+     * @expectedException Collections\Exceptions\InvalidArgumentException
+     */
     public function test_non_array_or_col_throws_ex()
     {
-        $this->expectException(InvalidArgumentException::class);
         $col = new Collection('TestClassA');
         $col->merge(new TestClassA(1));
     }

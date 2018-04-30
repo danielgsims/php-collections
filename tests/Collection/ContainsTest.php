@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class ContainsTest extends PHPUnit_Framework_TestCase
+class ContainsTest extends TestCase
 {
     /**
      * @var Collection
