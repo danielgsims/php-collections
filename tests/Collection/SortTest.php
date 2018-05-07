@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class SortTest extends PHPUnit_Framework_TestCase
+class SortTest extends TestCase
 {
     public function test_sorts_with_callback()
     {

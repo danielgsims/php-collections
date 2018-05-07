@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class MapTest extends PHPUnit_Framework_TestCase
+class MapTest extends TestCase
 {
     public function test_map_ints()
     {

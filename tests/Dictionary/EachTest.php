@@ -3,8 +3,9 @@
 namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class EachTest extends \PHPUnit_Framework_TestCase
+class EachTest extends TestCase
 {
     public function test_fn_applied_to_every_item()
     {

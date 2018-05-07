@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class EveryTest extends PHPUnit_Framework_TestCase
+class EveryTest extends TestCase
 {
     public function testEvery()
     {

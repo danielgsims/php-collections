@@ -4,8 +4,9 @@ namespace Collections\Tests\Dictionary;
 
 
 use Collections\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class ExistsTest extends \PHPUnit_Framework_TestCase
+class ExistsTest extends TestCase
 {
     public function test_key_exists_returns_true()
     {

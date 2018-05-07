@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class DropRightTest extends PHPUnit_Framework_TestCase
+class DropRightTest extends TestCase
 {
     /**
      * @var Collection

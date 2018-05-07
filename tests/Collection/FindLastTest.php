@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class FindLastTest extends PHPUnit_Framework_TestCase
+class FindLastTest extends TestCase
 {
     public function testFindLast()
     {
