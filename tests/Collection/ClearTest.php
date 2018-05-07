@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class ClearTest extends PHPUnit_Framework_TestCase
+class ClearTest extends TestCase
 {
     public function test_clear_returns_an_empty_collection()
     {

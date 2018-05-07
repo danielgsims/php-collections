@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class AddTest extends PHPUnit_Framework_TestCase
+class AddTest extends TestCase
 {
     public function test_add_item_creates_new_col_with_item()
     {

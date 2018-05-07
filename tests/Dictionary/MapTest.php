@@ -3,8 +3,9 @@
 namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class MapTest extends \PHPUnit_Framework_TestCase
+class MapTest extends TestCase
 {
     public function test_map_infers_type_for_dict()
     {

@@ -3,8 +3,9 @@
 namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-class GetOrElseTest extends \PHPUnit_Framework_TestCase
+class GetOrElseTest extends TestCase
 {
     public function test_get_or_else()
     {

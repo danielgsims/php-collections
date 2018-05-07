@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class ReduceTest extends PHPUnit_Framework_TestCase
+class ReduceTest extends TestCase
 {
     public function testReduce()
     {

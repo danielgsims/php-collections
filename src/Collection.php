@@ -337,7 +337,6 @@ class Collection implements CollectionInterface
         $col->setItemsFromTrustedSource($items);
 
         return $col;
-
     }
 
     /**

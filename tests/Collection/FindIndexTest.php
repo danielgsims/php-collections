@@ -1,8 +1,9 @@
 <?php
 
 use Collections\Collection;
+use PHPUnit\Framework\TestCase;
 
-class FindIndexTest extends PHPUnit_Framework_TestCase
+class FindIndexTest extends TestCase
 {
     public function testFindIndex()
     {
