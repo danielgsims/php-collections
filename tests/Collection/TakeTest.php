@@ -3,7 +3,7 @@
 use Collections\Collection;
 use PHPUnit\Framework\TestCase;
 
-class FancyTest extends TestCase
+class TakeTest extends TestCase
 {
     /**
      * @var Collection
