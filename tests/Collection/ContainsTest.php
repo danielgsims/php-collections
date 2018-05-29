@@ -28,7 +28,6 @@ class ContainsTest extends TestCase
         $this->assertTrue($result);
     }
 
-
     public function test_contains_finds_when_no_match_returns_false()
     {
         $result = $this->col->contains(function(TestClassA $item) {
