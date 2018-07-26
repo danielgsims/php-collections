@@ -1,11 +1,11 @@
 {
-    "name": "danielgsims/php-collections",
-    "description": "Collection classes for PHP",
+    "name": "danfah/php-collections",
+    "description": "Collection classes for PHP. Forked from danielgsims/php-collections with fixed type check in merge method.",
     "license": "MIT",
     "authors": [
         {
             "name": "Daniel G Sims",
-            "email": "danielgarthsims@gmail.com"
+            "email": "daniel.fahel@gmail.com"
         }
     ],
     "minimum-stability": "dev",
