@@ -546,7 +546,7 @@ class Collection implements CollectionInterface
      */
     public function merge($items)
     {
-        if ($items instanceof static) {
+        if ($items instanceof CollectionInterface) {
             $items = $items->toArray();
         }
 
