@@ -227,7 +227,7 @@ class Dictionary implements DictionaryInterface
      */
     public function merge($newItems)
     {
-        if ($newItems instanceof self) {
+        if ($newItems instanceof DictionaryInterface) {
             $newItems = $newItems->toArray();
         }
 
