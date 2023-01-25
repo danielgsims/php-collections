@@ -33,43 +33,33 @@ class SliceTest extends TestCase
         $this->c = new Collection('TestClassA', $this->items);
     }
 
-    /**
-     * @expectedException \Collections\Exceptions\InvalidArgumentException
-     */
     public function test_slice_negative_start_throws_ex()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $this->c->slice(-1, 3);
     }
 
-    /**
-     * @expectedException \Collections\Exceptions\InvalidArgumentException
-     */
     public function test_slice_negative_end_throws_ex()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $this->c->slice(1, -4);
     }
 
-    /**
-     * @expectedException \Collections\Exceptions\InvalidArgumentException
-     */
     public function test_start_gt_end_is_invalid()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $this->c->slice(3, 2);
     }
 
-    /**
-     * @expectedException \Collections\Exceptions\InvalidArgumentException
-     */
     public function test_start_out_of_range_is_invalid()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $this->c->slice(20, 22);
     }
 
-    /**
-     * @expectedException \Collections\Exceptions\InvalidArgumentException
-     */
     public function test_end_out_of_range_is_invalid()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $this->c->slice(2, 22);
     }
 

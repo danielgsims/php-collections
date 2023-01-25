@@ -3,7 +3,6 @@
 namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
-use Collections\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use TestClassA;
 use TestClassAInterface;

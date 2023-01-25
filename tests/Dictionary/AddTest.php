@@ -3,7 +3,6 @@
 namespace Collections\Tests\Dictionary;
 
 use Collections\Dictionary;
-use Collections\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use TestClassA;
 use TestClassAInterface;
@@ -68,77 +67,59 @@ class AddTest extends TestCase
         $this->assertEquals(1, $d->count());
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_adding_with_invalid_key_type_throws_ex()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new dictionary('string', 'int');
         $d = $d->add(4, 1977);
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_adding_with_invalid_value_type_throws_ex()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new dictionary('string', 'string');
         $d = $d->add("Episode IV", 1977);
     }
 
-   /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_array_is_invalid_key_type()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new Dictionary('array', 'int');
     }
 
-   /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_object_is_invalid_key_type()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new Dictionary('object', 'int');
     }
 
-   /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_callable_is_invalid_key_type()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new Dictionary('callable', 'int');
     }
 
-   /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_class_is_invalid_key_type()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new Dictionary('TestClassA', 'int');
     }
 
-   /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_interface_is_invalid_key_type()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new Dictionary('TestClassAInterface', 'int');
     }
 
-   /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_madeup_string_is_invalid_key_type()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new Dictionary('test2', 'int');
     }
 
-   /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_float_is_invalid_key_type()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new Dictionary('float', 'int');
     }
 
@@ -150,11 +131,9 @@ class AddTest extends TestCase
         $this->assertEquals(2, $d->get('key'));
     }
 
-   /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_ex_thrown_if_callable_is_not_passed()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $d = new Dictionary('string', 'callable');
         $d = $d->add('test', 123);
     }

@@ -43,11 +43,9 @@ class TakeTest extends TestCase
         $this->assertEquals($this->col, $result);
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_take_negative_throws_ex()
     {
+        $this->expectException(Collections\Exceptions\InvalidArgumentException::class);
         $result = $this->col->take(-1);
     }
 

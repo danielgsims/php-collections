@@ -62,7 +62,7 @@ class Collection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function add($item)
+    public function add($item): CollectionInterface
     {
         $this->validateItem($item, $this->type);
 
