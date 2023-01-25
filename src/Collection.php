@@ -163,7 +163,7 @@ class Collection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->items);
     }
@@ -217,7 +217,7 @@ class Collection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->items);
     }

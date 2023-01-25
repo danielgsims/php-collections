@@ -10,7 +10,7 @@ class FindTest extends TestCase
      */
     private $col;
 
-    public function setup()
+    public function setup(): void
     {
          $this->col = new Collection(
             'TestClassA', [

@@ -8,14 +8,14 @@ class SliceTest extends TestCase
     /**
      * @var Collection
      */
-    private $c;
+    private Collection $c;
 
     /**
      * @var array
      */
     private $items;
 
-    public function setup()
+    public function setup(): void
     {
         $this->items = [
             new TestClassA(0),

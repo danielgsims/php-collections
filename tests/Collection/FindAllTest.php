@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 class FindAllTest extends TestCase
 {
+    private Collection $c;
+
     public function testFindAll()
     {
         $this->c = new Collection('TestClassA');

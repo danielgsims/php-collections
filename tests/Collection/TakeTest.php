@@ -10,7 +10,7 @@ class TakeTest extends TestCase
      */
     private $col;
 
-    public function setup()
+    public function setup(): void
     {
         $this->col = new Collection('TestClassA', [
             new TestClassA(2),

@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 class FindIndexTest extends TestCase
 {
+    private \Collections\CollectionInterface|Collection $c;
+
     public function testFindIndex()
     {
         $this->c = new Collection("TestClassA");

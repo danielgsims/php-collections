@@ -63,7 +63,7 @@ interface DictionaryInterface extends \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count();
+    public function count(): int;
 
     /**
      * Removes every key-value pair from the dictionary.

@@ -91,7 +91,7 @@ class Dictionary implements DictionaryInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->storage);
     }
@@ -99,7 +99,7 @@ class Dictionary implements DictionaryInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->storage);
     }
