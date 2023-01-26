@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 class DropWhileTest extends TestCase
 {
-    private \Collections\CollectionInterface|Collection $col;
+    private \Collections\CollectionInterface $col;
 
     public function test_drop_while()
     {

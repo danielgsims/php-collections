@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 class RemoveAtTest extends TestCase
 {
-    private \Collections\CollectionInterface|Collection $c;
+    private \Collections\CollectionInterface $c;
 
     public function testRemoveAt()
     {
