@@ -266,7 +266,7 @@ class Collection implements CollectionInterface
         $partA[] = $item;
 
         $items = array_merge($partA, $partB);
-        $col = new static ($this->type);
+        $col = new static($this->type);
         $col->setItemsFromTrustedSource($items);
 
         return $col;
@@ -289,7 +289,7 @@ class Collection implements CollectionInterface
         $items1 = array_merge($partA, $items);
         $items1 = array_merge($items1, $partB);
 
-        $col = new static ($this->type);
+        $col = new static($this->type);
         $col->setItemsFromTrustedSource($items1);
 
         return $col;
@@ -319,7 +319,7 @@ class Collection implements CollectionInterface
         $partB = array_slice($items, $index + 1, count($items));
         $items = array_merge($partA, $partB);
 
-        $col = new static ($this->type);
+        $col = new static($this->type);
         $col->setItemsFromTrustedSource($items);
 
         return $col;
@@ -333,7 +333,7 @@ class Collection implements CollectionInterface
     {
         $items = array_reverse($this->items);
 
-        $col = new static ($this->type);
+        $col = new static($this->type);
         $col->setItemsFromTrustedSource($items);
 
         return $col;
@@ -348,7 +348,7 @@ class Collection implements CollectionInterface
 
         usort($items, $callback);
 
-        $col = new static ($this->type);
+        $col = new static($this->type);
         $col->setItemsFromTrustedSource($items);
 
         return $col;
@@ -511,7 +511,7 @@ class Collection implements CollectionInterface
             $type = $this->type;
         }
 
-        $col = new static ($type);
+        $col = new static($type);
         $col->setItemsFromTrustedSource($items);
 
         return $col;
@@ -535,7 +535,7 @@ class Collection implements CollectionInterface
         $items = $this->items;
         shuffle($items);
 
-        $col = new static ($this->type);
+        $col = new static($this->type);
         $col->setItemsFromTrustedSource($items);
 
         return $col;
@@ -557,7 +557,7 @@ class Collection implements CollectionInterface
         $this->validateItems($items, $this->type);
         $newItems = array_merge($this->items, $items);
 
-        $col = new static ($this->type);
+        $col = new static($this->type);
         $col->setItemsFromTrustedSource($newItems);
 
         return $col;

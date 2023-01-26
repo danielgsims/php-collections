@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9037d442b8e4edd2dc72bf0e86f096f",
+    "content-hash": "79e21ffd758ead23e75f152c15dfa6db",
     "packages": [],
     "packages-dev": [
         {
@@ -320,12 +320,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "08b2022df9708328731f1e9094e81d720739acf8"
+                "reference": "2cf940ebc6355a9d430462811b5aaa308b174bed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/08b2022df9708328731f1e9094e81d720739acf8",
-                "reference": "08b2022df9708328731f1e9094e81d720739acf8",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/2cf940ebc6355a9d430462811b5aaa308b174bed",
+                "reference": "2cf940ebc6355a9d430462811b5aaa308b174bed",
                 "shasum": ""
             },
             "require": {
@@ -381,7 +381,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.24"
             },
             "funding": [
                 {
@@ -389,7 +389,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-24T14:18:22+00:00"
+            "time": "2023-01-26T08:26:55+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -638,12 +638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "aa658d693d68e23604fcd3504b6e5efd59d341ab"
+                "reference": "e6c588044e41e22777225c4339bce021113cc829"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/aa658d693d68e23604fcd3504b6e5efd59d341ab",
-                "reference": "aa658d693d68e23604fcd3504b6e5efd59d341ab",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e6c588044e41e22777225c4339bce021113cc829",
+                "reference": "e6c588044e41e22777225c4339bce021113cc829",
                 "shasum": ""
             },
             "require": {
@@ -732,7 +732,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-24T14:15:16+00:00"
+            "time": "2023-01-26T08:31:58+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -1700,63 +1700,37 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.9.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "4665f6411253f737658f9aae12e6cafd3ca26b13"
+                "reference": "add95a74551c3ba8fc99ef7651ad05f553b3fbbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4665f6411253f737658f9aae12e6cafd3ca26b13",
-                "reference": "4665f6411253f737658f9aae12e6cafd3ca26b13",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/add95a74551c3ba8fc99ef7651ad05f553b3fbbf",
+                "reference": "add95a74551c3ba8fc99ef7651ad05f553b3fbbf",
                 "shasum": ""
             },
             "require": {
                 "ext-simplexml": "*",
                 "ext-tokenizer": "*",
                 "ext-xmlwriter": "*",
-                "php": ">=5.1.2"
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
+            "default-branch": true,
             "bin": [
-                "scripts/phpcs",
-                "scripts/phpcbf"
+                "bin/phpcs",
+                "bin/phpcbf"
             ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev"
+                    "dev-master": "3.x-dev"
                 }
-            },
-            "autoload": {
-                "classmap": [
-                    "CodeSniffer.php",
-                    "CodeSniffer/CLI.php",
-                    "CodeSniffer/Exception.php",
-                    "CodeSniffer/File.php",
-                    "CodeSniffer/Fixer.php",
-                    "CodeSniffer/Report.php",
-                    "CodeSniffer/Reporting.php",
-                    "CodeSniffer/Sniff.php",
-                    "CodeSniffer/Tokens.php",
-                    "CodeSniffer/Reports/",
-                    "CodeSniffer/Tokenizers/",
-                    "CodeSniffer/DocGenerators/",
-                    "CodeSniffer/Standards/AbstractPatternSniff.php",
-                    "CodeSniffer/Standards/AbstractScopeSniff.php",
-                    "CodeSniffer/Standards/AbstractVariableSniff.php",
-                    "CodeSniffer/Standards/IncorrectPatternException.php",
-                    "CodeSniffer/Standards/Generic/Sniffs/",
-                    "CodeSniffer/Standards/MySource/Sniffs/",
-                    "CodeSniffer/Standards/PEAR/Sniffs/",
-                    "CodeSniffer/Standards/PSR1/Sniffs/",
-                    "CodeSniffer/Standards/PSR2/Sniffs/",
-                    "CodeSniffer/Standards/Squiz/Sniffs/",
-                    "CodeSniffer/Standards/Zend/Sniffs/"
-                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1769,17 +1743,18 @@
                 }
             ],
             "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
-            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
             "keywords": [
                 "phpcs",
-                "standards"
+                "standards",
+                "static analysis"
             ],
             "support": {
                 "issues": "https://github.com/squizlabs/PHP_CodeSniffer/issues",
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2018-11-07T22:53:13+00:00"
+            "time": "2022-12-22T21:46:41+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -1838,7 +1813,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4.0"
+        "php": "^7.0 || ^8.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
