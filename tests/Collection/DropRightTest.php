@@ -11,7 +11,7 @@ class DropRightTest extends TestCase
     private $col;
     private $items;
 
-    public function setup()
+    public function setup(): void
     {
         $this->items = [
             new TestClassA(2),

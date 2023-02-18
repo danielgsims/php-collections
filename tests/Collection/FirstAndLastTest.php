@@ -11,11 +11,9 @@ class FirstAndLastTest extends TestCase
         $this->assertSame($col->first(), 1);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function test_can_not_get_first_if_collection_is_empty()
     {
+        $this->expectException(\RuntimeException::class);
         (new Collection('integer'))->first();
     }
 
@@ -25,11 +23,9 @@ class FirstAndLastTest extends TestCase
         $this->assertSame($col->last(), 5);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function test_can_not_get_last_if_collection_is_empty()
     {
+        $this->expectException(\RuntimeException::class);
         (new Collection('integer'))->last();
     }
 }

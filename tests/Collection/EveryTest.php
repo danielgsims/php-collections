@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 class EveryTest extends TestCase
 {
+    private Collection $c;
+
     public function testEvery()
     {
         $t = new TestClassA(2);

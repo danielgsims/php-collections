@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 class FindLastTest extends TestCase
 {
+    private \Collections\CollectionInterface $c;
+
     public function testFindLast()
     {
         $this->c = new Collection('TestClassA');

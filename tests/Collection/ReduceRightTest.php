@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 class ReduceRightTest extends TestCase
 {
+    private \Collections\CollectionInterface $c;
+
     public function test_reduce_right_add()
     {
         $this->c = new Collection('int');

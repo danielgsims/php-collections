@@ -16,22 +16,18 @@ class InsertTest extends TestCase
         $this->assertEquals(3, $result->at(1)->getValue());
     }
 
-    /**
-     * @expectedException Collections\Exceptions\OutOfRangeException
-     * @expectedExceptionMessage Index out of bounds of collection
-     */
     public function testInsertThrowsOutOfRangeException()
     {
+        $this->expectExceptionMessage("Index out of bounds of collection");
+        $this->expectException(\Collections\Exceptions\OutOfRangeException::class);
         $c = new Collection('TestClassA');
         $c->insert(100, new TestClassA(5));
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     * @expectedExceptionMessage Index must be a non-negative integer
-     */
     public function testInsertThrowsInvalidArgumentException()
     {
+        $this->expectExceptionMessage("Index must be a non-negative integer");
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $c = new Collection('TestClassA');
         $c->insert(-1, new TestClassA(5));
     }

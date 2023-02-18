@@ -5,29 +5,23 @@ use PHPUnit\Framework\TestCase;
 
 class AccessTest extends TestCase
 {
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_bad_index_throws_ex()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $col = new Collection('TestClassA', [ new TestClassA(1)]);
         $col->at("one");
     }
 
-    /**
-     * @expectedException Collections\Exceptions\OutOfRangeException
-     */
     public function test_out_of_range_throws_ex()
     {
+        $this->expectException(\Collections\Exceptions\OutOfRangeException::class);
         $col = new Collection('TestClassA', [ new TestClassA(1)]);
         $col->at(1);
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_negative_index_throws_value()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $col = new Collection('TestClassA', [ new TestClassA(1)]);
         $col->at(-1);
     }

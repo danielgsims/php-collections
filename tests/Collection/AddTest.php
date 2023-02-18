@@ -21,11 +21,9 @@ class AddTest extends TestCase
         $this->assertEquals($a, $col2->at(0));
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_adding_wrong_class_triggers_error()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $col = new Collection('TestClassA');
         $col->add(new TestClassB());
     }
@@ -101,11 +99,9 @@ class AddTest extends TestCase
         $this->assertEquals(1, $col->count());
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_collection_throws_ex_for_non_existent_type()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $col = new Collection('this_type_is_invalid');
     }
 
@@ -127,11 +123,9 @@ class AddTest extends TestCase
         $this->assertEquals(3, $col->count());
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_collection_throws_ex_for_different_types()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $col = new Collection('int');
         $col = $col->add('string');
     }

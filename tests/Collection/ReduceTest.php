@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 class ReduceTest extends TestCase
 {
+    private Collection $c;
+
     public function testReduce()
     {
         $t = new TestClassA(1);

@@ -1,7 +1,6 @@
 <?php
 
 use Collections\Collection;
-use Collections\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class MergeTest extends TestCase
@@ -47,11 +46,9 @@ class MergeTest extends TestCase
         $this->assertEquals($range, $withRange->toArray());
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_range_with_incorrect_types_throws_ex()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $badItems = array();
         $badItems[] = new TestClassB();
         $badItems[] = new TestClassB();
@@ -60,11 +57,9 @@ class MergeTest extends TestCase
         $col->merge($badItems);
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     */
     public function test_non_array_or_col_throws_ex()
     {
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $col = new Collection('TestClassA');
         $col->merge(new TestClassA(1));
     }

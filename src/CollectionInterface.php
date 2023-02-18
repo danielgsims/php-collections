@@ -84,7 +84,7 @@ interface CollectionInterface extends \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function count();
+    public function count(): int;
 
     /**
      * Returns a collection that only contains the items which satisfy
@@ -118,7 +118,7 @@ interface CollectionInterface extends \IteratorAggregate, \Countable
      *
      * @return ArrayIterator
      */
-    public function getIterator();
+    public function getIterator(): ArrayIterator;
 
     /**
      * Returns a collection that contains the subset of items ranging from the

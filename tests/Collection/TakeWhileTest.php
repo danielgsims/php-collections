@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 class TakeWhileTest extends TestCase
 {
+    private \Collections\CollectionInterface $c;
+
     public function test_take_while()
     {
         $t = new TestClassA(2);

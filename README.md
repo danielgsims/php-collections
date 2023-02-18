@@ -7,7 +7,7 @@ you will receive a new instance with the changes applied.
 
 ## Requirements ##
 
-Requires PHP 5.4 or greater, dev reqiures PHP 5.5 or greater.
+Requires PHP 7.0 or greater.
 
 Collection
 =============

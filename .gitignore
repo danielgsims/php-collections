@@ -2,3 +2,4 @@ vendor
 reports
 *.sw*
 .idea
+.phpunit.result.cache

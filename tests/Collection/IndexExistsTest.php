@@ -16,22 +16,18 @@ class IndexExistsTest extends TestCase
         $this->assertFalse($col->indexExists(2));
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     * @expectedExceptionMessage Index must be a non-negative integer
-     */
     public function testIndexExitsRejectsNegatives()
     {
+        $this->expectExceptionMessage("Index must be a non-negative integer");
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $col = new Collection('TestClassA');
         $col->indexExists(-1);
     }
 
-    /**
-     * @expectedException Collections\Exceptions\InvalidArgumentException
-     * @expectedExceptionMessage Index must be an integer
-     */
     public function testIndexExitsRejectsNonIntegers()
     {
+        $this->expectExceptionMessage("Index must be an integer");
+        $this->expectException(\Collections\Exceptions\InvalidArgumentException::class);
         $col = new Collection('TestClassA');
         $col->indexExists("wat");
     }

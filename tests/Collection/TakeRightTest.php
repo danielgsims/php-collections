@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 class TakeRightTest extends TestCase
 {
+    private Collection $c;
+
     public function testTakeRight()
     {
         $t = new TestClassA(2);
